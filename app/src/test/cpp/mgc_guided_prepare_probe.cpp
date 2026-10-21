@@ -14,9 +14,9 @@
 #include <vector>
 using namespace photon::mgc_denoise;
 using Clock = std::chrono::steady_clock;
-extern "C" jlong Java_com_hinnka_mycamera_raw_MgcGuidedUpsample_nativePrepare(
+extern "C" jlong Java_vn_hoang_leicafujicam_raw_MgcGuidedUpsample_nativePrepare(
     JNIEnv *, jobject, jobject, jint, jint, jint, jfloatArray);
-extern "C" void Java_com_hinnka_mycamera_raw_MgcGuidedUpsample_nativeRelease(
+extern "C" void Java_vn_hoang_leicafujicam_raw_MgcGuidedUpsample_nativeRelease(
     JNIEnv *, jobject, jlong);
 struct Buffer { void *data; jlong bytes; };
 static JNIEnv FakeJni() {
@@ -172,12 +172,12 @@ static void MappedBenchmark() {
   float wb[] = {2.14f,1.f,1.62f};
   Buffer input{mapped,jlong(n)*16},gains{wb,12};
   const auto prepare_begin = Clock::now();
-  const auto handle = Java_com_hinnka_mycamera_raw_MgcGuidedUpsample_nativePrepare(
+  const auto handle = Java_vn_hoang_leicafujicam_raw_MgcGuidedUpsample_nativePrepare(
       &env,nullptr,reinterpret_cast<jobject>(&input),w,h,1,reinterpret_cast<jfloatArray>(&gains));
   const auto prepare_end = Clock::now();
   Check(handle != 0,"complete mapped nativePrepare");
   printf("GPU-mapped %dx%d complete nativePrepare=%.2fms (fresh allocations, box, low RGB, mapped writeback)\n",w,h,Ms(prepare_begin,prepare_end));
-  Java_com_hinnka_mycamera_raw_MgcGuidedUpsample_nativeRelease(&env,nullptr,handle);
+  Java_vn_hoang_leicafujicam_raw_MgcGuidedUpsample_nativeRelease(&env,nullptr,handle);
   Check(glUnmapBuffer(GL_PIXEL_PACK_BUFFER),"unmap");glDeleteBuffers(1,&buffer);
   glDeleteProgram(program);glDeleteShader(shader);eglMakeCurrent(display,EGL_NO_SURFACE,EGL_NO_SURFACE,EGL_NO_CONTEXT);
   eglDestroySurface(display,surface);eglDestroyContext(display,context);eglTerminate(display);

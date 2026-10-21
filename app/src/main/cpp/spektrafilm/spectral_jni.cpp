@@ -50,7 +50,7 @@ jfloatArray output(JNIEnv* env, const std::vector<float>& values) {
 }
 
 extern "C" JNIEXPORT jobjectArray JNICALL
-Java_com_hinnka_mycamera_raw_SpektrafilmNativeBridge_generate(
+Java_vn_hoang_leicafujicam_raw_SpektrafilmNativeBridge_generate(
     JNIEnv* env, jobject, jstring sharedKeyValue, jstring filmKeyValue,
     jbyteArray sharedData, jbyteArray filmData, jstring paperNameValue,
     jbyteArray paperData, jboolean positive, jboolean buildFilm, jboolean buildPrint) {

@@ -37,7 +37,7 @@ bool IsValidNoisePair(float read, float shot) {
 }  // namespace
 
 extern "C" JNIEXPORT jint JNICALL
-Java_com_hinnka_mycamera_processor_MgcSpatialStrengthMapGenerator_nativeCompute(
+Java_vn_hoang_leicafujicam_processor_MgcSpatialStrengthMapGenerator_nativeCompute(
     JNIEnv* env,
     jobject,
     jint layout,

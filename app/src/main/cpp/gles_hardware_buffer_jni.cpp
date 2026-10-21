@@ -34,7 +34,7 @@ jlong toHardwareBufferImageJlong(HardwareBufferEglImage *value) {
 } // namespace
 
 extern "C" JNIEXPORT jlong JNICALL
-Java_com_hinnka_mycamera_processor_GlesHardwareBufferImage_create(
+Java_vn_hoang_leicafujicam_processor_GlesHardwareBufferImage_create(
     JNIEnv *env, jobject, jobject hardware_buffer) {
   if (!hardware_buffer) {
     return 0;
@@ -86,7 +86,7 @@ Java_com_hinnka_mycamera_processor_GlesHardwareBufferImage_create(
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_hinnka_mycamera_processor_GlesHardwareBufferImage_bind(
+Java_vn_hoang_leicafujicam_processor_GlesHardwareBufferImage_bind(
     JNIEnv *, jobject, jlong image_handle, jint texture_id) {
   auto *source = fromHardwareBufferImageJlong(image_handle);
   if (!source || source->display != eglGetCurrentDisplay() || texture_id == 0) {
@@ -112,7 +112,7 @@ Java_com_hinnka_mycamera_processor_GlesHardwareBufferImage_bind(
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_com_hinnka_mycamera_processor_GlesHardwareBufferImage_destroy(
+Java_vn_hoang_leicafujicam_processor_GlesHardwareBufferImage_destroy(
     JNIEnv *, jobject, jlong image_handle) {
   std::unique_ptr<HardwareBufferEglImage> source(
       fromHardwareBufferImageJlong(image_handle));

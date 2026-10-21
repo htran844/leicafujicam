@@ -215,7 +215,7 @@ std::string sourceKey(const fotufilm::FotufilmFrame& frame) {
 }
 
 jobject frameObject(JNIEnv* env, const fotufilm::FotufilmFrame& frame, jstring cachedTilesKey, jfloatArray cachedTiles) {
-    jclass frameClass = env->FindClass("com/hinnka/mycamera/raw/fotufilm/FotufilmFrame");
+    jclass frameClass = env->FindClass("vn/hoang/leicafujicam/raw/fotufilm/FotufilmFrame");
     if (!frameClass) throw std::runtime_error("Missing FotufilmFrame class");
     jmethodID constructor = env->GetMethodID(
         frameClass, "<init>", "([FI[F[F[FIIIIIIII[ILjava/lang/String;[FLjava/lang/String;)V");
@@ -267,7 +267,7 @@ jobject meteringObject(JNIEnv* env, const fotufilm::FotufilmFrame& frame) {
     if (!frame.metered || !frame.sceneHighlightStops || !frame.sceneToneStops || !frame.sceneChannelMedians) {
         return nullptr;
     }
-    jclass meteringClass = env->FindClass("com/hinnka/mycamera/raw/fotufilm/FotufilmMetering");
+    jclass meteringClass = env->FindClass("vn/hoang/leicafujicam/raw/fotufilm/FotufilmMetering");
     if (!meteringClass) throw std::runtime_error("Missing FotufilmMetering class");
     jmethodID constructor = env->GetMethodID(meteringClass, "<init>", "(F[F[F)V");
     if (!constructor) throw std::runtime_error("Missing FotufilmMetering constructor");
@@ -293,7 +293,7 @@ void requireInstalled() {
 }  // namespace
 
 extern "C" JNIEXPORT void JNICALL
-Java_com_hinnka_mycamera_raw_fotufilm_FotufilmNativeBridge_install(JNIEnv* env, jobject, jobjectArray stockJsons,
+Java_vn_hoang_leicafujicam_raw_fotufilm_FotufilmNativeBridge_install(JNIEnv* env, jobject, jobjectArray stockJsons,
                                                                     jbyteArray reflectancePrior, jstring grainCacheDir) {
     std::unique_lock<std::shared_mutex> lock(runtimeMutex);
     try {
@@ -339,7 +339,7 @@ Java_com_hinnka_mycamera_raw_fotufilm_FotufilmNativeBridge_install(JNIEnv* env, 
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_hinnka_mycamera_raw_fotufilm_FotufilmNativeBridge_stocks(JNIEnv* env, jobject) {
+Java_vn_hoang_leicafujicam_raw_fotufilm_FotufilmNativeBridge_stocks(JNIEnv* env, jobject) {
     std::shared_lock<std::shared_mutex> lock(runtimeMutex);
     try {
         requireInstalled();
@@ -353,7 +353,7 @@ Java_com_hinnka_mycamera_raw_fotufilm_FotufilmNativeBridge_stocks(JNIEnv* env, j
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_hinnka_mycamera_raw_fotufilm_FotufilmNativeBridge_catalogue(JNIEnv* env, jobject, jstring stockId,
+Java_vn_hoang_leicafujicam_raw_fotufilm_FotufilmNativeBridge_catalogue(JNIEnv* env, jobject, jstring stockId,
                                                                       jstring documentJson) {
     std::shared_lock<std::shared_mutex> lock(runtimeMutex);
     try {
@@ -370,7 +370,7 @@ Java_com_hinnka_mycamera_raw_fotufilm_FotufilmNativeBridge_catalogue(JNIEnv* env
 }
 
 extern "C" JNIEXPORT jobject JNICALL
-Java_com_hinnka_mycamera_raw_fotufilm_FotufilmNativeBridge_buildFrame(
+Java_vn_hoang_leicafujicam_raw_fotufilm_FotufilmNativeBridge_buildFrame(
     JNIEnv* env, jobject, jstring stockId, jstring documentJson, jint width, jint height, jlong frameIndex,
     jobject meteringBuffer, jint meteringWidth, jint meteringHeight, jboolean measureFlareOnDevice,
     jfloatArray sceneMetering, jstring cachedFilmTilesKey, jfloatArray cachedFilmTiles) {
@@ -416,11 +416,11 @@ Java_com_hinnka_mycamera_raw_fotufilm_FotufilmNativeBridge_buildFrame(
 
         jobject frameValue = frameObject(env, frame, cachedFilmTilesKey, cachedFilmTiles);
         jobject meteringValue = meteringObject(env, frame);
-        jclass resultClass = env->FindClass("com/hinnka/mycamera/raw/fotufilm/FotufilmBuildResult");
+        jclass resultClass = env->FindClass("vn/hoang/leicafujicam/raw/fotufilm/FotufilmBuildResult");
         if (!resultClass) throw std::runtime_error("Missing FotufilmBuildResult class");
         jmethodID constructor = env->GetMethodID(
             resultClass, "<init>",
-            "(Lcom/hinnka/mycamera/raw/fotufilm/FotufilmFrame;Lcom/hinnka/mycamera/raw/fotufilm/FotufilmMetering;ZZ)V");
+            "(Lvn/hoang/leicafujicam/raw/fotufilm/FotufilmFrame;Lvn/hoang/leicafujicam/raw/fotufilm/FotufilmMetering;ZZ)V");
         if (!constructor) throw std::runtime_error("Missing FotufilmBuildResult constructor");
         jobject result = env->NewObject(resultClass, constructor, frameValue, meteringValue,
                                         static_cast<jboolean>(wantsMetering), static_cast<jboolean>(wantsFlare));

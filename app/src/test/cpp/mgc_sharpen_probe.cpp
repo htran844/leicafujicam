@@ -19,7 +19,7 @@
 using namespace photon::mgc_denoise;
 using Clock = std::chrono::steady_clock;
 extern "C" jfloat
-Java_com_hinnka_mycamera_raw_RawDemosaicProcessor_estimateMgcReferenceSignalNative(
+Java_vn_hoang_leicafujicam_raw_RawDemosaicProcessor_estimateMgcReferenceSignalNative(
     JNIEnv *, jobject, jobject, jint, jint, jint, jint, jint, jint, jint,
     jfloat, jint, jfloat);
 
@@ -44,7 +44,7 @@ static void SignalStats(int w, int h) {
   for (int i = 0; i < 4; ++i) {
     auto start = Clock::now();
     float signal =
-        Java_com_hinnka_mycamera_raw_RawDemosaicProcessor_estimateMgcReferenceSignalNative(
+        Java_vn_hoang_leicafujicam_raw_RawDemosaicProcessor_estimateMgcReferenceSignalNative(
             &env, nullptr, reinterpret_cast<jobject>(&buffer), 0, buffer.bytes,
             w, h, w * 2, 1, 1, 64.f, 4095, 4031.f);
     double ms =

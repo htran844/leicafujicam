@@ -247,7 +247,7 @@ bool IsSourceFormat(int32_t format) {
 // Upscales a whole finalized frame: `source` is the frame on its native grid and
 // `destination` the empty 2x bitmap of RGBA_8888 pixels to fill.
 extern "C" JNIEXPORT jint JNICALL
-Java_com_hinnka_mycamera_raw_MgcRaisrUpscale_nativeUpscaleBitmap(JNIEnv* env, jclass,
+Java_vn_hoang_leicafujicam_raw_MgcRaisrUpscale_nativeUpscaleBitmap(JNIEnv* env, jclass,
                                                                 jobject source,
                                                                 jobject destination,
                                                                 jfloat resample_rate) {
@@ -292,7 +292,7 @@ Java_com_hinnka_mycamera_raw_MgcRaisrUpscale_nativeUpscaleBitmap(JNIEnv* env, jc
 // is fed the core plus photon_raisr::kBandHaloPx and the margin is cropped from
 // the 2x result again. `destination` holds the core's 2x pixels.
 extern "C" JNIEXPORT jint JNICALL
-Java_com_hinnka_mycamera_raw_MgcRaisrUpscale_nativeUpscaleTile(
+Java_vn_hoang_leicafujicam_raw_MgcRaisrUpscale_nativeUpscaleTile(
     JNIEnv* env, jclass, jobject source, jint tile_width, jint tile_height, jint core_left,
     jint core_top, jint core_width, jint core_height, jobject destination,
     jfloat resample_rate) {

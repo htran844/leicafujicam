@@ -373,7 +373,7 @@ void LogPecanInputs(
 }  // namespace
 
 extern "C" JNIEXPORT jint JNICALL
-Java_com_hinnka_mycamera_raw_MgcFullResolutionDenoise_nativeDenoiseRgba16f(
+Java_vn_hoang_leicafujicam_raw_MgcFullResolutionDenoise_nativeDenoiseRgba16f(
     JNIEnv* env,
     jobject,
     jobject rgba_buffer,

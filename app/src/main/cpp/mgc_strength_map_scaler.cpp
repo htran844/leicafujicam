@@ -18,7 +18,7 @@ void LogError(const char *message, int sourceWidth, int sourceHeight,
 }  // namespace
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_hinnka_mycamera_processor_MgcSpatialStrengthMapScaler_nativeScaleBilinearU16(
+Java_vn_hoang_leicafujicam_processor_MgcSpatialStrengthMapScaler_nativeScaleBilinearU16(
     JNIEnv *env, jobject, jshortArray sourceArray, jint sourceWidth,
     jint sourceHeight, jshortArray destinationArray, jint destinationWidth,
     jint destinationHeight) {

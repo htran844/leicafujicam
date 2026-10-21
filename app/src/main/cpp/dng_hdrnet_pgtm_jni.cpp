@@ -496,7 +496,7 @@ bool ReadDehazeCurve(const float* values, int count, DehazeCurve* curve) {
 }  // namespace
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_hinnka_mycamera_raw_DngHdrNetProfileGainTableNative_nativeEvaluateDisplayLinearLumaGrid(
+Java_vn_hoang_leicafujicam_raw_DngHdrNetProfileGainTableNative_nativeEvaluateDisplayLinearLumaGrid(
     JNIEnv* env, jobject, jfloatArray coefficients_array,
     jint source_grid_width, jint source_grid_height, jint source_grid_depth,
     jint coefficient_count, jfloatArray model_input_array,
@@ -708,7 +708,7 @@ Java_com_hinnka_mycamera_raw_DngHdrNetProfileGainTableNative_nativeEvaluateDispl
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_hinnka_mycamera_raw_DngHdrNetProfileGainTableNative_nativeGenerateGains(
+Java_vn_hoang_leicafujicam_raw_DngHdrNetProfileGainTableNative_nativeGenerateGains(
     JNIEnv* env, jobject, jfloatArray coefficients_array,
     jfloatArray model_input_array,
     jint input_width, jint input_height, jint input_channels,

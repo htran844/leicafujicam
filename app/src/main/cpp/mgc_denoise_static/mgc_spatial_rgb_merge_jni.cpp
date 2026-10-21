@@ -155,7 +155,7 @@ extern "C" int photon_mgc_merge_rgb_raw16_f16_tile16_halide(
     HalideBuffer* output);
 
 extern "C" JNIEXPORT jint JNICALL
-Java_com_hinnka_mycamera_processor_MgcSpatialRgbMerger_nativeMerge(
+Java_vn_hoang_leicafujicam_processor_MgcSpatialRgbMerger_nativeMerge(
     JNIEnv* env,
     jobject,
     jobjectArray raw_buffers,
@@ -406,7 +406,7 @@ Java_com_hinnka_mycamera_processor_MgcSpatialRgbMerger_nativeMerge(
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_com_hinnka_mycamera_processor_MgcSpatialRgbMerger_nativeConvertPlanarF16ToFixed16(
+Java_vn_hoang_leicafujicam_processor_MgcSpatialRgbMerger_nativeConvertPlanarF16ToFixed16(
     JNIEnv* env,
     jobject,
     jobject buffer,

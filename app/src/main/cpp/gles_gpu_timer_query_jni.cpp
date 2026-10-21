@@ -84,7 +84,7 @@ bool resolveTimerFunctions() {
 }  // namespace
 
 extern "C" JNIEXPORT jint JNICALL
-Java_com_hinnka_mycamera_processor_GlesGpuTimerQuery_counterBits(JNIEnv*, jobject) {
+Java_vn_hoang_leicafujicam_processor_GlesGpuTimerQuery_counterBits(JNIEnv*, jobject) {
     if (!resolveTimerFunctions()) return 0;
     GLint bits = 0;
     getQueryiv(kTimeElapsedExt, kQueryCounterBitsExt, &bits);
@@ -92,7 +92,7 @@ Java_com_hinnka_mycamera_processor_GlesGpuTimerQuery_counterBits(JNIEnv*, jobjec
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_com_hinnka_mycamera_processor_GlesGpuTimerQuery_begin(JNIEnv*, jobject) {
+Java_vn_hoang_leicafujicam_processor_GlesGpuTimerQuery_begin(JNIEnv*, jobject) {
     if (!resolveTimerFunctions() || activeQuery != 0) return 0;
     GLuint query = 0;
     genQueries(1, &query);
@@ -103,14 +103,14 @@ Java_com_hinnka_mycamera_processor_GlesGpuTimerQuery_begin(JNIEnv*, jobject) {
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_com_hinnka_mycamera_processor_GlesGpuTimerQuery_end(JNIEnv*, jobject) {
+Java_vn_hoang_leicafujicam_processor_GlesGpuTimerQuery_end(JNIEnv*, jobject) {
     if (activeQuery == 0 || !resolveTimerFunctions()) return;
     endQuery(kTimeElapsedExt);
     activeQuery = 0;
 }
 
 extern "C" JNIEXPORT jlong JNICALL
-Java_com_hinnka_mycamera_processor_GlesGpuTimerQuery_poll(JNIEnv*, jobject, jint query) {
+Java_vn_hoang_leicafujicam_processor_GlesGpuTimerQuery_poll(JNIEnv*, jobject, jint query) {
     if (query <= 0 || !resolveTimerFunctions()) return -1;
     GLint available = GL_FALSE;
     getQueryObjectiv(static_cast<GLuint>(query), kQueryResultAvailableExt, &available);
@@ -121,7 +121,7 @@ Java_com_hinnka_mycamera_processor_GlesGpuTimerQuery_poll(JNIEnv*, jobject, jint
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_hinnka_mycamera_processor_GlesGpuTimerQuery_isDisjoint(JNIEnv*, jobject) {
+Java_vn_hoang_leicafujicam_processor_GlesGpuTimerQuery_isDisjoint(JNIEnv*, jobject) {
     if (!resolveTimerFunctions()) return JNI_FALSE;
     GLboolean disjoint = GL_FALSE;
     glGetBooleanv(kGpuDisjointExt, &disjoint);
@@ -129,7 +129,7 @@ Java_com_hinnka_mycamera_processor_GlesGpuTimerQuery_isDisjoint(JNIEnv*, jobject
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_com_hinnka_mycamera_processor_GlesGpuTimerQuery_delete(JNIEnv*, jobject, jint query) {
+Java_vn_hoang_leicafujicam_processor_GlesGpuTimerQuery_delete(JNIEnv*, jobject, jint query) {
     if (query <= 0 || !resolveTimerFunctions()) return;
     const GLuint id = static_cast<GLuint>(query);
     if (activeQuery == id) {

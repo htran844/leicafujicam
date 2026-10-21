@@ -135,7 +135,7 @@ void throwRuntimeException(JNIEnv *env, const std::string &message) {
 
 extern "C"
 JNIEXPORT jstring JNICALL
-Java_com_hinnka_mycamera_raw_DcpNativeBridge_parseDcpToJson(
+Java_vn_hoang_leicafujicam_raw_DcpNativeBridge_parseDcpToJson(
     JNIEnv *env,
     jobject /* this */,
     jstring filePath

@@ -14,15 +14,15 @@
 #include <string>
 #include <vector>
 using namespace photon::mgc_denoise;
-extern "C" jlong Java_com_hinnka_mycamera_raw_MgcGuidedUpsample_nativePrepare(
+extern "C" jlong Java_vn_hoang_leicafujicam_raw_MgcGuidedUpsample_nativePrepare(
     JNIEnv *, jobject, jobject, jint, jint, jint, jfloatArray);
-extern "C" jint Java_com_hinnka_mycamera_raw_MgcGuidedUpsample_nativeRender(
+extern "C" jint Java_vn_hoang_leicafujicam_raw_MgcGuidedUpsample_nativeRender(
     JNIEnv *, jobject, jlong, jobject, jfloat, jfloatArray);
 extern "C" void
-Java_com_hinnka_mycamera_raw_MgcGuidedUpsample_nativeRelease(JNIEnv *, jobject,
+Java_vn_hoang_leicafujicam_raw_MgcGuidedUpsample_nativeRelease(JNIEnv *, jobject,
                                                              jlong);
 extern "C" jboolean
-Java_com_hinnka_mycamera_raw_RawFloatTextureTransfer_nativeUpload(JNIEnv *,
+Java_vn_hoang_leicafujicam_raw_RawFloatTextureTransfer_nativeUpload(JNIEnv *,
                                                                   jobject, jint,
                                                                   jint, jint,
                                                                   jint);
@@ -87,7 +87,7 @@ static std::vector<float> Jni(int w, int h, int scale, int originX = 0, int orig
   Buffer buffer{pixels.data(), jlong(count * 16)};
   float wb[] = {1, 1, 1};
   Buffer gains{wb, 12};
-  auto handle = Java_com_hinnka_mycamera_raw_MgcGuidedUpsample_nativePrepare(
+  auto handle = Java_vn_hoang_leicafujicam_raw_MgcGuidedUpsample_nativePrepare(
       &env, nullptr, reinterpret_cast<jobject>(&buffer), w, h, scale == 2 ? 1 : 2,
       reinterpret_cast<jfloatArray>(&gains));
   Check(handle != 0, "JNI prepare including original low YUV->RGB");
@@ -96,10 +96,10 @@ static std::vector<float> Jni(int w, int h, int scale, int originX = 0, int orig
       pixels[i * 4 + c] = sqrtf(std::max(0.f, pixels[i * 4 + c]));
   auto curves = Curves();
   Buffer curve{curves.data(), 120};
-  int result = Java_com_hinnka_mycamera_raw_MgcGuidedUpsample_nativeRender(
+  int result = Java_vn_hoang_leicafujicam_raw_MgcGuidedUpsample_nativeRender(
       &env, nullptr, handle, reinterpret_cast<jobject>(&buffer), 1.f,
       reinterpret_cast<jfloatArray>(&curve));
-  Java_com_hinnka_mycamera_raw_MgcGuidedUpsample_nativeRelease(&env, nullptr,
+  Java_vn_hoang_leicafujicam_raw_MgcGuidedUpsample_nativeRelease(&env, nullptr,
                                                                handle);
   Check(result == 0, "JNI guided render");
   for (int i = 0; i < w * h; i++)
@@ -210,7 +210,7 @@ static void Gpu(const char *shaderPath, const char *boxPath, const char *uploadP
     mapped[i * 4] += .125f;
   Check(glUnmapBuffer(GL_PIXEL_PACK_BUFFER), "SSBO unmap");
   glBindBuffer(GL_PIXEL_PACK_BUFFER, 0);
-  Check(Java_com_hinnka_mycamera_raw_RawFloatTextureTransfer_nativeUpload(
+  Check(Java_vn_hoang_leicafujicam_raw_RawFloatTextureTransfer_nativeUpload(
             nullptr, nullptr, pbo, textures[1], w, h),
         "native float upload");
   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,

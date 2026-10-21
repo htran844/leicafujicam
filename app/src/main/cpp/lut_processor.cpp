@@ -183,7 +183,7 @@ void trilinearSample(const uint16_t *data, int size, float r, float g, float b,
 }
 
 extern "C" JNIEXPORT jshortArray JNICALL
-Java_com_hinnka_mycamera_lut_LutProcessor_resampleLutNative(
+Java_vn_hoang_leicafujicam_lut_LutProcessor_resampleLutNative(
     JNIEnv *env, jobject thiz, jshortArray src_data, jint size,
     jint curve_type) {
   jsize len = env->GetArrayLength(src_data);
@@ -229,7 +229,7 @@ Java_com_hinnka_mycamera_lut_LutProcessor_resampleLutNative(
 }
 
 extern "C" JNIEXPORT jshortArray JNICALL
-Java_com_hinnka_mycamera_lut_LutProcessor_resampleSizeNative(
+Java_vn_hoang_leicafujicam_lut_LutProcessor_resampleSizeNative(
     JNIEnv *env, jobject thiz, jshortArray src_data, jint src_size,
     jint target_size) {
   jshort *src = env->GetShortArrayElements(src_data, nullptr);

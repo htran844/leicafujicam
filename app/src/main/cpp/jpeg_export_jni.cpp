@@ -65,7 +65,7 @@ bool copyFloat3(JNIEnv *env, jfloatArray source,
 } // namespace
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_hinnka_mycamera_gallery_Jpeg444ExportEncoder_writeNative(
+Java_vn_hoang_leicafujicam_gallery_Jpeg444ExportEncoder_writeNative(
     JNIEnv *env, jobject /* this */, jobject bitmap, jstring outputPath,
     jint quality, jbyteArray iccProfile) {
   if (!bitmap || !outputPath) {
@@ -155,7 +155,7 @@ Java_com_hinnka_mycamera_gallery_Jpeg444ExportEncoder_writeNative(
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_hinnka_mycamera_gallery_Jpeg444ExportEncoder_encodeGainmapNative(
+Java_vn_hoang_leicafujicam_gallery_Jpeg444ExportEncoder_encodeGainmapNative(
     JNIEnv *env, jobject /* this */, jobject bitmap, jstring outputPath,
     jint quality) {
   if (!bitmap || !outputPath) {
@@ -229,7 +229,7 @@ Java_com_hinnka_mycamera_gallery_Jpeg444ExportEncoder_encodeGainmapNative(
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_hinnka_mycamera_gallery_Jpeg444ExportEncoder_packageJpegRNative(
+Java_vn_hoang_leicafujicam_gallery_Jpeg444ExportEncoder_packageJpegRNative(
     JNIEnv *env, jobject /* this */, jstring baseJpegPath,
     jstring gainmapJpegPath, jstring outputPath, jint baseColorGamut,
     jfloatArray ratioMin, jfloatArray ratioMax, jfloatArray gamma,
@@ -267,7 +267,7 @@ Java_com_hinnka_mycamera_gallery_Jpeg444ExportEncoder_packageJpegRNative(
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_hinnka_mycamera_gallery_Jpeg444ExportEncoder_isJpegRNative(
+Java_vn_hoang_leicafujicam_gallery_Jpeg444ExportEncoder_isJpegRNative(
     JNIEnv *env, jobject /* this */, jstring path) {
   ScopedUtfChars file_path(env, path);
   if (!file_path.get()) {

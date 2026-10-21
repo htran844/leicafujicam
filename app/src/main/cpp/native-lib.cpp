@@ -1097,7 +1097,7 @@ static jobject createRawCameraCalibration(
   }
 
   jclass calibrationClass =
-      env->FindClass("com/hinnka/mycamera/raw/RawCameraCalibration");
+      env->FindClass("vn/hoang/leicafujicam/raw/RawCameraCalibration");
   if (!calibrationClass) {
     return nullptr;
   }
@@ -2010,7 +2010,7 @@ extern "C" {
  * 带有保存到本地文件的 JPG 压缩版本的 processToBitmap
  */
 JNIEXPORT jboolean JNICALL
-Java_com_hinnka_mycamera_utils_YuvProcessor_processToFile(
+Java_vn_hoang_leicafujicam_utils_YuvProcessor_processToFile(
     JNIEnv *env, jobject /* this */, jobject yBuffer, jobject uBuffer,
     jobject vBuffer, jint width, jint height, jint yRowStride, jint uvRowStride,
     jint uvPixelStride, jint rotation, jint format, jstring outputPath) {
@@ -2149,7 +2149,7 @@ Java_com_hinnka_mycamera_utils_YuvProcessor_processToFile(
  * 仅处理预览：旋转、裁切，并输出为 8-bit Bitmap
  */
 JNIEXPORT void JNICALL
-Java_com_hinnka_mycamera_utils_YuvProcessor_processToBitmap(
+Java_vn_hoang_leicafujicam_utils_YuvProcessor_processToBitmap(
     JNIEnv *env, jobject /* this */, jobject yBuffer, jobject uBuffer,
     jobject vBuffer, jint width, jint height, jint yRowStride, jint uvRowStride,
     jint uvPixelStride, jint rotation, jint targetWR, jint targetHR,
@@ -2997,7 +2997,7 @@ static void exif_callback(void *datap, int tag, int type, int len,
  * 使用 LibRaw 处理 DNG 文件
  */
 JNIEXPORT jobject JNICALL
-Java_com_hinnka_mycamera_raw_RawDemosaicProcessor_processDngNative(
+Java_vn_hoang_leicafujicam_raw_RawDemosaicProcessor_processDngNative(
     JNIEnv *env, jobject /* this */, jstring filePath, jfloat xr, jfloat yr,
     jfloat xg, jfloat yg, jfloat xb, jfloat yb, jfloat xw, jfloat yw,
     jboolean embeddedCalibrationOnly) {
@@ -3382,10 +3382,10 @@ Java_com_hinnka_mycamera_raw_RawDemosaicProcessor_processDngNative(
   jobject rawDataBuffer = env->NewDirectByteBuffer(outData, outputSize);
 
   // 提取元数据
-  jclass dngDataClass = env->FindClass("com/hinnka/mycamera/raw/DngRawData");
+  jclass dngDataClass = env->FindClass("vn/hoang/leicafujicam/raw/DngRawData");
   jmethodID constructor =
       env->GetMethodID(dngDataClass, "<init>",
-                       "(Ljava/nio/ByteBuffer;IIIIF[F[F[F[F[F[FLjava/lang/String;Ljava/lang/String;IIFF[FII[FFIJF[I[I[F[F[ILandroid/graphics/Bitmap;Lcom/hinnka/mycamera/raw/RawCameraCalibration;Z)V");
+                       "(Ljava/nio/ByteBuffer;IIIIF[F[F[F[F[F[FLjava/lang/String;Ljava/lang/String;IIFF[FII[FFIJF[I[I[F[F[ILandroid/graphics/Bitmap;Lvn/hoang/leicafujicam/raw/RawCameraCalibration;Z)V");
 
   jfloatArray blackLevelArray = env->NewFloatArray(4);
   for (int i = 0; i < 4; i++) {
@@ -3805,7 +3805,7 @@ Java_com_hinnka_mycamera_raw_RawDemosaicProcessor_processDngNative(
 /**
  * 释放 DNG RAW 数据的 native 内存
  */
-JNIEXPORT void JNICALL Java_com_hinnka_mycamera_raw_DngRawData_freeNativeBuffer(
+JNIEXPORT void JNICALL Java_vn_hoang_leicafujicam_raw_DngRawData_freeNativeBuffer(
     JNIEnv *env, jobject /* this */, jobject rawDataBuffer) {
   if (rawDataBuffer == nullptr)
     return;
@@ -3817,7 +3817,7 @@ JNIEXPORT void JNICALL Java_com_hinnka_mycamera_raw_DngRawData_freeNativeBuffer(
 }
 
 JNIEXPORT void JNICALL
-Java_com_hinnka_mycamera_ml_DnCNNDenoiseEstimator_preprocessNative(
+Java_vn_hoang_leicafujicam_ml_DnCNNDenoiseEstimator_preprocessNative(
     JNIEnv *env, jobject, jobject bitmap, jint x, jint y, jint w, jint h,
     jobject outBuffer, jboolean isRgb, jboolean channelsFirst) {
 
@@ -3875,7 +3875,7 @@ Java_com_hinnka_mycamera_ml_DnCNNDenoiseEstimator_preprocessNative(
 }
 
 JNIEXPORT void JNICALL
-Java_com_hinnka_mycamera_ml_DnCNNDenoiseEstimator_postprocessNative(
+Java_vn_hoang_leicafujicam_ml_DnCNNDenoiseEstimator_postprocessNative(
     JNIEnv *env, jobject, jobject inBuffer, jobject srcBitmap, jobject dstBitmap,
     jint patchX, jint patchY, jint srcX, jint srcY, jint dstX, jint dstY,
     jint w, jint h, jint patchW, jint patchH, jfloat strength, jboolean isRgb,
@@ -3987,7 +3987,7 @@ Java_com_hinnka_mycamera_ml_DnCNNDenoiseEstimator_postprocessNative(
 }
 
 JNIEXPORT jobject JNICALL
-Java_com_hinnka_mycamera_utils_DirectBufferAllocator_allocateNative(
+Java_vn_hoang_leicafujicam_utils_DirectBufferAllocator_allocateNative(
     JNIEnv *env, jobject, jlong capacity) {
   void* ptr = malloc(capacity);
   if (!ptr) {
@@ -3998,7 +3998,7 @@ Java_com_hinnka_mycamera_utils_DirectBufferAllocator_allocateNative(
 }
 
 JNIEXPORT jboolean JNICALL
-Java_com_hinnka_mycamera_utils_DirectBufferPixelPacker_unpackRgba16TileToRgb16(
+Java_vn_hoang_leicafujicam_utils_DirectBufferPixelPacker_unpackRgba16TileToRgb16(
     JNIEnv *env, jobject, jobject sourceBuffer, jint sourceWidth,
     jint sourceHeight, jobject destinationBuffer, jint destinationWidth,
     jint destinationHeight, jint destinationLeft, jint destinationTop) {
@@ -4062,7 +4062,7 @@ Java_com_hinnka_mycamera_utils_DirectBufferPixelPacker_unpackRgba16TileToRgb16(
 }
 
 JNIEXPORT jboolean JNICALL
-Java_com_hinnka_mycamera_utils_DirectBufferPixelPacker_packRgba16fToRgb16(
+Java_vn_hoang_leicafujicam_utils_DirectBufferPixelPacker_packRgba16fToRgb16(
     JNIEnv *env, jobject, jobject sourceBuffer, jint width, jint height,
     jobject destinationBuffer) {
   if (!sourceBuffer || !destinationBuffer || width <= 0 || height <= 0) {
@@ -4108,7 +4108,7 @@ Java_com_hinnka_mycamera_utils_DirectBufferPixelPacker_packRgba16fToRgb16(
 }
 
 JNIEXPORT jboolean JNICALL
-Java_com_hinnka_mycamera_processor_GlesPixelBufferTransfer_uploadRgba16fPboToTexture(
+Java_vn_hoang_leicafujicam_processor_GlesPixelBufferTransfer_uploadRgba16fPboToTexture(
     JNIEnv *, jobject, jint pixelBufferObject, jint textureId, jint width,
     jint height) {
   if (pixelBufferObject <= 0 || textureId <= 0 || width <= 0 || height <= 0) {
@@ -4134,7 +4134,7 @@ Java_com_hinnka_mycamera_processor_GlesPixelBufferTransfer_uploadRgba16fPboToTex
 }
 
 JNIEXPORT jbyteArray JNICALL
-Java_com_hinnka_mycamera_utils_SuperResolutionDngWriter_encodeLosslessJpegNative(
+Java_vn_hoang_leicafujicam_utils_SuperResolutionDngWriter_encodeLosslessJpegNative(
     JNIEnv *env, jobject, jobject rawBuffer, jint width, jint height,
     jint samplesPerPixel, jint bitsPerSample, jint rowStep, jint colStep) {
   if (!rawBuffer || width <= 0 || height <= 0 || samplesPerPixel <= 0 ||
@@ -4199,7 +4199,7 @@ Java_com_hinnka_mycamera_utils_SuperResolutionDngWriter_encodeLosslessJpegNative
 }
 
 JNIEXPORT void JNICALL
-Java_com_hinnka_mycamera_utils_DirectBufferAllocator_freeNative(
+Java_vn_hoang_leicafujicam_utils_DirectBufferAllocator_freeNative(
     JNIEnv *env, jobject, jobject buffer) {
   if (!buffer) return;
   void* ptr = env->GetDirectBufferAddress(buffer);

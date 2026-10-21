@@ -974,7 +974,7 @@ ExposureSolver* FromHandle(jlong handle) {
 }  // namespace
 
 extern "C" JNIEXPORT jlong JNICALL
-Java_com_hinnka_mycamera_raw_RawLegacyAutoExposureNativeBridge_nativeCreate(
+Java_vn_hoang_leicafujicam_raw_RawLegacyAutoExposureNativeBridge_nativeCreate(
     JNIEnv* env,
     jobject,
     jintArray reference_pixels,
@@ -1018,7 +1018,7 @@ Java_com_hinnka_mycamera_raw_RawLegacyAutoExposureNativeBridge_nativeCreate(
 }
 
 extern "C" JNIEXPORT jfloat JNICALL
-Java_com_hinnka_mycamera_raw_RawLegacyAutoExposureNativeBridge_nativeNextExposureEv(
+Java_vn_hoang_leicafujicam_raw_RawLegacyAutoExposureNativeBridge_nativeNextExposureEv(
     JNIEnv*,
     jobject,
     jlong handle) {
@@ -1033,7 +1033,7 @@ Java_com_hinnka_mycamera_raw_RawLegacyAutoExposureNativeBridge_nativeNextExposur
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_hinnka_mycamera_raw_RawLegacyAutoExposureNativeBridge_nativeSubmitCandidate(
+Java_vn_hoang_leicafujicam_raw_RawLegacyAutoExposureNativeBridge_nativeSubmitCandidate(
     JNIEnv* env,
     jobject,
     jlong handle,
@@ -1059,7 +1059,7 @@ Java_com_hinnka_mycamera_raw_RawLegacyAutoExposureNativeBridge_nativeSubmitCandi
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_hinnka_mycamera_raw_RawLegacyAutoExposureNativeBridge_nativeSubmitGridCandidate(
+Java_vn_hoang_leicafujicam_raw_RawLegacyAutoExposureNativeBridge_nativeSubmitGridCandidate(
     JNIEnv* env,
     jobject,
     jlong handle,
@@ -1091,7 +1091,7 @@ Java_com_hinnka_mycamera_raw_RawLegacyAutoExposureNativeBridge_nativeSubmitGridC
 }
 
 extern "C" JNIEXPORT jfloatArray JNICALL
-Java_com_hinnka_mycamera_raw_RawLegacyAutoExposureNativeBridge_nativeSolveSingleGridExposure(
+Java_vn_hoang_leicafujicam_raw_RawLegacyAutoExposureNativeBridge_nativeSolveSingleGridExposure(
     JNIEnv* env,
     jobject,
     jlong handle,
@@ -1134,14 +1134,14 @@ Java_com_hinnka_mycamera_raw_RawLegacyAutoExposureNativeBridge_nativeSolveSingle
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_hinnka_mycamera_raw_RawLegacyAutoExposureNativeBridge_nativeConfigureHdrNetPriority(
+Java_vn_hoang_leicafujicam_raw_RawLegacyAutoExposureNativeBridge_nativeConfigureHdrNetPriority(
     JNIEnv*, jobject, jlong handle) {
     ExposureSolver* solver = FromHandle(handle);
     return solver != nullptr && solver->ConfigureHdrNetPriority() ? JNI_TRUE : JNI_FALSE;
 }
 
 extern "C" JNIEXPORT jintArray JNICALL
-Java_com_hinnka_mycamera_raw_RawLegacyAutoExposureNativeBridge_legacyHdrNetReferencePixels(
+Java_vn_hoang_leicafujicam_raw_RawLegacyAutoExposureNativeBridge_legacyHdrNetReferencePixels(
     JNIEnv* env, jobject, jfloatArray display_linear_rgb, jfloat post_exposure_ev) {
     if (display_linear_rgb == nullptr) return nullptr;
     const jsize value_count = env->GetArrayLength(display_linear_rgb);
@@ -1163,7 +1163,7 @@ Java_com_hinnka_mycamera_raw_RawLegacyAutoExposureNativeBridge_legacyHdrNetRefer
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_hinnka_mycamera_raw_RawLegacyAutoExposureNativeBridge_nativeConfigureExposureBounds(
+Java_vn_hoang_leicafujicam_raw_RawLegacyAutoExposureNativeBridge_nativeConfigureExposureBounds(
     JNIEnv*,
     jobject,
     jlong handle,
@@ -1177,7 +1177,7 @@ Java_com_hinnka_mycamera_raw_RawLegacyAutoExposureNativeBridge_nativeConfigureEx
 }
 
 extern "C" JNIEXPORT jfloat JNICALL
-Java_com_hinnka_mycamera_raw_RawLegacyAutoExposureNativeBridge_nativeGetResultExposureEv(
+Java_vn_hoang_leicafujicam_raw_RawLegacyAutoExposureNativeBridge_nativeGetResultExposureEv(
     JNIEnv*,
     jobject,
     jlong handle) {
@@ -1191,7 +1191,7 @@ Java_com_hinnka_mycamera_raw_RawLegacyAutoExposureNativeBridge_nativeGetResultEx
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_com_hinnka_mycamera_raw_RawLegacyAutoExposureNativeBridge_nativeDestroy(
+Java_vn_hoang_leicafujicam_raw_RawLegacyAutoExposureNativeBridge_nativeDestroy(
     JNIEnv*,
     jobject,
     jlong handle) {

@@ -17,3 +17,12 @@ Thay đổi do Hoàng & Muse thực hiện (2026-10-21):
 File `LICENSE` (Apache License 2.0) của dự án gốc được giữ nguyên không thay đổi.
 Một số định danh nội bộ trong mã nguồn (tên class/thuật toán như PhotonLookProvider,
 rawPhotonPgtmToneMap...) được giữ nguyên vì lý do kỹ thuật — chúng không phải nhận diện hiển thị tới người dùng.
+
+## Bản 1.0.1 — sửa lỗi văng app khi bấm chụp
+Bản 1.0.0 còn sót tên package cũ dạng JNI trong mã C++ (`com/hinnka/mycamera` ở FindClass/chữ ký
+hàm và 68 symbol `Java_com_hinnka_mycamera_*`). Kotlin đã mang package mới nên khi bấm chụp,
+pipeline xử lý ảnh native không tìm thấy class/symbol → app sập, không lưu được ảnh.
+Đã đổi toàn bộ sang `vn/hoang/leicafujicam` / `Java_vn_hoang_leicafujicam_*` trong
+`app/src/main/cpp` và `app/src/test/cpp`. Giữ nguyên định danh định dạng preset
+`com.hinnka.photon.preset` (PresetPackageManager) vì đó là marker tương thích file preset,
+không phải đường dẫn class.

@@ -176,7 +176,7 @@ void SharpenRgbToFloatRgba(const uint16_t *rgb, size_t count, float *rgba) {
 } // namespace photon::mgc_denoise
 
 extern "C" JNIEXPORT jint JNICALL
-Java_com_hinnka_mycamera_raw_MgcSharpen_nativeSharpenRgbaFloat(
+Java_vn_hoang_leicafujicam_raw_MgcSharpen_nativeSharpenRgbaFloat(
     JNIEnv *env, jobject, jobject rgba_buffer, jobject scratch_buffer,
     jint width, jint height, jfloat snr, jfloat attenuation, jfloatArray curve_points) {
   using namespace photon::mgc_denoise;
@@ -241,7 +241,7 @@ Java_com_hinnka_mycamera_raw_MgcSharpen_nativeSharpenRgbaFloat(
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_hinnka_mycamera_raw_RawFloatTextureTransfer_nativeUpload(
+Java_vn_hoang_leicafujicam_raw_RawFloatTextureTransfer_nativeUpload(
     JNIEnv *, jobject, jint pbo, jint texture, jint width, jint height) {
   if (pbo <= 0 || texture <= 0 || width <= 0 || height <= 0)
     return JNI_FALSE;

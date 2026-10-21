@@ -101,7 +101,7 @@ extern "C" int photon_mgc_resolve_sabre_halide(
     float demosaic_sharpness_scale);
 
 extern "C" JNIEXPORT jint JNICALL
-Java_com_hinnka_mycamera_processor_MgcSabreResolver_nativeResolve(
+Java_vn_hoang_leicafujicam_processor_MgcSabreResolver_nativeResolve(
     JNIEnv* env,
     jobject,
     jobject accumulated_color_buffer,

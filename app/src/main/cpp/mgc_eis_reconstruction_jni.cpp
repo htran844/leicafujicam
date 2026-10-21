@@ -63,7 +63,7 @@ void logFailure(const char *operation, const std::exception &error) {
 } // namespace
 
 extern "C" JNIEXPORT jlong JNICALL
-Java_com_hinnka_mycamera_stabilization_MgcEisNativeBridge_create(
+Java_vn_hoang_leicafujicam_stabilization_MgcEisNativeBridge_create(
     JNIEnv *, jobject, jint width, jint height, jboolean front_facing,
     jfloat strength, jint lookahead_frames) {
   try {
@@ -87,13 +87,13 @@ Java_com_hinnka_mycamera_stabilization_MgcEisNativeBridge_create(
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_com_hinnka_mycamera_stabilization_MgcEisNativeBridge_release(
+Java_vn_hoang_leicafujicam_stabilization_MgcEisNativeBridge_release(
     JNIEnv *, jobject, jlong handle) {
   delete fromJlong(handle);
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_hinnka_mycamera_stabilization_MgcEisNativeBridge_processGyro(
+Java_vn_hoang_leicafujicam_stabilization_MgcEisNativeBridge_processGyro(
     JNIEnv *, jobject, jlong handle, jfloat x, jfloat y, jfloat z,
     jlong timestamp_ns) {
   Handle *state = fromJlong(handle);
@@ -120,7 +120,7 @@ Java_com_hinnka_mycamera_stabilization_MgcEisNativeBridge_processGyro(
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_hinnka_mycamera_stabilization_MgcEisNativeBridge_processLensOffset(
+Java_vn_hoang_leicafujicam_stabilization_MgcEisNativeBridge_processLensOffset(
     JNIEnv *, jobject, jlong handle, jfloat x_shift_pixels,
     jfloat y_shift_pixels, jlong timestamp_ns, jint camera_type) {
   Handle *state = fromJlong(handle);
@@ -142,7 +142,7 @@ Java_com_hinnka_mycamera_stabilization_MgcEisNativeBridge_processLensOffset(
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_hinnka_mycamera_stabilization_MgcEisNativeBridge_processLensIntrinsics(
+Java_vn_hoang_leicafujicam_stabilization_MgcEisNativeBridge_processLensIntrinsics(
     JNIEnv *, jobject, jlong handle, jfloat fx, jfloat fy, jfloat cx,
     jfloat cy, jfloat skew, jlong timestamp_ns, jint camera_type) {
   Handle *state = fromJlong(handle);
@@ -164,7 +164,7 @@ Java_com_hinnka_mycamera_stabilization_MgcEisNativeBridge_processLensIntrinsics(
 }
 
 extern "C" JNIEXPORT jlong JNICALL
-Java_com_hinnka_mycamera_stabilization_MgcEisNativeBridge_processFrame(
+Java_vn_hoang_leicafujicam_stabilization_MgcEisNativeBridge_processFrame(
     JNIEnv *env, jobject, jlong handle, jlong source_timestamp_ns,
     jlong first_row_center_timestamp_ns,
     jlong exposure_time_ns, jlong frame_duration_ns,

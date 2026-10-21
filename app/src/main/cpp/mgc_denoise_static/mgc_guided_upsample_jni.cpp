@@ -27,7 +27,7 @@ void OutOfMemory(JNIEnv *env) {
 } // namespace
 
 extern "C" JNIEXPORT jlong JNICALL
-Java_com_hinnka_mycamera_raw_MgcGuidedUpsample_nativePrepare(
+Java_vn_hoang_leicafujicam_raw_MgcGuidedUpsample_nativePrepare(
     JNIEnv *env, jobject, jobject buffer, jint width, jint height, jint log2_scale,
     jfloatArray gains) {
   using namespace photon::mgc_denoise;
@@ -104,7 +104,7 @@ Java_com_hinnka_mycamera_raw_MgcGuidedUpsample_nativePrepare(
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_com_hinnka_mycamera_raw_MgcGuidedUpsample_nativeRender(
+Java_vn_hoang_leicafujicam_raw_MgcGuidedUpsample_nativeRender(
     JNIEnv *env, jobject, jlong handle, jobject buffer, jfloat attenuation,
     jfloatArray points) {
   using namespace photon::mgc_denoise;
@@ -161,7 +161,7 @@ Java_com_hinnka_mycamera_raw_MgcGuidedUpsample_nativeRender(
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_com_hinnka_mycamera_raw_MgcGuidedUpsample_nativeRelease(JNIEnv *, jobject,
+Java_vn_hoang_leicafujicam_raw_MgcGuidedUpsample_nativeRelease(JNIEnv *, jobject,
                                                              jlong handle) {
   delete reinterpret_cast<GuidedInputs *>(handle);
 }

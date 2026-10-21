@@ -35,7 +35,7 @@ int HistogramBinCenter(int raw, int histogram_shift,
 }  // namespace
 
 extern "C" JNIEXPORT jfloat JNICALL
-Java_com_hinnka_mycamera_raw_RawDemosaicProcessor_estimateMgcReferenceSignalNative(
+Java_vn_hoang_leicafujicam_raw_RawDemosaicProcessor_estimateMgcReferenceSignalNative(
     JNIEnv* env, jobject /* thiz */, jobject raw_buffer, jint buffer_offset,
     jint buffer_limit, jint width, jint height, jint row_stride,
     jint samples_per_pixel, jint first_row_green_phase, jfloat black_level,
@@ -132,7 +132,7 @@ Java_com_hinnka_mycamera_raw_RawDemosaicProcessor_estimateMgcReferenceSignalNati
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_hinnka_mycamera_raw_DngProfileGainTableValidation_validateGainsNative(
+Java_vn_hoang_leicafujicam_raw_DngProfileGainTableValidation_validateGainsNative(
     JNIEnv* env, jobject /* thiz */, jfloatArray gains, jfloat minimum,
     jfloat maximum) {
   if (gains == nullptr || !std::isfinite(minimum) ||

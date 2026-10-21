@@ -5,7 +5,7 @@
 #include <jni.h>
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_hinnka_mycamera_raw_Raw10Unpacker_validateHardwareBufferNative(
+Java_vn_hoang_leicafujicam_raw_Raw10Unpacker_validateHardwareBufferNative(
     JNIEnv *env, jobject, jobject hardwareBuffer, jint width, jint height) {
   if (!hardwareBuffer) return JNI_FALSE;
   AHardwareBuffer *buffer = AHardwareBuffer_fromHardwareBuffer(env, hardwareBuffer);
@@ -36,7 +36,7 @@ Java_com_hinnka_mycamera_raw_Raw10Unpacker_validateHardwareBufferNative(
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_hinnka_mycamera_raw_Raw10Unpacker_unpackNative(
+Java_vn_hoang_leicafujicam_raw_Raw10Unpacker_unpackNative(
     JNIEnv *env, jobject, jobject sourceBuffer, jint sourceLimit,
     jobject destinationBuffer, jint width, jint height, jint rowStride) {
   if (!sourceBuffer || !destinationBuffer || width <= 0 || width % 4 != 0 ||
