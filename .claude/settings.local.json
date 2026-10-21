@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(wc -l:*)",
+      "Bash(./gradlew :app:compileDefaultDebugKotlin)",
+      "Bash(./gradlew :app:compileDebugKotlin)",
+      "Bash(grep:*)",
+      "Bash(./gradlew compileDebugKotlin)",
+      "Bash(./gradlew assembleDebug)",
+      "WebSearch"
+    ]
+  }
+}

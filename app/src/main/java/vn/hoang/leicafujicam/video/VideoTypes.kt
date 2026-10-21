@@ -1,0 +1,231 @@
+package vn.hoang.leicafujicam.video
+
+import android.graphics.Rect
+import android.os.Environment
+import android.util.Size
+import vn.hoang.leicafujicam.raw.ColorSpace
+import vn.hoang.leicafujicam.color.TransferCurve
+import vn.hoang.leicafujicam.stabilization.DEFAULT_VIDEO_STABILIZATION_STRENGTH
+import vn.hoang.leicafujicam.stabilization.DEFAULT_VIDEO_STABILIZATION_LOOKAHEAD
+import kotlin.math.max
+import kotlin.math.min
+import kotlin.math.roundToInt
+
+enum class VideoStabilizationMode(val displayName: String) {
+    OFF("OFF"),
+    EIS("EIS"),
+    OIS("OIS"),
+    ENHANCED("EIS+")
+}
+
+enum class CaptureMode {
+    PHOTO,
+    VIDEO
+}
+
+enum class VideoAspectRatio {
+    RATIO_16_9,
+    RATIO_21_9,
+    OPEN_GATE;
+
+    fun getDisplayName(): String {
+        return when (this) {
+            RATIO_16_9 -> "16:9"
+            RATIO_21_9 -> "21:9"
+            OPEN_GATE -> "Open Gate"
+        }
+    }
+
+    fun getPortraitAspectRatio(openGatePortraitAspectRatio: Float): Float {
+        return when (this) {
+            RATIO_16_9 -> 9f / 16f
+            RATIO_21_9 -> 9f / 21f
+            OPEN_GATE -> openGatePortraitAspectRatio
+        }
+    }
+}
+
+enum class VideoResolutionPreset(
+    val displayName: String,
+    val shortEdge: Int,
+    val longEdge: Int
+) {
+    /** Open Gate only: the largest full-sensor stream. */
+    MAX("MAX", 0, 0),
+    UHD_2160P("2160p", 2160, 3840),
+    FHD_1080P("1080p", 1080, 1920),
+    HD_720P("720p", 720, 1280);
+
+    fun isAvailableFor(aspectRatio: VideoAspectRatio): Boolean {
+        return this != MAX || aspectRatio == VideoAspectRatio.OPEN_GATE
+    }
+
+    fun resolveOutputSize(portraitAspectRatio: Float): Size {
+        val clampedAspect = portraitAspectRatio.coerceIn(0.1f, 1.0f)
+        val height = if (this == MAX) UHD_2160P.longEdge else longEdge
+        val width = (height * clampedAspect).toInt().align16()
+
+        return Size(width, height.align16())
+    }
+}
+
+enum class VideoFpsPreset(val fps: Int) {
+    FPS_24(24),
+    FPS_25(25),
+    FPS_30(30),
+    FPS_50(50),
+    FPS_60(60);
+
+    fun getDisplayName(): String = fps.toString()
+}
+
+enum class VideoBitratePreset(val bitrateMbps: Int) {
+    P1(30),
+    P2(60),
+    P3(90),
+    P4(120),
+    P5(250);
+}
+
+enum class VideoCodec(val displayName: String, val mimeType: String) {
+    H264("H.264", "video/avc"),
+    H265("H.265", "video/hevc");
+}
+
+enum class VideoRecordingPath(val relativePath: String?) {
+    DCIM_PHOTON(Environment.DIRECTORY_DCIM + "/leicafujicam"),
+    EXTERNAL_TREE(null);
+
+    companion object {
+        fun fromPersistedName(name: String?): VideoRecordingPath {
+            return entries.firstOrNull { it.name == name } ?: DCIM_PHOTON
+        }
+    }
+}
+
+enum class VideoLogProfile(
+    val displayName: String,
+    val logCurve: TransferCurve,
+    val colorSpace: ColorSpace
+) {
+    OFF("Off", TransferCurve.SRGB, ColorSpace.SRGB),
+    APPLE_LOG2("Apple-Log2", TransferCurve.APPLE_LOG, ColorSpace.AppleLog2),
+    FLOG2_BT2020("F-Log2", TransferCurve.FLOG2, ColorSpace.BT2020),
+    V_LOG("V-Log", TransferCurve.VLOG, ColorSpace.VGamut),
+    LOGC4_ARRI4("LogC4", TransferCurve.LOGC4, ColorSpace.ARRI4),
+    LOG3G10_RED("Log3G10", TransferCurve.LOG3G10, ColorSpace.RED),
+    LLOG_BT2020("L-Log", TransferCurve.LLOG, ColorSpace.BT2020);
+
+    val isEnabled: Boolean
+        get() = this != OFF
+
+    fun matchesLut(curve: TransferCurve?, gamut: ColorSpace?): Boolean =
+        !isEnabled || (curve == logCurve && gamut == colorSpace)
+
+    companion object {
+        fun fromPersistedName(name: String?): VideoLogProfile =
+            entries.firstOrNull { it.name == name } ?: OFF
+    }
+}
+
+enum class VideoLogLutMode {
+    MONITOR_ONLY,
+    BAKE_IN
+}
+
+data class VideoConfig(
+    val resolution: VideoResolutionPreset = VideoResolutionPreset.FHD_1080P,
+    val fps: VideoFpsPreset = VideoFpsPreset.FPS_30,
+    val aspectRatio: VideoAspectRatio = VideoAspectRatio.RATIO_16_9,
+    val logProfile: VideoLogProfile = VideoLogProfile.OFF,
+    val logLutMode: VideoLogLutMode = VideoLogLutMode.MONITOR_ONLY,
+    val bitrate: VideoBitratePreset = VideoBitratePreset.P1,
+    val codec: VideoCodec = VideoCodec.H264,
+    val audioInputId: String = VIDEO_AUDIO_INPUT_AUTO,
+    val recordingPath: VideoRecordingPath = VideoRecordingPath.DCIM_PHOTON,
+    val recordingTreeUri: String? = null,
+    val stabilizationMode: VideoStabilizationMode = VideoStabilizationMode.OIS,
+    val enhancedStabilizationStrength: Float = DEFAULT_VIDEO_STABILIZATION_STRENGTH,
+    val enhancedStabilizationLookahead: Int = DEFAULT_VIDEO_STABILIZATION_LOOKAHEAD,
+    val torchEnabled: Boolean = false,
+    val lensLockEnabled: Boolean = false,
+    val whiteBalanceLockEnabled: Boolean = false
+) {
+    fun resolveOutputSize(openGatePortraitAspectRatio: Float, cameraInputSize: Size): Size {
+        if (aspectRatio == VideoAspectRatio.OPEN_GATE) {
+            // Keep the full-sensor input aspect, scaled down to the selected preset.
+            val inputShort = minOf(cameraInputSize.width, cameraInputSize.height)
+            val inputLong = maxOf(cameraInputSize.width, cameraInputSize.height).coerceAtLeast(1)
+            val long = if (resolution == VideoResolutionPreset.MAX) {
+                inputLong
+            } else {
+                minOf(inputLong, resolution.longEdge)
+            }
+            val short = (long.toLong() * inputShort / inputLong).toInt()
+            return Size(short.align16(), long.align16())
+        }
+        return resolution.resolveOutputSize(
+            aspectRatio.getPortraitAspectRatio(openGatePortraitAspectRatio)
+        )
+    }
+
+    fun shouldLockLens(captureMode: CaptureMode, isRecording: Boolean): Boolean {
+        return lensLockEnabled && captureMode == CaptureMode.VIDEO && isRecording
+    }
+
+    fun shouldLockWhiteBalance(captureMode: CaptureMode, isRecording: Boolean): Boolean {
+        return whiteBalanceLockEnabled && captureMode == CaptureMode.VIDEO && isRecording
+    }
+}
+
+data class VideoCapabilities(
+    val availableResolutions: List<VideoResolutionPreset> = emptyList(),
+    val availableFps: List<VideoFpsPreset> = emptyList(),
+    val availableAspectRatios: List<VideoAspectRatio> = VideoAspectRatio.entries.toList(),
+    val availableLogProfiles: List<VideoLogProfile> = listOf(VideoLogProfile.OFF),
+    val availableBitrates: List<VideoBitratePreset> = VideoBitratePreset.entries.toList(),
+    val availableCodecs: List<VideoCodec> = VideoCodec.entries.toList(),
+    val cameraInputSizesByResolution: Map<VideoResolutionPreset, Size> = emptyMap(),
+    val enhancedStabilizationInputSizesByResolution: Map<VideoResolutionPreset, Size> = emptyMap(),
+    val recordingSizesByResolution: Map<VideoResolutionPreset, Size> = emptyMap(),
+    val openGatePortraitAspectRatio: Float = 3f / 4f,
+    val availableStabilizationModes: List<VideoStabilizationMode> = emptyList(),
+    val supportsTorch: Boolean = false,
+    val linearTonemapSupported: Boolean = false
+)
+
+data class VideoRecordingState(
+    val isRecording: Boolean = false,
+    val isPaused: Boolean = false,
+    val isProcessing: Boolean = false,
+    val elapsedMs: Long = 0L
+) {
+    fun shouldAttachCameraInput(): Boolean {
+        return isRecording && !isPaused && !isProcessing
+    }
+}
+
+data class VideoCapabilitySnapshot(
+    val config: VideoConfig,
+    val capabilities: VideoCapabilities,
+    val previewSize: Size,
+    val recordingSize: Size
+)
+
+fun resolveOpenGatePortraitAspectRatio(
+    activeArraySize: Rect?,
+    sensorOrientation: Int
+): Float {
+    val rect = activeArraySize ?: return 3f / 4f
+    val width = max(1, rect.width())
+    val height = max(1, rect.height())
+    return if (sensorOrientation % 180 == 0) {
+        min(width, height).toFloat() / max(width, height).toFloat()
+    } else {
+        min(height, width).toFloat() / max(height, width).toFloat()
+    }.coerceIn(0.1f, 1f)
+}
+
+private fun Int.align16(): Int {
+    return (this / 16 * 16).coerceAtLeast(16)
+}

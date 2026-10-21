@@ -1,0 +1,173 @@
+package vn.hoang.leicafujicam.gallery.db
+
+import androidx.room.ColumnInfo
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
+import vn.hoang.leicafujicam.model.ColorRecipeParams
+import vn.hoang.leicafujicam.raw.RawToneMappingParameters
+
+@Entity(
+    tableName = "gallery_media",
+    indices = [
+        Index(value = ["dateAdded"]),
+        Index(value = ["mediaType"])
+    ]
+)
+data class GalleryMediaEntity(
+    @PrimaryKey val id: String,
+    val mediaType: String,
+    val dateAdded: Long,
+    val size: Long,
+    val photoPath: String?,
+    val thumbnailPath: String?,
+    val videoPath: String?,
+    val dngPath: String?,
+    val yuvPath: String?,
+    val hasOriginal: Boolean,
+    val hasThumbnail: Boolean,
+    val hasVideo: Boolean,
+    val hasDng: Boolean,
+    val hasYuv: Boolean,
+    val isBurstPhoto: Boolean,
+    val updatedAt: Long,
+
+    val version: Int,
+    val lutId: String?,
+    val tonemapMode: String?,
+    @Embedded(prefix = "recipe_")
+    val colorRecipeParams: ColorRecipeParams?,
+    val baselineTarget: String?,
+    val baselineLutId: String?,
+    @Embedded(prefix = "baseline_recipe_")
+    val baselineColorRecipeParams: ColorRecipeParams?,
+    val sharpening: Float?,
+    val noiseReduction: Float?,
+    val chromaNoiseReduction: Float?,
+    val captureNoiseReductionLevel: Int?,
+    val rawDenoiseValue: Float?,
+    val rawChromaDenoiseValue: Float?,
+    val rawExposureCompensation: Float?,
+    val rawAutoExposure: Boolean?,
+    val rawAutoExposureMode: String?,
+    val rawHighlightsAdjustment: Float?,
+    val rawShadowsAdjustment: Float?,
+    val rawBlackPointCorrection: Float?,
+    val rawWhitePointCorrection: Float?,
+    val rawLensShadingCorrectionEnabled: Boolean?,
+    val rawDcpId: String?,
+    val rawEmbeddedDngProfileId: String? = null,
+    val rawHncsProfileId: String? = null,
+    val rawHncsRenderIntent: String = "standard",
+    val rawHncsFilmCurveMode: String = "standard",
+    val rawColorEngine: String,
+    /** Professional-mode output magnification algorithm; absent on older rows. */
+    @ColumnInfo(defaultValue = "'LANCZOS3'")
+    val rawOutputUpscaleMode: String = "LANCZOS3",
+    @ColumnInfo(defaultValue = "'standard'")
+    val rawLumixPhotoStyle: String = "standard",
+    @ColumnInfo(defaultValue = "'standard'")
+    val rawCanonPictureStyle: String = "standard",
+    @ColumnInfo(defaultValue = "-0.5")
+    val rawCanonExposureCompensationEv: Float = RawToneMappingParameters.CANON_EXPOSURE_COMPENSATION_DEFAULT,
+    @ColumnInfo(defaultValue = "1")
+    val rawLumixColorMatchingEnabled: Boolean = true,
+    @ColumnInfo(defaultValue = "1")
+    val rawHncsColorMatchingEnabled: Boolean = true,
+    @ColumnInfo(defaultValue = "0")
+    val rawCanonUseR5ColorMatrix: Boolean = false,
+    @ColumnInfo(defaultValue = "0")
+    val rawLeicaUseM9ColorMatrix: Boolean = false,
+    val rawAgxBlackRelativeExposure: Float,
+    val rawAgxWhiteRelativeExposure: Float,
+    val rawAgxToe: Float,
+    val rawAgxShoulder: Float,
+    val rawFilmicBlackRelativeExposure: Float,
+    val rawFilmicWhiteRelativeExposure: Float,
+    @ColumnInfo(name = "rawGooglePixelToneMap")
+    val legacyPhotonToneMap: Boolean,
+    @ColumnInfo(defaultValue = "1")
+    val rawProfileToneMap: Boolean,
+    val rawOppoMasterToneMap: Boolean,
+    @ColumnInfo(name = "rawPhotonPgtmToneMap")
+    val rawPhotonHdr: Boolean,
+    val rawAppleProRawToneMap: Boolean,
+    val frameId: String?,
+    val width: Int,
+    val height: Int,
+    val ratio: String?,
+    val cropLeft: Int?,
+    val cropTop: Int?,
+    val cropRight: Int?,
+    val cropBottom: Int?,
+    val rotation: Int,
+    val deviceModel: String?,
+    val brand: String?,
+    val dateTaken: Long?,
+    val location: String?,
+    val latitude: Double?,
+    val longitude: Double?,
+    val altitude: Double?,
+    val iso: Int?,
+    val shutterSpeed: String?,
+    val focalLength: String?,
+    val focalLength35mm: String?,
+    val aperture: String?,
+    val exposureBias: Float?,
+    val isImported: Boolean,
+    val sourceUri: String?,
+    val mimeType: String?,
+    val durationMs: Long?,
+    val frameRate: Int?,
+    val bitrate: Long?,
+    val rotationDegrees: Int?,
+    val hasAudio: Boolean?,
+    val videoWidth: Int?,
+    val videoHeight: Int?,
+    val customProperties: String?,
+    val exportedUris: String?,
+    val computationalAperture: Float?,
+    val computationalBokehStyle: String,
+    val focusPointX: Float?,
+    val focusPointY: Float?,
+    val postCropLeft: Int?,
+    val postCropTop: Int?,
+    val postCropRight: Int?,
+    val postCropBottom: Int?,
+    val postRotationDegrees: Int,
+    val postStraightenDegrees: Float,
+    val postMirrorHorizontal: Boolean,
+    val presentationTimestampUs: Long?,
+    val droMode: String?,
+    val software: String?,
+    val isMirrored: Boolean,
+    val colorSpace: String,
+    val manualHdrEffectEnabled: Boolean,
+    val hdrEffectStrength: Float,
+    val hasEmbeddedGainmap: Boolean,
+    val dynamicRangeProfile: String?,
+    val captureMode: String?,
+    val multipleExposureFrameCount: Int?,
+    val hasAiDenoisedBase: Boolean,
+    val aiDenoiseStrength: Float?,
+    val rawBlackLevelMode: String?,
+    val rawCustomBlackLevel: Float?,
+    val rawWhiteLevelMode: String?,
+    val rawCustomWhiteLevel: Float?,
+    val rawCfaCorrectionMode: String?,
+    val rawBlackBorderCropLeftPx: Int,
+    val rawBlackBorderCropTopPx: Int,
+    val rawBlackBorderCropRightPx: Int,
+    val rawBlackBorderCropBottomPx: Int,
+    val rawDROEnabled: Boolean?,
+    val cameraId: String?,
+    val applyEffectsToVideo: Boolean,
+    val spectralFilmEnabled: Boolean,
+    val spectralFilmStock: String?,
+    val spectralFilmPrint: String?,
+    val spectralFilmCDensityGain: Float,
+    val spectralFilmMDensityGain: Float,
+    val spectralFilmYDensityGain: Float,
+    val fotufilmDocument: String?
+)

@@ -1,0 +1,72 @@
+package vn.hoang.leicafujicam.raw
+
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Rect
+import vn.hoang.leicafujicam.camera.AspectRatio
+import vn.hoang.leicafujicam.camera.RawBlackBorderCrop
+import vn.hoang.leicafujicam.preview.PortraitMaskSnapshot
+
+/** Routes capture-time adaptive exposure into one complete, mutually exclusive processing path. */
+internal object RawCaptureProfileCoordinator {
+    suspend fun prepareCaptureProfile(
+        renderer: RawDemosaicProcessor,
+        context: Context,
+        input: RawDngCaptureProfileInput,
+        mode: RawAdaptiveExposureMode,
+        aspectRatio: AspectRatio?,
+        cropRegion: Rect?,
+        rotation: Int,
+        capturePreviewThumbnail: Bitmap?,
+        capturePortraitMask: PortraitMaskSnapshot?,
+        viewfinderMirroredHorizontally: Boolean,
+        viewfinderPreviewToCaptureRotationDegrees: Int,
+        statsBounds: Rect?,
+        rawBlackPointCorrection: Float = 0f,
+        rawWhitePointCorrection: Float = 0f,
+        applyLensShadingCorrection: Boolean = true,
+        rawBlackBorderCrop: RawBlackBorderCrop = RawBlackBorderCrop(),
+        rawNoiseProfileId: String = RawNoiseProfileManager.DEFAULT_PROFILE_ID,
+        maxHdrRatio: Float = RawSceneExposureMath.FAST_MOMENTS_MAX_HDR_RATIO,
+    ): RawDngCaptureProfileResult? {
+        val photonRequest = if (mode.usesPhotonHdr) {
+            RawSceneExposureMatcher.createRequest(
+                context = context,
+                metadata = input.metadata,
+                deviceLimits = input.sceneExposureDeviceLimits,
+                portraitMask = capturePortraitMask,
+                maxHdrRatio = maxHdrRatio,
+            )
+        } else {
+            null
+        }
+        val legacyRequest = RawLegacyAutoExposureMatcher.createRequest(
+            capturePreviewThumbnail = capturePreviewThumbnail,
+            capturePortraitMask = capturePortraitMask,
+            viewfinderMirroredHorizontally = viewfinderMirroredHorizontally,
+            viewfinderPreviewToCaptureRotationDegrees =
+                viewfinderPreviewToCaptureRotationDegrees,
+            highlightClippingConstraint = if (mode == RawAdaptiveExposureMode.OFF) {
+                RawLegacyHighlightClippingConstraint.HDR_PLUS_DISABLED
+            } else {
+                null
+            },
+        )
+        return renderer.prepareCaptureProfile(
+            context = context,
+            input = input,
+            aspectRatio = aspectRatio,
+            cropRegion = cropRegion,
+            rotation = rotation,
+            sceneExposureRequest = photonRequest,
+            legacyAutoExposureRequest = legacyRequest,
+            generatePhotonPgtm = mode.usesPhotonHdr || mode.usesLegacyAutoExposure,
+            statsBounds = statsBounds,
+            rawBlackPointCorrection = rawBlackPointCorrection,
+            rawWhitePointCorrection = rawWhitePointCorrection,
+            applyLensShadingCorrection = applyLensShadingCorrection,
+            rawBlackBorderCrop = rawBlackBorderCrop,
+            rawNoiseProfileId = rawNoiseProfileId,
+        )
+    }
+}

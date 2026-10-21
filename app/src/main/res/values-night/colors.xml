@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Widget Colors Dark -->
+    <color name="widget_background">#121A21</color>
+    <color name="widget_button_capture">#434A5E</color>
+    <color name="widget_button_secondary">#1C242E</color>
+    <color name="widget_text_primary">#FFFFFF</color>
+    <color name="widget_text_secondary">#80FFFFFF</color>
+    <color name="widget_accent">#FF6B35</color>
+    <color name="widget_recent_accent">#34B0F1</color>
+</resources>

@@ -1,0 +1,24 @@
+package vn.hoang.leicafujicam.gallery
+
+import vn.hoang.leicafujicam.hdr.HdrGainmapStrength
+
+object EmbeddedGainmapReusePolicy {
+    fun canReuse(metadata: MediaMetadata): Boolean {
+        return metadata.manualHdrEffectEnabled &&
+                !metadata.hasAiDenoisedBase &&
+                metadata.hasEmbeddedGainmap &&
+                HdrGainmapStrength.coerce(metadata.hdrEffectStrength) == HdrGainmapStrength.DEFAULT &&
+                metadata.lutId == null &&
+                metadata.colorRecipeParams == null &&
+                metadata.sharpening == null &&
+                metadata.noiseReduction == null &&
+                metadata.chromaNoiseReduction == null &&
+                metadata.frameId == null &&
+                metadata.cropRegion == null &&
+                metadata.postCropRegion == null &&
+                PostEditGeometry.normalizeRotation(metadata.postRotationDegrees) == 0 &&
+                kotlin.math.abs(metadata.postStraightenDegrees) < 0.001f &&
+                !metadata.postMirrorHorizontal &&
+                metadata.computationalAperture == null
+    }
+}

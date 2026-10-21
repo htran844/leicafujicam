@@ -1,0 +1,3042 @@
+package vn.hoang.leicafujicam.processor
+
+/**
+ * GLES stages for the MGC-compatible Spatial RAW pipeline.
+ *
+ * The guide, rejection, dilation and merge equations below retain the embedded GLSL equations and
+ * constants. The original program first extracts RAW16 into a half-resolution Bayer texture.
+ * Photon reads R16UI directly; the RGB branch reconstructs jointly from native CFA observations.
+ * Float samplers (including helper parameters) must remain highp: the CPU/Halide alignment
+ * products are Float32, and normalized flow/noise samples cannot use the default lowp precision.
+ */
+internal object GlesMgcRawSpatialShaders {
+    val guide = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        precision highp usampler2D;
+        uniform highp usampler2D uRaw;
+        uniform ivec2 uRawSize;
+        uniform ivec2 uGuideSize;
+        uniform int uCfaPattern;
+        uniform vec4 uGains;
+        uniform vec4 uBlackLevelsTimesGains;
+        uniform sampler2D uNoiseEstimates;
+        uniform vec4 uNoiseTextureScaleBias;
+        uniform float uGreenClippingPoint;
+        uniform float uForceReferenceColorRgb;
+        out vec4 oGuide;
+
+        vec4 rawQuad(ivec2 quad) {
+            ivec2 p = clamp(quad * 2, ivec2(0), uRawSize - ivec2(2));
+            float p00 = float(texelFetch(uRaw, p, 0).r);
+            float p10 = float(texelFetch(uRaw, p + ivec2(1, 0), 0).r);
+            float p01 = float(texelFetch(uRaw, p + ivec2(0, 1), 0).r);
+            float p11 = float(texelFetch(uRaw, p + ivec2(1, 1), 0).r);
+            vec4 raw;
+            if (uCfaPattern == 0) raw = vec4(p00, p10, p01, p11);
+            else if (uCfaPattern == 1) raw = vec4(p10, p00, p11, p01);
+            else if (uCfaPattern == 2) raw = vec4(p01, p11, p00, p10);
+            else raw = vec4(p11, p01, p10, p00);
+            return (raw + vec4(1.0e-4)) * uGains + uBlackLevelsTimesGains;
+        }
+
+        float luma(vec3 rgb) {
+            return dot(rgb, vec3(0.25, 0.5, 0.25));
+        }
+
+        float kernelWeight(int offset) {
+            return offset == 0 ? 0.5 : 0.25;
+        }
+
+        int mirrorGuideCenter(int coordinate, int extent) {
+            int maximum = extent - 2;
+            coordinate = coordinate < 1 ? 2 - coordinate : coordinate;
+            return coordinate > maximum ? 2 * maximum - coordinate : coordinate;
+        }
+
+        void main() {
+            ivec2 outputPosition = ivec2(gl_FragCoord.xy);
+            ivec2 center = ivec2(
+                mirrorGuideCenter(outputPosition.x, uGuideSize.x),
+                mirrorGuideCenter(outputPosition.y, uGuideSize.y)
+            );
+            vec3 m0Rgb = vec3(0.0);
+            vec3 m1Rgb = vec3(0.0);
+            float m0Green = 0.0;
+            float m1Green = 0.0;
+            vec3 averageRgb = vec3(0.0);
+            float centerGreen = 0.0;
+            for (int y = -1; y <= 1; ++y) {
+                for (int x = -1; x <= 1; ++x) {
+                    vec4 rggb = rawQuad(center + ivec2(x, y));
+                    vec3 rgb = vec3(rggb.x, 0.5 * (rggb.y + rggb.z), rggb.w);
+                    averageRgb += rgb * kernelWeight(x) * kernelWeight(y);
+                    if (x == 0 && y == 0) centerGreen = rgb.y;
+                    m0Rgb += rgb;
+                    m1Rgb += rgb * rgb;
+                    m0Green += rggb.y + rggb.z;
+                    m1Green += rggb.y * rggb.y + rggb.z * rggb.z;
+                }
+            }
+            m0Rgb /= 9.0;
+            m1Rgb /= 9.0;
+            vec3 rgbVariance = max(vec3(0.0), m1Rgb - m0Rgb * m0Rgb);
+            m0Green /= 18.0;
+            m1Green /= 18.0;
+            float greenVariance = max(0.0, m1Green - m0Green * m0Green);
+            float averageLuma = luma(averageRgb);
+            vec2 noiseUv =
+                vec2(averageLuma, 1.0) * uNoiseTextureScaleBias.xy +
+                uNoiseTextureScaleBias.zw;
+            float greenVarianceNoise =
+                2.0 * texture(uNoiseEstimates, noiseUv).y;
+            vec3 referenceColor;
+            float referenceVariance;
+            if (greenVariance > 3.0 * greenVarianceNoise &&
+                uForceReferenceColorRgb == 0.0) {
+                referenceColor = vec3(averageRgb.x, centerGreen, averageRgb.z);
+                referenceVariance = -max(rgbVariance.y, greenVariance);
+            } else {
+                referenceColor = averageRgb;
+                referenceVariance = dot(rgbVariance, vec3(1.0 / 3.0));
+            }
+            if (centerGreen >= uGreenClippingPoint) {
+                referenceColor = vec3(10000.0);
+            }
+            oGuide = vec4(referenceColor, referenceVariance * 1024.0);
+        }
+    """.trimIndent()
+
+    /**
+     * Precomputes the edge-directed green value at native R/B sites for one RAW tile region.
+     * MergeRgb consumes this compact guide instead of repeating eight neighboring RAW fetches
+     * for every chroma observation at every super-resolution output sample.
+     */
+    val rgbChromaGuide = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        precision highp usampler2D;
+        uniform highp usampler2D uRaw;
+        uniform ivec2 uRawSize;
+        uniform ivec2 uRawTextureOrigin;
+        uniform ivec2 uRegionOrigin;
+        uniform ivec2 uRegionSize;
+        uniform vec4 uGains;
+        uniform vec4 uBlackLevelsTimesGains;
+        uniform int uCfaPattern;
+        out float oGreen;
+
+        int canonicalChannel(ivec2 p) {
+            int phase = ((p.y & 1) << 1) + (p.x & 1);
+            if (uCfaPattern == 0) return phase;
+            if (uCfaPattern == 1) {
+                if (phase == 0) return 1;
+                if (phase == 1) return 0;
+                if (phase == 2) return 3;
+                return 2;
+            }
+            if (uCfaPattern == 2) {
+                if (phase == 0) return 2;
+                if (phase == 1) return 3;
+                if (phase == 2) return 0;
+                return 1;
+            }
+            if (phase == 0) return 3;
+            if (phase == 1) return 2;
+            if (phase == 2) return 1;
+            return 0;
+        }
+
+        int clampRawCoordinateToPhase(int coordinate, int extent) {
+            int phase = coordinate & 1;
+            if (phase >= extent) return extent - 1;
+            int last = phase + 2 * ((extent - 1 - phase) / 2);
+            return clamp(coordinate, phase, last);
+        }
+
+        ivec2 clampRawPixelToPhase(ivec2 p) {
+            return ivec2(
+                clampRawCoordinateToPhase(p.x, uRawSize.x),
+                clampRawCoordinateToPhase(p.y, uRawSize.y)
+            );
+        }
+
+        float gainedRaw(ivec2 globalPixel) {
+            int channel = canonicalChannel(globalPixel);
+            globalPixel = clampRawPixelToPhase(globalPixel);
+            return float(texelFetch(uRaw, globalPixel - uRawTextureOrigin, 0).r) *
+                uGains[channel] +
+                uBlackLevelsTimesGains[channel];
+        }
+
+        float greenAtNonGreen(ivec2 p, float center) {
+            float gL = gainedRaw(p + ivec2(-1, 0));
+            float gR = gainedRaw(p + ivec2(1, 0));
+            float gU = gainedRaw(p + ivec2(0, -1));
+            float gD = gainedRaw(p + ivec2(0, 1));
+            float cL2 = gainedRaw(p + ivec2(-2, 0));
+            float cR2 = gainedRaw(p + ivec2(2, 0));
+            float cU2 = gainedRaw(p + ivec2(0, -2));
+            float cD2 = gainedRaw(p + ivec2(0, 2));
+            float horizontalLinear = 0.5 * (gL + gR);
+            float verticalLinear = 0.5 * (gU + gD);
+            float horizontalCorrection = clamp(
+                0.25 * (2.0 * center - cL2 - cR2),
+                -0.5 * abs(gL - gR),
+                0.5 * abs(gL - gR)
+            );
+            float verticalCorrection = clamp(
+                0.25 * (2.0 * center - cU2 - cD2),
+                -0.5 * abs(gU - gD),
+                0.5 * abs(gU - gD)
+            );
+            float horizontal = horizontalLinear + horizontalCorrection;
+            float vertical = verticalLinear + verticalCorrection;
+            float gradientH = abs(gL - gR) + abs(2.0 * center - cL2 - cR2);
+            float gradientV = abs(gU - gD) + abs(2.0 * center - cU2 - cD2);
+            float blendH = gradientV / max(gradientH + gradientV, 1.0e-7);
+            float green = mix(vertical, horizontal, blendH);
+            float nativeMinimum = min(min(gL, gR), min(gU, gD));
+            float nativeMaximum = max(max(gL, gR), max(gU, gD));
+            return clamp(green, nativeMinimum, nativeMaximum);
+        }
+
+        void main() {
+            ivec2 local = ivec2(gl_FragCoord.xy);
+            if (any(greaterThanEqual(local, uRegionSize))) {
+                oGreen = 0.0;
+                return;
+            }
+            ivec2 globalPixel = local + uRegionOrigin;
+            float center = gainedRaw(globalPixel);
+            int channel = canonicalChannel(globalPixel);
+            oGreen = channel == 1 || channel == 2
+                ? center
+                : greenAtNonGreen(globalPixel, center);
+        }
+    """.trimIndent()
+
+    /**
+     * Structure-adaptive Spatial RGB precision matrix recovered with MergeRgbRaw.
+     *
+     * MGC originally emitted this beside the guide. It is kept as an independent draw here so the
+     * corrected Bayer guide/rejection transport remains byte-for-byte isolated from RGB output.
+     */
+    val covariance = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        precision highp usampler2D;
+        uniform highp usampler2D uRaw;
+        uniform sampler2D uNoiseEstimates;
+        uniform ivec2 uRawSize;
+        uniform ivec2 uGuideSize;
+        uniform int uCfaPattern;
+        uniform vec4 uGains;
+        uniform vec4 uBlackLevelsTimesGains;
+        uniform vec4 uNoiseTextureScaleBias;
+        uniform vec4 uCovarianceParameters1;
+        uniform vec4 uCovarianceParameters2;
+        uniform vec4 uCovRangeRgFactors;
+        uniform vec2 uCovRangeBFactor;
+        out vec4 oCovariance;
+
+        vec4 rawQuad(ivec2 quad) {
+            ivec2 p = clamp(quad * 2, ivec2(0), uRawSize - ivec2(2));
+            float p00 = float(texelFetch(uRaw, p, 0).r);
+            float p10 = float(texelFetch(uRaw, p + ivec2(1, 0), 0).r);
+            float p01 = float(texelFetch(uRaw, p + ivec2(0, 1), 0).r);
+            float p11 = float(texelFetch(uRaw, p + ivec2(1, 1), 0).r);
+            vec4 raw;
+            if (uCfaPattern == 0) raw = vec4(p00, p10, p01, p11);
+            else if (uCfaPattern == 1) raw = vec4(p10, p00, p11, p01);
+            else if (uCfaPattern == 2) raw = vec4(p01, p11, p00, p10);
+            else raw = vec4(p11, p01, p10, p00);
+            return (raw + vec4(1.0e-4)) * uGains + uBlackLevelsTimesGains;
+        }
+
+        void accumulateGradient(float dx, float dy, inout vec4 tensor) {
+            tensor += vec4(dx * dx, dy * dy, dx * dy, 0.0);
+        }
+
+        vec4 structureTensor(float green0[9], float green1[9]) {
+            vec4 tensor = vec4(0.0);
+            for (int y = 0; y < 2; ++y) {
+                for (int x = 0; x < 2; ++x) {
+                    float g00 = green0[y * 3 + x];
+                    float g01 = green0[y * 3 + x + 1];
+                    float g10 = green1[y * 3 + x];
+                    float g11 = green1[y * 3 + x + 1];
+                    float g20 = green0[(y + 1) * 3 + x];
+                    float g21 = green0[(y + 1) * 3 + x + 1];
+                    float g30 = green1[(y + 1) * 3 + x];
+                    float g31 = green1[(y + 1) * 3 + x + 1];
+                    float bdx;
+                    float bdy;
+                    float rdx;
+                    float rdy;
+                    if (uCfaPattern == 1 || uCfaPattern == 2) {
+                        bdx = 0.5 * ((g11 - g01) + (g21 - g10));
+                        bdy = 0.5 * ((g01 - g10) + (g11 - g21));
+                        rdx = 0.5 * ((g21 - g10) + (g30 - g20));
+                        rdy = 0.5 * ((g21 - g30) + (g10 - g20));
+                    } else {
+                        bdx = 0.5 * ((g11 - g00) + (g20 - g10));
+                        bdy = 0.5 * ((g00 - g10) + (g11 - g20));
+                        rdx = 0.5 * ((g21 - g11) + (g31 - g20));
+                        rdy = 0.5 * ((g21 - g31) + (g11 - g20));
+                    }
+                    accumulateGradient(bdx, bdy, tensor);
+                    accumulateGradient(rdx, rdy, tensor);
+                    accumulateGradient(0.5 * (g21 - g00), 0.5 * (g01 - g20), tensor);
+                    accumulateGradient(0.5 * (g31 - g10), 0.5 * (g11 - g30), tensor);
+                }
+            }
+            tensor /= 16.0;
+            tensor.w = 0.75;
+            float c0 = 0.5 * (tensor.x + tensor.y);
+            float c1 = 0.5 * (tensor.y - tensor.x);
+            return vec4(c0 + tensor.z, c0 - tensor.z, c1, tensor.w);
+        }
+
+        vec3 constructCovariance(vec4 tensor, float greenVariance, float greenNoise) {
+            float trace = tensor.x + tensor.y;
+            float difference = tensor.x - tensor.y;
+            float discriminant = sqrt(max(
+                difference * difference + 4.0 * tensor.z * tensor.z,
+                0.0
+            ));
+            float eigenvalue1 = 0.5 * (trace + discriminant);
+            float eigenvalue2 = 0.5 * (trace - discriminant);
+            vec2 eigenvector1 = vec2(1.0, 0.0);
+            if (abs(tensor.z) > 0.0001) {
+                eigenvector1 = normalize(vec2(tensor.z, eigenvalue1 - tensor.x)) *
+                    -sign(tensor.z);
+            } else if (tensor.x < tensor.y) {
+                eigenvector1 = vec2(0.0, 1.0);
+            }
+            vec2 eigenvector2 = vec2(-eigenvector1.y, eigenvector1.x);
+            float singularValue1 = sqrt(max(eigenvalue1, 0.0));
+            float singularValue2 = sqrt(max(eigenvalue2, 0.0));
+            float correction = tensor.w * greenNoise;
+            eigenvalue1 *= eigenvalue1 / max(eigenvalue1 + correction, 1.0e-8);
+            float strength = sqrt(max(eigenvalue1, 0.0));
+            float coherence = (singularValue1 - singularValue2) /
+                (singularValue1 + singularValue2 + 1.0e-6);
+            float correctedGreenStdDev = sqrt(
+                greenVariance * greenVariance / max(greenVariance + greenNoise, 1.0e-8)
+            );
+            float dominantFeature = max(strength, correctedGreenStdDev) -
+                uCovarianceParameters1.z;
+            float blur = clamp(
+                1.0 - dominantFeature * uCovarianceParameters2.y,
+                0.0,
+                1.0
+            );
+            float anisotropicShrinking = mix(
+                uCovarianceParameters1.w,
+                uCovarianceParameters1.x,
+                min(coherence, strength * 5.0)
+            );
+            float precision1 = mix(
+                anisotropicShrinking,
+                uCovarianceParameters2.x,
+                blur
+            );
+            float precision2 = mix(
+                mix(uCovarianceParameters1.w, uCovarianceParameters1.y, coherence),
+                uCovarianceParameters2.x,
+                blur
+            );
+            mat2 rotation = mat2(eigenvector1, eigenvector2);
+            mat2 covariance = transpose(rotation) * mat2(
+                precision1 * precision1, 0.0,
+                0.0, precision2 * precision2
+            ) * rotation;
+            return vec3(covariance[0].x, covariance[1].y, covariance[0].y);
+        }
+
+        int mirrorGuideCenter(int coordinate, int extent) {
+            int maximum = extent - 2;
+            coordinate = coordinate < 1 ? 2 - coordinate : coordinate;
+            return coordinate > maximum ? 2 * maximum - coordinate : coordinate;
+        }
+
+        void main() {
+            ivec2 outputPosition = ivec2(gl_FragCoord.xy);
+            ivec2 center = ivec2(
+                mirrorGuideCenter(outputPosition.x, uGuideSize.x),
+                mirrorGuideCenter(outputPosition.y, uGuideSize.y)
+            );
+            float green0[9];
+            float green1[9];
+            float greenSum = 0.0;
+            float greenSquareSum = 0.0;
+            vec3 averageRgb = vec3(0.0);
+            for (int y = -1; y <= 1; ++y) {
+                for (int x = -1; x <= 1; ++x) {
+                    vec4 rggb = rawQuad(center + ivec2(x, y));
+                    int index = (y + 1) * 3 + x + 1;
+                    if (uCfaPattern == 2 || uCfaPattern == 3) {
+                        green0[index] = rggb.z;
+                        green1[index] = rggb.y;
+                    } else {
+                        green0[index] = rggb.y;
+                        green1[index] = rggb.z;
+                    }
+                    float wx = x == 0 ? 0.5 : 0.25;
+                    float wy = y == 0 ? 0.5 : 0.25;
+                    averageRgb += vec3(rggb.x, 0.5 * (rggb.y + rggb.z), rggb.w) * wx * wy;
+                    greenSum += rggb.y + rggb.z;
+                    greenSquareSum += rggb.y * rggb.y + rggb.z * rggb.z;
+                }
+            }
+            float greenMean = greenSum / 18.0;
+            float greenVariance = max(0.0, greenSquareSum / 18.0 - greenMean * greenMean);
+            float averageLuma = dot(averageRgb, vec3(0.25, 0.5, 0.25));
+            vec2 noiseUv = vec2(averageLuma, 1.0) * uNoiseTextureScaleBias.xy +
+                uNoiseTextureScaleBias.zw;
+            float greenNoise = 2.0 * texture(uNoiseEstimates, noiseUv).y;
+            vec3 covariance = constructCovariance(
+                structureTensor(green0, green1),
+                greenVariance,
+                greenNoise
+            );
+            vec2 packedRg = clamp(
+                covariance.xy * uCovRangeRgFactors.yw + uCovRangeRgFactors.xz,
+                0.0,
+                1.0
+            );
+            float packedB = clamp(
+                covariance.z * uCovRangeBFactor.y + uCovRangeBFactor.x,
+                0.0,
+                1.0
+            );
+            oCovariance = vec4(packedRg, packedB, 0.0);
+        }
+    """.trimIndent()
+
+    val rejection = rejectionWithFlowSource("""
+        uniform sampler2D uFlow;
+        uniform vec4 uFlowScaleOffset;
+        vec4 rejectionFlow(vec2 uv) {
+            return texture(uFlow, uv * uFlowScaleOffset.xy + uFlowScaleOffset.zw);
+        }
+    """.trimIndent(), usePaddedFrameBorder = true)
+
+    /** Share rejection equations while allowing the caller to supply dense or tiled flow. */
+    fun rejectionWithFlowSource(
+        flowSource: String,
+        usePaddedFrameBorder: Boolean = false,
+    ) = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        uniform sampler2D uBaseGuide;
+        uniform sampler2D uAltGuide;
+        uniform sampler2D uUnblocker;
+        uniform sampler2D uNoiseEstimates;
+        uniform ivec2 uGuideSize;
+        uniform ivec2 uRejectionSize;
+        ${if (usePaddedFrameBorder) "uniform vec4 uFrameBorderPadded;" else ""}
+        uniform vec2 uUnblockerScale;
+        uniform vec4 uNoiseTextureScaleBias;
+        uniform vec2 uColorDifferenceMultiplier;
+        uniform float uUnblockerReductionThreshold;
+        uniform float uExtraMotionRobustnessBoost;
+        uniform float uMotionRobustnessBoostVarianceThreshold;
+        uniform float uExtraMotionRobustnessMotionThreshold;
+        layout(location = 0) out float oReverseWeight;
+        layout(location = 1) out float oPixelDifference;
+
+        $flowSource
+
+        vec2 mirrorUv(vec2 uv) {
+            ${if (usePaddedFrameBorder) """
+            if (uv.x <= uFrameBorderPadded.x) {
+                uv.x = 2.0 * uFrameBorderPadded.x - uv.x;
+            }
+            if (uv.y <= uFrameBorderPadded.y) {
+                uv.y = 2.0 * uFrameBorderPadded.y - uv.y;
+            }
+            if (uv.x > uFrameBorderPadded.z) {
+                uv.x = 2.0 * uFrameBorderPadded.z - uv.x;
+            }
+            if (uv.y > uFrameBorderPadded.w) {
+                uv.y = 2.0 * uFrameBorderPadded.w - uv.y;
+            }
+            return uv;
+            """.trimIndent().prependIndent("            ") else """
+            uv = mod(uv, 2.0);
+            return mix(uv, 2.0 - uv, greaterThan(uv, vec2(1.0)));
+            """.trimIndent().prependIndent("            ")}
+        }
+
+        vec4 sampleBiquadraticAbsolute(sampler2D image, vec2 uv) {
+            vec2 texelSize = 1.0 / vec2(uGuideSize);
+            vec2 fractionalOffset = fract(uv * vec2(uGuideSize));
+            vec2 c = fractionalOffset * fractionalOffset -
+                fractionalOffset + 0.5;
+            vec2 w0 = uv - c * texelSize;
+            vec2 w1 = uv + c * texelSize;
+            vec4 samples =
+                abs(texture(image, vec2(w0.x, w0.y))) +
+                abs(texture(image, vec2(w0.x, w1.y))) +
+                abs(texture(image, vec2(w1.x, w1.y))) +
+                abs(texture(image, vec2(w1.x, w0.y)));
+            samples.w /= 1024.0;
+            return samples * 0.25;
+        }
+
+        void main() {
+            // V25 requires GenerateRejectionTexture and GuideImage to share the RAW/2
+            // Bayer-quad domain.
+            vec2 uv = gl_FragCoord.xy / vec2(uRejectionSize);
+            vec4 flow = rejectionFlow(uv);
+            vec2 warpedUv = mirrorUv(uv + flow.xy);
+            float unblocker = texture(uUnblocker, uv * uUnblockerScale).r;
+            if (flow.z < uUnblockerReductionThreshold) unblocker = 0.0;
+            bool motionPrior = flow.z > uExtraMotionRobustnessMotionThreshold;
+            // MGC Spatial enables FILTER_BASE_GUIDE: both frames need the same
+            // biquadratic lookup. Read the green-only flag before filtering; the
+            // helper takes abs per lookup and already divides stored variance by 1024.
+            bool greenOnly = texture(uBaseGuide, uv).w < 0.0;
+            vec4 reference = sampleBiquadraticAbsolute(uBaseGuide, uv);
+            vec4 current = sampleBiquadraticAbsolute(uAltGuide, warpedUv);
+            float luma = greenOnly
+                ? reference.y
+                : dot(reference.rgb, vec3(1.0 / 3.0));
+            vec2 referenceNoiseUv =
+                vec2(luma, 0.0) * uNoiseTextureScaleBias.xy +
+                uNoiseTextureScaleBias.zw;
+            vec2 currentNoiseUv =
+                vec2(luma, 1.0) * uNoiseTextureScaleBias.xy +
+                uNoiseTextureScaleBias.zw;
+            vec3 referenceNoise =
+                texture(uNoiseEstimates, referenceNoiseUv).xyz;
+            vec3 currentNoise =
+                texture(uNoiseEstimates, currentNoiseUv).xyz;
+            float filterVarianceScale = greenOnly ? 0.25 : 0.0976597;
+            referenceNoise *= filterVarianceScale;
+            currentNoise *= filterVarianceScale;
+            reference.w *= filterVarianceScale;
+            current.w *= filterVarianceScale;
+            float pixelVariance = min(reference.w, current.w);
+            float minimumVariance = greenOnly
+                ? referenceNoise.y
+                : dot(referenceNoise, vec3(1.0 / 3.0));
+            float robustnessBoost = 1.0;
+            if (reference.w >
+                    uMotionRobustnessBoostVarianceThreshold * minimumVariance &&
+                motionPrior) {
+                robustnessBoost = uExtraMotionRobustnessBoost;
+            }
+            pixelVariance *= 2.0;
+            // Noise estimates are transported through RGBA16F and can quantize to zero at the
+            // dark end. Keep the recovered equations defined without changing any positive
+            // estimate.
+            vec3 combinedNoise = max(
+                referenceNoise + currentNoise,
+                vec3(1.0e-8)
+            );
+            vec3 difference = current.rgb - reference.rgb;
+            vec3 differenceSquared = max(
+                difference * difference - combinedNoise,
+                vec3(0.0)
+            );
+            vec3 variance = max(vec3(pixelVariance), combinedNoise);
+            vec3 pixelDistanceSquared = differenceSquared / combinedNoise;
+            differenceSquared /= variance;
+            float distance = greenOnly
+                ? uColorDifferenceMultiplier.y * differenceSquared.y
+                : uColorDifferenceMultiplier.x *
+                    dot(differenceSquared, vec3(1.0 / 3.0));
+            float pixelDistance = greenOnly
+                ? uColorDifferenceMultiplier.y * pixelDistanceSquared.y
+                : uColorDifferenceMultiplier.x *
+                    dot(pixelDistanceSquared, vec3(1.0 / 3.0));
+            float pixelDifference = exp2(min(-pixelDistance, 0.0));
+            distance *= robustnessBoost;
+            float frameWeight = exp2(min(-distance, 0.0));
+            float weight = min(1.0 - unblocker, frameWeight);
+            oReverseWeight = 1.0 - weight;
+            oPixelDifference = pixelDifference;
+        }
+    """.trimIndent().trimStart()
+
+    /** Applies AdjustRejectionWeights' signal-invariant scale to RAW/4 acceptance. */
+    val rejectionAcceptance = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        uniform sampler2D uAcceptance;
+        uniform ivec2 uSize;
+        uniform float uFrameScale;
+        out float oAcceptance;
+        void main() {
+            ivec2 p = clamp(
+                ivec2(gl_FragCoord.xy),
+                ivec2(0),
+                uSize - ivec2(1)
+            );
+            float acceptance = texelFetch(uAcceptance, p, 0).r;
+            // AdjustRejectionWeightsHalide never raises the original rejection acceptance.
+            // Its signal-invariant branch divides special-exposure frames by the shadow-
+            // variance ratio. Same-exposure frames reach this shader with an identity scale.
+            oAcceptance = acceptance / max(uFrameScale, 1.0);
+        }
+    """.trimIndent()
+
+    /**
+     * Rejection::Downsample2x. GenerateRejectionTextureCpu applies this to pixel-difference
+     * immediately after DilateMask has moved the rejection result onto the merge-weight grid.
+     */
+    val rejectionPixelDifferenceDownsample = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        uniform sampler2D uInput;
+        uniform ivec2 uInputSize;
+        out float oPixelDifference;
+        float valueAt(ivec2 p) {
+            return texelFetch(
+                uInput,
+                clamp(p, ivec2(0), uInputSize - ivec2(1)),
+                0
+            ).r;
+        }
+        void main() {
+            ivec2 source = ivec2(gl_FragCoord.xy) * 2;
+            oPixelDifference = 0.25 * (
+                valueAt(source) +
+                valueAt(source + ivec2(1, 0)) +
+                valueAt(source + ivec2(0, 1)) +
+                valueAt(source + ivec2(1, 1))
+            );
+        }
+    """.trimIndent()
+
+    /**
+     * ClippedGaussianBlurHalide (0x387cd28), recovered from the AOT workers and verified against
+     * the original function with constant, impulse, step and asymmetric synthetic inputs.
+     *
+     * filtered_a_x = min(input, GaussianX(input))
+     * output = min(filtered_a_x, GaussianY(filtered_a_x))
+     *
+     * MGC keeps the horizontal intermediate in Float32 and quantizes only the final result to U8.
+     */
+    val clippedGaussianHorizontal = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        uniform sampler2D uInput;
+        uniform ivec2 uSize;
+        uniform float uKernel[20];
+        out float oFiltered;
+        float valueAt(ivec2 p) {
+            return texelFetch(
+                uInput,
+                clamp(p, ivec2(0), uSize - ivec2(1)),
+                0
+            ).r;
+        }
+        void main() {
+            ivec2 p = ivec2(gl_FragCoord.xy);
+            float filtered = 0.0;
+            for (int tap = 0; tap < 20; ++tap) {
+                filtered += uKernel[tap] *
+                    valueAt(p + ivec2(tap - 9, 0));
+            }
+            oFiltered = min(valueAt(p), filtered);
+        }
+    """.trimIndent()
+
+    val clippedGaussianVertical = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        uniform sampler2D uInput;
+        uniform ivec2 uSize;
+        uniform float uKernel[20];
+        out float oFiltered;
+        float valueAt(ivec2 p) {
+            return texelFetch(
+                uInput,
+                clamp(p, ivec2(0), uSize - ivec2(1)),
+                0
+            ).r;
+        }
+        void main() {
+            ivec2 p = ivec2(gl_FragCoord.xy);
+            float filtered = 0.0;
+            for (int tap = 0; tap < 20; ++tap) {
+                filtered += uKernel[tap] *
+                    valueAt(p + ivec2(0, tap - 9));
+            }
+            oFiltered = round(
+                255.0 * clamp(min(valueAt(p), filtered), 0.0, 1.0)
+            ) / 255.0;
+        }
+    """.trimIndent()
+
+    /**
+     * SabreProcessor's FilterRejectionMap uses S16/U8 BoxDownsample before the Halide
+     * bilateral filter. Both sums round once to integers, including repeated edge samples
+     * in a partial 4x4 block. The OpenCL path's fractional averages are a different contract.
+     */
+    val rejectionFilterDownsample = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        precision highp isampler2D;
+        uniform highp isampler2D uBaseLuma;
+        uniform sampler2D uRejection;
+        uniform ivec2 uInputSize;
+        layout(location = 0) out float oLuma;
+        layout(location = 1) out float oRejection;
+
+        void main() {
+            ivec2 origin = ivec2(gl_FragCoord.xy) * 4;
+            int luma = 0;
+            int rejection = 0;
+            for (int y = 0; y < 4; ++y) {
+                for (int x = 0; x < 4; ++x) {
+                    ivec2 p = min(origin + ivec2(x, y), uInputSize - ivec2(1));
+                    luma += texelFetch(uBaseLuma, p, 0).r;
+                    rejection += int(floor(texelFetch(uRejection, p, 0).r * 255.0 + 0.5));
+                }
+            }
+            oLuma = float((luma + 8) >> 4) / 16383.0;
+            oRejection = float((rejection + 8) >> 4) / 255.0;
+        }
+    """.trimIndent()
+
+    /**
+     * RejectionMapFilterHalide (38B13E0). Compare quantized weights directly, without
+     * OpenCL's one-code tolerance, and retain the native round-to-even U8 output.
+     */
+    val rejectionFilter = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        uniform sampler2D uLuma;
+        uniform sampler2D uRejection;
+        uniform ivec2 uSize;
+        uniform int uRadius;
+        uniform float uSigmaSpatial;
+        uniform float uColorSigma;
+        uniform float uColorSigmaBoost;
+        uniform int uClipRejection;
+        out float oFilteredRejection;
+
+        float bilateralWeight(float residual, float sigma) {
+            float widthSquared = sigma * sigma * 5.0;
+            float squaredDistance = residual * residual;
+            float distance = 1.0 - squaredDistance / widthSquared;
+            return squaredDistance <= widthSquared
+                ? distance * distance
+                : 0.0;
+        }
+
+        float spatialWeight(float radius) {
+            return exp(
+                -(radius * radius) /
+                    (2.0 * uSigmaSpatial * uSigmaSpatial)
+            );
+        }
+
+        float valueAt(sampler2D image, ivec2 p) {
+            return texelFetch(
+                image,
+                clamp(p, ivec2(0), uSize - ivec2(1)),
+                0
+            ).r;
+        }
+
+        void main() {
+            ivec2 p = ivec2(gl_FragCoord.xy);
+            float centerLuma = valueAt(uLuma, p);
+            float centerRejection = valueAt(uRejection, p);
+            int spatialRadius = min(uRadius, 3 * int(uSigmaSpatial));
+            float weightedRejection = 0.0;
+            float weightSum = 0.0;
+            for (int dy = -3; dy <= 3; ++dy) {
+                if (abs(dy) > spatialRadius) continue;
+                float spatialWeightY = spatialWeight(float(dy));
+                for (int dx = -3; dx <= 3; ++dx) {
+                    if (abs(dx) > spatialRadius) continue;
+                    ivec2 q = p + ivec2(dx, dy);
+                    float deltaLuma = valueAt(uLuma, q);
+                    float deltaRejection = valueAt(uRejection, q);
+                    float sigma = centerRejection < deltaRejection
+                        ? uColorSigma
+                        : uColorSigma * (
+                            uClipRejection != 0 ? uColorSigmaBoost : 1.0
+                        );
+                    float weight = bilateralWeight(
+                        abs(deltaLuma - centerLuma),
+                        sigma
+                    );
+                    weight *= spatialWeight(float(dx)) * spatialWeightY;
+                    float value = uClipRejection != 0
+                        ? min(deltaRejection, centerRejection)
+                        : deltaRejection;
+                    weightedRejection += weight * value;
+                    weightSum += weight;
+                }
+            }
+            float filtered = weightSum > 0.0
+                ? weightedRejection / weightSum
+                : centerRejection;
+            oFilteredRejection = roundEven(clamp(filtered, 0.0, 1.0) * 255.0) / 255.0;
+        }
+    """.trimIndent()
+
+    /**
+     * FilterRejectionMap's LinearKernel resample and strong postprocess. V25's U8
+     * linear AOT (5C1208C) uses fixed 4x coordinates and two integer interpolation
+     * stages, vertical first. Normalized texture sampling stretches ceil-sized grids
+     * and loses the intermediate U8 rounding.
+     */
+    val rejectionPostprocess = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        uniform sampler2D uOriginalWeight;
+        uniform sampler2D uFilteredWeight;
+        uniform sampler2D uPixelDifference;
+        uniform ivec2 uSize;
+        uniform float uPixelDifferenceThreshold;
+        uniform float uClippedThreshold;
+        out float oRejection;
+
+        int filteredAt(ivec2 p) {
+            p = clamp(p, ivec2(0), textureSize(uFilteredWeight, 0) - ivec2(1));
+            return int(floor(texelFetch(uFilteredWeight, p, 0).r * 255.0 + 0.5));
+        }
+        int lerpU8(int a, int b, int fraction) {
+            int sum = a * (255 - fraction) + b * fraction;
+            // NEON urshr #8 followed by raddhn: rounded division by 255.
+            return (sum + ((sum + 128) >> 8) + 128) >> 8;
+        }
+        int upsampledAt(ivec2 p) {
+            vec2 coordinate = (vec2(p) + vec2(0.5)) * 0.25 - vec2(0.5);
+            ivec2 source = ivec2(floor(coordinate));
+            ivec2 fraction = ivec2(fract(coordinate) * 256.0);
+            int left = lerpU8(
+                filteredAt(source), filteredAt(source + ivec2(0, 1)), fraction.y
+            );
+            int right = lerpU8(
+                filteredAt(source + ivec2(1, 0)), filteredAt(source + ivec2(1)), fraction.y
+            );
+            return lerpU8(left, right, fraction.x);
+        }
+        void main() {
+            ivec2 p = ivec2(gl_FragCoord.xy);
+            int original = int(floor(texelFetch(uOriginalWeight, p, 0).r * 255.0 + 0.5));
+            int pixelDifference = int(floor(texelFetch(uPixelDifference, p, 0).r * 255.0 + 0.5));
+            int pixelThreshold = int(floor(uPixelDifferenceThreshold * 255.0 + 0.5));
+            int clippedThreshold = int(floor(uClippedThreshold * 255.0 + 0.5));
+            int filtered = upsampledAt(p);
+            int postprocessed = filtered;
+            if (filtered > original) {
+                float weight = pixelDifference <= pixelThreshold
+                    ? 0.0
+                    : float(pixelDifference) / 255.0;
+                postprocessed = int(float(original) + weight * float(filtered - original));
+            }
+            if (clippedThreshold > 0 &&
+                original <= clippedThreshold &&
+                pixelDifference <= pixelThreshold) {
+                postprocessed = original;
+            }
+            oRejection = float(postprocessed) / 255.0;
+        }
+    """.trimIndent()
+
+    val dilateRejection = buildDilateRejection(includePixelDifference = false)
+
+    // MRT combines the two RAW downsample draws without changing their sampling or R8 stores.
+    val rejectionDownsample = buildDilateRejection(includePixelDifference = true)
+
+    private fun buildDilateRejection(includePixelDifference: Boolean) = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        uniform sampler2D uRejection;
+        uniform ivec2 uInputSize;
+        layout(location = 0) out float oWeight;
+        ${if (includePixelDifference) """
+        uniform sampler2D uPixelDifference;
+        layout(location = 1) out float oPixelDifference;
+        float valueAt(ivec2 p) {
+            return texelFetch(
+                uPixelDifference,
+                clamp(p, ivec2(0), uInputSize - ivec2(1)),
+                0
+            ).r;
+        }
+        """ else ""}
+        float rejectionAt(vec2 p) {
+            return texture(uRejection, p / vec2(uInputSize)).r;
+        }
+        void main() {
+            // Exact DilateMask mapping from guide-sized RAW/2 rejection to the half-sized
+            // RAW/4 merge-weight texture. The nine bilinear reads and
+            // coefficients are the factored form of a 5x5 box sum.
+            vec2 texCoord =
+                2.0 * floor(gl_FragCoord.xy - vec2(0.5)) + vec2(1.5);
+            float rejection =
+                4.0 * rejectionAt(texCoord + vec2(-1.5, -1.5)) +
+                4.0 * rejectionAt(texCoord + vec2( 0.5, -1.5)) +
+                2.0 * rejectionAt(texCoord + vec2( 2.0, -1.5)) +
+                4.0 * rejectionAt(texCoord + vec2(-1.5,  0.5)) +
+                4.0 * rejectionAt(texCoord + vec2( 0.5,  0.5)) +
+                2.0 * rejectionAt(texCoord + vec2( 2.0,  0.5)) +
+                2.0 * rejectionAt(texCoord + vec2(-1.5,  2.0)) +
+                2.0 * rejectionAt(texCoord + vec2( 0.5,  2.0)) +
+                      rejectionAt(texCoord + vec2( 2.0,  2.0));
+            rejection = (rejection - 0.2) * 0.5;
+            oWeight = 1.0 - rejection;
+            ${if (includePixelDifference) """
+            ivec2 source = ivec2(gl_FragCoord.xy) * 2;
+            oPixelDifference = 0.25 * (
+                valueAt(source) +
+                valueAt(source + ivec2(1, 0)) +
+                valueAt(source + ivec2(0, 1)) +
+                valueAt(source + ivec2(1, 1))
+            );
+            """ else ""}
+        }
+    """.trimIndent()
+
+    /**
+     * Bento UpdateLinearKernelMaskHalide. MGC invokes this once on the rejection-buffer slice
+     * selected by the accepted ultrashort index. It is not a temporal union of normal-frame
+     * rejection maps.
+     */
+    val updateLinearKernelMask = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        uniform sampler2D uRejection;
+        uniform ivec2 uSize;
+        out float oLinearKernelMask;
+        float rejectionAt(ivec2 p) {
+            return texelFetch(
+                uRejection,
+                clamp(p, ivec2(0), uSize - ivec2(1)),
+                0
+            ).r;
+        }
+        void main() {
+            ivec2 p = ivec2(gl_FragCoord.xy);
+            float localMinimum = 1.0;
+            float localMaximum = 0.0;
+            for (int y = -1; y <= 1; ++y) {
+                for (int x = -1; x <= 1; ++x) {
+                    float rejection = rejectionAt(p + ivec2(x, y));
+                    localMinimum = min(localMinimum, rejection);
+                    localMaximum = max(localMaximum, rejection);
+                }
+            }
+            // UpdateLinearKernelMaskHalide emits a strict binary mask: any non-uniform
+            // 3x3 rejection neighbourhood selects the linear kernel, independently of
+            // the rejection-value amplitude.
+            oLinearKernelMask = localMaximum != localMinimum ? 1.0 : 0.0;
+        }
+    """.trimIndent()
+
+    // Embedded OpenCL source: Mask_GenerateHighlightMask.
+    val bentoGenerateHighlightMask = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        uniform sampler2D uBaseFrame;
+        uniform sampler2D uSensorClipping;
+        uniform ivec2 uSize;
+        uniform float uMaxRgbClippingThreshold;
+        out float oHighlightMask;
+        void main() {
+            ivec2 p = clamp(
+                ivec2(gl_FragCoord.xy),
+                ivec2(0),
+                uSize - ivec2(1)
+            );
+            vec3 rgb = round(
+                65535.0 * clamp(texelFetch(uBaseFrame, p, 0).rgb, 0.0, 1.0)
+            ) / 65535.0;
+            float maxIntensity = max(rgb.r, max(rgb.g, rgb.b));
+            float clippedRatio =
+                (maxIntensity - uMaxRgbClippingThreshold) /
+                (1.0 - uMaxRgbClippingThreshold);
+            // The WB-balanced, filtered guide can stay below the ramp while a native CFA
+            // phase is already saturated. Those reference samples carry no highlight detail
+            // and must be replaced by the ultrashort like guide-detected clipping.
+            float sensorClipped = texelFetch(uSensorClipping, p, 0).r;
+            oHighlightMask = max(clamp(clippedRatio, 0.0, 1.0), sensorClipped);
+        }
+    """.trimIndent()
+
+    /**
+     * Counts non-zero R8 highlight-mask pixels without materializing the full mask on the CPU.
+     * One atomic update is issued per 8x8 work group rather than per active pixel.
+     */
+    val bentoCountHighlightMask = """
+        #version 310 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+        uniform highp sampler2D uMask;
+        uniform ivec2 uSize;
+        layout(std430, binding = 0) buffer ActiveCountBuffer {
+            uint activeCount;
+        };
+        shared uint localCounts[64];
+
+        void main() {
+            uint lane = gl_LocalInvocationIndex;
+            ivec2 p = ivec2(gl_GlobalInvocationID.xy);
+            localCounts[lane] =
+                all(lessThan(p, uSize)) && texelFetch(uMask, p, 0).r > 0.0
+                    ? 1u
+                    : 0u;
+            barrier();
+            for (uint stride = 32u; stride > 0u; stride >>= 1u) {
+                if (lane < stride) {
+                    localCounts[lane] += localCounts[lane + stride];
+                }
+                barrier();
+            }
+            if (lane == 0u && localCounts[0] != 0u) {
+                atomicAdd(activeCount, localCounts[0]);
+            }
+        }
+    """.trimIndent()
+
+    /** Observable collar evidence for a short-frame flow, on the 8-quad merge grid. */
+    val bentoCollarSupport = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        uniform sampler2D uBaseGuide;
+        uniform sampler2D uShortGuide;
+        uniform sampler2D uHighlightMask;
+        uniform sampler2D uForwardAlignment;
+        uniform sampler2D uReverseAlignment;
+        uniform ivec2 uGuideSize;
+        uniform ivec2 uGridSize;
+        uniform int uTileStride;
+        out vec4 oSupport;
+        void main() {
+            ivec2 tile = ivec2(gl_FragCoord.xy);
+            vec2 forward = texelFetch(uForwardAlignment, tile, 0).xy;
+            vec2 center = (vec2(tile) + 0.5) * float(uTileStride);
+            vec2 mapped = center + forward;
+            if (!(abs(forward.x) < 1.0e5 && abs(forward.y) < 1.0e5) ||
+                any(lessThan(mapped, vec2(0.0))) ||
+                any(greaterThanEqual(mapped, vec2(uGuideSize))) ||
+                !(mapped.x >= 0.0 && mapped.y >= 0.0)) {
+                oSupport = vec4(0.0);
+                return;
+            }
+            ivec2 reverseTile = clamp(
+                ivec2(floor(mapped / float(uTileStride))),
+                ivec2(0), uGridSize - ivec2(1)
+            );
+            vec2 reverse = texelFetch(uReverseAlignment, reverseTile, 0).xy;
+            if (!(abs(reverse.x) < 1.0e5 && abs(reverse.y) < 1.0e5)) {
+                oSupport = vec4(0.0);
+                return;
+            }
+            float fbError = length(forward + reverse);
+            if (!(fbError <= 2.0)) {
+                oSupport = vec4(0.0, fbError, 0.0, 0.0);
+                return;
+            }
+            float agreement = 0.0;
+            float valid = 0.0;
+            float clipped = 0.0;
+            for (int y = 0; y < 4; ++y) {
+                for (int x = 0; x < 4; ++x) {
+                    ivec2 p = tile * uTileStride +
+                        ivec2((2 * x + 1) * uTileStride / 8,
+                              (2 * y + 1) * uTileStride / 8);
+                    vec2 q = vec2(p) + forward;
+                    if (any(lessThan(p, ivec2(0))) ||
+                        any(greaterThanEqual(p, uGuideSize)) ||
+                        any(lessThan(q, vec2(0.0))) ||
+                        any(greaterThanEqual(q, vec2(uGuideSize)))) continue;
+                    if (texelFetch(uHighlightMask, p, 0).r > 0.0) {
+                        clipped += 1.0;
+                        continue;
+                    }
+                    vec3 base = texelFetch(uBaseGuide, p, 0).rgb;
+                    vec3 shortValue = texture(uShortGuide,
+                        (q + vec2(0.5)) / vec2(uGuideSize)).rgb;
+                    if (any(greaterThan(abs(base), vec3(2.0))) ||
+                        any(greaterThan(abs(shortValue), vec3(2.0)))) continue;
+                    float delta = dot(abs(base - shortValue), vec3(0.25, 0.5, 0.25));
+                    agreement += 1.0 - smoothstep(0.04, 0.16, delta);
+                    valid += 1.0;
+                }
+            }
+            float confidence = valid >= 4.0 && clipped == 0.0
+                ? (agreement / valid) * (1.0 - smoothstep(0.75, 2.0, fbError))
+                : 0.0;
+            oSupport = vec4(confidence, fbError, valid / 16.0, clipped / 16.0);
+        }
+    """.trimIndent()
+
+    // Embedded OpenCL sources: GainUp and
+    // Mask_AdjustHighlightMaskAndGenerateInpaintingMask. Source saturation is assessed
+    // separately from native CFA codes, before WB, exposure gain and guide filtering.
+    val bentoAdjustHighlightMask = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        uniform sampler2D uBaseFrame;
+        uniform sampler2D uUltrashortFrame;
+        uniform sampler2D uHighlightMask;
+        uniform sampler2D uFlow;
+        uniform vec4 uFlowScaleOffset;
+        uniform ivec2 uSize;
+        uniform float uExposureRatio;
+        uniform float uMinNormalizedIntensityError;
+        uniform float uMaxRgbClippingThreshold;
+        uniform float uMinRgbForInpainting;
+        layout(location = 0) out float oAdjustedHighlightMask;
+        layout(location = 1) out float oInpaintingMask;
+
+        vec2 mirrorUv(vec2 uv) {
+            uv = mod(uv, 2.0);
+            return mix(uv, 2.0 - uv, greaterThan(uv, vec2(1.0)));
+        }
+
+        void main() {
+            ivec2 p = clamp(
+                ivec2(gl_FragCoord.xy),
+                ivec2(0),
+                uSize - ivec2(1)
+            );
+            vec2 uv = gl_FragCoord.xy / vec2(uSize);
+            vec2 flowUv = uv * uFlowScaleOffset.xy + uFlowScaleOffset.zw;
+            vec2 flow = texture(uFlow, flowUv).xy;
+            vec3 base = round(
+                65535.0 * clamp(texelFetch(uBaseFrame, p, 0).rgb, 0.0, 1.0)
+            ) / 65535.0;
+            vec3 ultrashort = clamp(
+                texture(uUltrashortFrame, mirrorUv(uv + flow)).rgb,
+                0.0,
+                1.0
+            );
+            vec3 gainedUltrashort = floor(
+                65535.0 * clamp(ultrashort * uExposureRatio, 0.0, 1.0)
+            ) / 65535.0;
+            vec3 difference = min(gainedUltrashort - base, vec3(0.0));
+            float normalizedIntensityError = length(difference);
+            float fallback = normalizedIntensityError >=
+                    uMinNormalizedIntensityError
+                ? floor(normalizedIntensityError * 255.0) / 255.0
+                : 0.0;
+            float highlight = texelFetch(uHighlightMask, p, 0).r;
+            fallback = highlight > 0.0 ? fallback : 0.0;
+            oAdjustedHighlightMask = floor(
+                (1.0 - fallback) * highlight * 255.0
+            ) / 255.0;
+
+            vec3 base8 = round(clamp(base, 0.0, 1.0) * 255.0) / 255.0;
+            float smallest = min(base8.r, min(base8.g, base8.b));
+            float largest = max(base8.r, max(base8.g, base8.b));
+            float middle = base8.r + base8.g + base8.b - smallest - largest;
+            // A rejected short over a fully clipped reference (guide ramp complete or a
+            // sensor-clipped CFA phase) leaves only the clipped plateau, which renders as a
+            // flat gray patch in the ultrashort domain. It is a hole regardless of its hue.
+            oInpaintingMask =
+                fallback > 0.0 &&
+                (highlight >= 1.0 ||
+                    (smallest >= uMinRgbForInpainting &&
+                        middle >= uMaxRgbClippingThreshold))
+                    ? 1.0
+                    : 0.0;
+
+        }
+    """.trimIndent()
+
+    // Embedded OpenCL source: MaskRejectionWithClippedHighlights.
+    val bentoRewriteWeight = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        uniform sampler2D uExistingWeight;
+        uniform sampler2D uBentoMask;
+        uniform ivec2 uSize;
+        uniform int uHasExistingWeight;
+        out float oWeight;
+        void main() {
+            vec2 uv = gl_FragCoord.xy / vec2(uSize);
+            float existingWeight = uHasExistingWeight != 0
+                ? texture(uExistingWeight, uv).r
+                : 1.0;
+            float maskWeight = texture(uBentoMask, uv).r;
+            oWeight = existingWeight * (1.0 - maskWeight);
+        }
+    """.trimIndent()
+
+    /**
+     * RAW-domain joint demosaic and super-resolution merge.
+     *
+     * No per-frame RGB image exists. Every output location gathers native CFA observations in the
+     * continuously warped sensor domain. Native greens form the high-resolution edge lattice;
+     * native red/blue sites contribute R-G/B-G observations against an edge-directed local green.
+     * This couples all output channels to one SR edge geometry instead of reproducing the historical
+     * independent-RGB support that produced purple/green fringes on high-contrast edges.
+     */
+    val mergeRgb = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        precision highp usampler2D;
+        uniform highp usampler2D uRaw;
+        uniform sampler2D uChromaGuideRegion;
+        uniform sampler2D uAlignment;
+        uniform sampler2D uFrameWeight;
+        uniform sampler2D uCovariance;
+        uniform ivec2 uRawSize;
+        uniform ivec2 uRawTextureOrigin;
+        uniform ivec2 uRawRegionOrigin;
+        uniform ivec2 uRawRegionSize;
+        uniform ivec2 uOutputSize;
+        uniform ivec2 uOutputOrigin;
+        uniform ivec2 uAccumulatorOrigin;
+        uniform vec4 uCovRangeRg;
+        uniform vec2 uCovRangeB;
+        uniform vec4 uGains;
+        uniform vec4 uBlackLevelsTimesGains;
+        uniform float uGlobalFrameWeight;
+        uniform vec2 uGreenNoise;
+        uniform float uChromaEdgeNoiseSigmas;
+        uniform float uChromaEdgeSigmaFloor;
+        uniform float uInterpolationFlowTolerance;
+        uniform int uCfaPattern;
+        uniform int uUseFrameWeight;
+        layout(location = 0) out vec4 oColorAndRWeight;
+        layout(location = 1) out vec4 oGbWeights;
+
+        int canonicalChannel(ivec2 p) {
+            int phase = ((p.y & 1) << 1) + (p.x & 1);
+            if (uCfaPattern == 0) return phase;
+            if (uCfaPattern == 1) {
+                if (phase == 0) return 1;
+                if (phase == 1) return 0;
+                if (phase == 2) return 3;
+                return 2;
+            }
+            if (uCfaPattern == 2) {
+                if (phase == 0) return 2;
+                if (phase == 1) return 3;
+                if (phase == 2) return 0;
+                return 1;
+            }
+            if (phase == 0) return 3;
+            if (phase == 1) return 2;
+            if (phase == 2) return 1;
+            return 0;
+        }
+
+        int clampRawCoordinateToPhase(int coordinate, int extent) {
+            int phase = coordinate & 1;
+            if (phase >= extent) return extent - 1;
+            int last = phase + 2 * ((extent - 1 - phase) / 2);
+            return clamp(coordinate, phase, last);
+        }
+
+        ivec2 clampRawPixelToPhase(ivec2 p) {
+            return ivec2(
+                clampRawCoordinateToPhase(p.x, uRawSize.x),
+                clampRawCoordinateToPhase(p.y, uRawSize.y)
+            );
+        }
+
+        float gainedRaw(ivec2 globalPixel) {
+            int channel = canonicalChannel(globalPixel);
+            globalPixel = clampRawPixelToPhase(globalPixel);
+            return float(texelFetch(uRaw, globalPixel - uRawTextureOrigin, 0).r) *
+                uGains[channel] +
+                uBlackLevelsTimesGains[channel];
+        }
+
+        float chromaGuideAt(ivec2 globalPixel) {
+            ivec2 local = clamp(
+                globalPixel - uRawRegionOrigin,
+                ivec2(0),
+                uRawRegionSize - ivec2(1)
+            );
+            return texelFetch(uChromaGuideRegion, local, 0).r;
+        }
+
+        vec2 alignmentAt(ivec2 tile) {
+            ivec2 size = max(textureSize(uAlignment, 0), ivec2(1));
+            return texelFetch(uAlignment, clamp(tile, ivec2(0), size - ivec2(1)), 0).xy;
+        }
+
+        vec2 interpolatedAlignment(vec2 quadPosition) {
+            ivec2 tile = ivec2(floor(quadPosition / 8.0));
+            vec2 baseFlow = alignmentAt(tile);
+            if (uInterpolationFlowTolerance <= 0.0) return baseFlow;
+            vec2 offsetWithinTile = quadPosition - vec2(tile * 8);
+            bool leftHalf = offsetWithinTile.x <= 4.0;
+            bool topHalf = offsetWithinTile.y <= 4.0;
+            int tx0 = leftHalf ? tile.x - 1 : tile.x;
+            int ty0 = topHalf ? tile.y - 1 : tile.y;
+            ivec2 tile00 = ivec2(tx0, ty0);
+            vec2 flow00 = alignmentAt(tile00);
+            vec2 flow10 = alignmentAt(tile00 + ivec2(1, 0));
+            vec2 flow01 = alignmentAt(tile00 + ivec2(0, 1));
+            vec2 flow11 = alignmentAt(tile00 + ivec2(1, 1));
+            float threshold = 8.0 * uInterpolationFlowTolerance;
+            bool cancelInterpolation =
+                any(greaterThanEqual(abs(flow00 - baseFlow), vec2(threshold))) ||
+                any(greaterThanEqual(abs(flow10 - baseFlow), vec2(threshold))) ||
+                any(greaterThanEqual(abs(flow01 - baseFlow), vec2(threshold))) ||
+                any(greaterThanEqual(abs(flow11 - baseFlow), vec2(threshold)));
+            if (cancelInterpolation) return baseFlow;
+            float ux = quadPosition.x / 8.0 - (float(tx0) + 0.5);
+            float uy = quadPosition.y / 8.0 - (float(ty0) + 0.5);
+            return mix(mix(flow00, flow10, ux), mix(flow01, flow11, ux), uy);
+        }
+
+        vec2 mirrorUv(vec2 uv) {
+            uv = mod(uv, 2.0);
+            return mix(uv, 2.0 - uv, greaterThan(uv, vec2(1.0)));
+        }
+
+        float kernelWeight(vec2 pixelOffset, vec3 covariance) {
+            float distance = pixelOffset.x * pixelOffset.x * covariance.x +
+                pixelOffset.y * pixelOffset.y * covariance.y +
+                2.0 * pixelOffset.x * pixelOffset.y * covariance.z;
+            return exp2(-0.5 * max(distance, 0.0)) + 0.00005;
+        }
+
+        float chromaGuideWeight(float sampleGreen, float targetGreen) {
+            float signal = max(max(sampleGreen, targetGreen), 0.0);
+            float variance = max(uGreenNoise.x * signal + uGreenNoise.y, 0.0);
+            float sigma = max(
+                uChromaEdgeNoiseSigmas * sqrt(variance),
+                uChromaEdgeSigmaFloor
+            );
+            float normalizedDifference = (sampleGreen - targetGreen) / sigma;
+            return exp(-0.5 * normalizedDifference * normalizedDifference);
+        }
+
+        vec2 greenDirectionMoment(ivec2 center, float signal) {
+            float gx = chromaGuideAt(center + ivec2(1, 0)) -
+                chromaGuideAt(center - ivec2(1, 0));
+            float gy = chromaGuideAt(center + ivec2(0, 1)) -
+                chromaGuideAt(center - ivec2(0, 1));
+            float energy = gx * gx + gy * gy;
+            float variance = max(uGreenNoise.x * max(signal, 0.0) + uGreenNoise.y, 0.0);
+            float varianceFloor = uChromaEdgeSigmaFloor * uChromaEdgeSigmaFloor;
+            // Two independent central differences contribute four samples of noise energy.
+            float noiseEnergy = 4.0 * max(variance, varianceFloor);
+            float confidence = clamp(
+                (energy - noiseEnergy) / max(energy + noiseEnergy, 1.0e-12),
+                0.0,
+                1.0
+            );
+            vec2 doubledAngle = vec2(gx * gx - gy * gy, 2.0 * gx * gy) /
+                max(energy, 1.0e-12);
+            return doubledAngle * confidence;
+        }
+
+        void main() {
+            ivec2 localOutput = ivec2(gl_FragCoord.xy) - uAccumulatorOrigin;
+            ivec2 outputPixel = localOutput + uOutputOrigin;
+            vec2 referenceRaw = (vec2(outputPixel) + vec2(0.5)) *
+                vec2(uRawSize) / vec2(uOutputSize) - vec2(0.5);
+            vec2 sourceRaw = referenceRaw + 2.0 * interpolatedAlignment(referenceRaw * 0.5);
+            vec2 sourceUv = mirrorUv((sourceRaw + vec2(0.5)) / vec2(uRawSize));
+            vec3 packedCovariance = texture(uCovariance, sourceUv).xyz;
+            vec3 covariance = vec3(
+                packedCovariance.xy * uCovRangeRg.yw + uCovRangeRg.xz,
+                packedCovariance.z * uCovRangeB.y + uCovRangeB.x
+            );
+            vec2 samplePosition = sourceRaw + vec2(0.5);
+            ivec2 anchor = ivec2(floor(samplePosition));
+            vec2 subpixelOffset = vec2(anchor) + vec2(0.5) - samplePosition;
+            float greenSum = 0.0;
+            float greenWeight = 0.0;
+            for (int y = -1; y <= 1; ++y) {
+                for (int x = -1; x <= 1; ++x) {
+                    ivec2 p = anchor + ivec2(x, y);
+                    int channel = canonicalChannel(p);
+                    if (channel != 1 && channel != 2) continue;
+                    float spatialWeight = kernelWeight(
+                        subpixelOffset + vec2(x, y),
+                        covariance
+                    );
+                    greenSum += gainedRaw(p) * spatialWeight;
+                    greenWeight += spatialWeight;
+                }
+            }
+            float targetGreen = greenSum / max(greenWeight, 1.0e-8);
+            vec3 semanticSums = vec3(greenSum, 0.0, 0.0);
+            vec3 weights = vec3(greenWeight, 0.0, 0.0);
+            for (int y = -1; y <= 1; ++y) {
+                for (int x = -1; x <= 1; ++x) {
+                    ivec2 p = anchor + ivec2(x, y);
+                    int channel = canonicalChannel(p);
+                    if (channel == 1 || channel == 2) continue;
+                    float spatialWeight = kernelWeight(
+                        subpixelOffset + vec2(x, y),
+                        covariance
+                    );
+                    float nativeValue = gainedRaw(p);
+                    float localGreen = chromaGuideAt(p);
+                    float jointWeight = spatialWeight *
+                        chromaGuideWeight(localGreen, targetGreen);
+                    int opponent = channel == 0 ? 1 : 2;
+                    semanticSums[opponent] += (nativeValue - localGreen) * jointWeight;
+                    weights[opponent] += jointWeight;
+                }
+            }
+            vec2 weightUv = (referenceRaw + vec2(0.5)) / vec2(uRawSize);
+            float frameWeight = uUseFrameWeight != 0 ?
+                texture(uFrameWeight, clamp(weightUv, vec2(0.0), vec2(1.0))).r : 1.0;
+            frameWeight = clamp(frameWeight, 0.0, 1.0);
+            frameWeight *= uGlobalFrameWeight;
+            vec2 directionMoment = greenDirectionMoment(anchor, targetGreen);
+            oColorAndRWeight = vec4(semanticSums * frameWeight, weights.r * frameWeight);
+            oGbWeights = vec4(
+                weights.gb * frameWeight,
+                directionMoment * weights.r * frameWeight
+            );
+        }
+    """.trimIndent()
+
+    val normalizeRgb16 = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        uniform sampler2D uColorAndRWeight;
+        uniform sampler2D uGbWeights;
+        uniform sampler2D uLensShading;
+        uniform ivec2 uAccumulatorSize;
+        uniform ivec2 uTargetOrigin;
+        uniform ivec2 uOutputOrigin;
+        uniform ivec2 uOutputSize;
+        uniform vec3 uCameraDomainScale;
+        uniform float uOutputExposureScale;
+        uniform int uUseLensShading;
+        layout(location = 0) out highp uvec4 oRgb16;
+
+        uint encodeSnorm8(float value) {
+            int encoded = int(round(clamp(value, -1.0, 1.0) * 127.0));
+            return uint(encoded & 0xFF);
+        }
+
+        uint packDirectionMoment(vec2 moment) {
+            return encodeSnorm8(moment.x) | (encodeSnorm8(moment.y) << 8u);
+        }
+
+        void main() {
+            ivec2 local = ivec2(gl_FragCoord.xy) - uTargetOrigin;
+            if (any(lessThan(local, ivec2(0))) || any(greaterThanEqual(local, uAccumulatorSize))) {
+                oRgb16 = uvec4(0u);
+                return;
+            }
+            vec4 colorAndR = texelFetch(uColorAndRWeight, local, 0);
+            vec4 gbWeightsAndDirection = texelFetch(uGbWeights, local, 0);
+            vec3 semantic = colorAndR.rgb / max(
+                vec3(colorAndR.a, gbWeightsAndDirection.x, gbWeightsAndDirection.y),
+                vec3(1.0e-8)
+            );
+            vec2 directionMoment = gbWeightsAndDirection.ba / max(colorAndR.a, 1.0e-8);
+            vec3 rgb = vec3(
+                semantic.r + semantic.g,
+                semantic.r,
+                semantic.r + semantic.b
+            );
+            ivec2 outputPixel = local + uOutputOrigin;
+            if (uUseLensShading != 0) {
+                vec2 uv = (vec2(outputPixel) + vec2(0.5)) / vec2(uOutputSize);
+                vec4 shading = texture(uLensShading, clamp(uv, vec2(0.0), vec2(1.0)));
+                rgb *= vec3(shading.r, 0.5 * (shading.g + shading.b), shading.a);
+            }
+            rgb = max(rgb * uCameraDomainScale * uOutputExposureScale, vec3(0.0));
+            oRgb16 = uvec4(
+                uvec3(round(clamp(rgb, vec3(0.0), vec3(1.0)) * 65535.0)),
+                packDirectionMoment(directionMoment)
+            );
+        }
+    """.trimIndent()
+
+    /** Converts native planar Q14 camera RGB to RGB16, without resampling before FinishRaw. */
+    val normalizeAotRgb16 = """
+        #version 300 es
+        precision highp float;
+        precision highp int;
+        precision highp sampler2D;
+        uniform sampler2D uChannelPlane;
+        uniform sampler2D uLensShading;
+        uniform sampler2D uUltrashortWeight;
+        uniform vec3 uCameraWhite;
+        uniform int uHasUltrashort;
+        uniform ivec2 uOutputSize;
+        uniform float uOutputExposureScale;
+        uniform int uUseLensShading;
+        uniform int uChannel;
+        layout(location = 0) out highp uvec4 oRgb16;
+
+        void main() {
+            ivec2 p = ivec2(gl_FragCoord.xy);
+            vec2 uv = (vec2(p) + vec2(0.5)) / vec2(uOutputSize);
+            float value = texelFetch(uChannelPlane, p, 0).r * (1.0 / 16384.0);
+            float channelShading = 1.0;
+            if (uUseLensShading != 0) {
+                vec4 shading = texture(uLensShading, clamp(uv, vec2(0.0), vec2(1.0)));
+                channelShading = uChannel == 0 ? shading.r :
+                    (uChannel == 1 ? 0.5 * (shading.g + shading.b) : shading.a);
+            }
+            // Sensor saturation precedes lens-shading correction, so CameraWhite bounds the
+            // unshaded sensor-domain value and the shading gain applies to the clipped result.
+            // Clipping after shading would cap unsaturated off-axis samples at the reference
+            // white, outside the (unshaded) highlight mask the ultrashort replaces.
+            // CameraWhite must follow the exposures that actually supply this pixel.
+            // A rejected short leaves the reference's saturated RGB at 1/ratio in the
+            // exported short domain; clipping it later against short-domain CameraWhite
+            // misses the reference plateau and preserves its false magenta chroma.
+            // The selected short slice has weight m and unit frame weight, while the
+            // reference slice alone keeps (1 - m); the short's share of the merge is thus
+            // at most m, and the merged white is bounded by mix(referenceWhite, shortWhite, m).
+            // The bound must stay continuous in m: switching on m > 0 steps the cap along
+            // the RAW/4 weight texel grid and draws a staircase through the highlight.
+            float shortShare = uHasUltrashort != 0
+                ? clamp(texture(uUltrashortWeight, uv).r, 0.0, 1.0)
+                : 0.0;
+            float whiteScale = mix(uOutputExposureScale, 1.0, shortShare);
+            float cameraWhite = uCameraWhite[uChannel] * whiteScale;
+            float outputValue =
+                min(value * uOutputExposureScale, cameraWhite) * channelShading;
+            uint encodedValue = uint(round(
+                clamp(outputValue, 0.0, 1.0) * 65535.0
+            ));
+            // CPU-side glColorMask selects the destination RGB component for this pass.
+            // Avoid dynamically indexing a fragment output, which is rejected by strict ES
+            // compilers even though dynamically indexing an ordinary local vector is legal.
+            oRgb16 = uvec4(uvec3(encodedValue), 0u);
+        }
+    """.trimIndent()
+
+    /**
+     * First integer-to-float conversion stays in compute image load/store. Some Mali drivers
+     * incorrectly lower the equivalent fragment-sampler uint16 conversion to FP16.
+     */
+    val copyRgb16ToFloat = """
+        #version 310 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        precision highp uimage2D;
+        precision highp image2D;
+        layout(local_size_x = 8, local_size_y = 8) in;
+        layout(rgba16ui, binding = 0) readonly uniform highp uimage2D uRgb16;
+        layout(rgba16f, binding = 1) writeonly uniform highp image2D uRgb16f;
+        uniform ivec2 uImageSize;
+
+        void main() {
+            ivec2 p = ivec2(gl_GlobalInvocationID.xy);
+            if (any(greaterThanEqual(p, uImageSize))) return;
+            uvec3 encoded = imageLoad(uRgb16, p).rgb;
+            imageStore(uRgb16f, p, vec4(vec3(encoded) * (1.0 / 65535.0), 1.0));
+        }
+    """.trimIndent()
+
+    /**
+     * Detect source-frame sensor clipping after transporting its RAW into reference
+     * coordinates. Detection stays in the unnormalized sensor domain so exposure scaling cannot
+     * make a clipped sample appear valid.
+     */
+    val alignedRawClippingMask = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        precision highp usampler2D;
+
+        uniform highp usampler2D uRaw;
+        uniform sampler2D uFlow;
+        uniform vec4 uFlowScaleOffset;
+        uniform ivec2 uRawSize;
+        uniform ivec2 uBayerSize;
+        uniform ivec2 uOutputSize;
+        uniform int uBayerQuadsPerTexel;
+        uniform vec4 uPhaseClippingLevels;
+
+        out float oClippingMask;
+
+        bool quadIsNearClipping(ivec2 quad) {
+            quad = clamp(quad, ivec2(0), uBayerSize - ivec2(1));
+            ivec2 rawOrigin = quad * 2;
+            for (int phase = 0; phase < 4; ++phase) {
+                ivec2 phaseOffset = ivec2(phase & 1, phase >> 1);
+                ivec2 rawPixel = min(rawOrigin + phaseOffset, uRawSize - ivec2(1));
+                // Keep sensor codes integer through the comparison. Converting uint16
+                // samples in a fragment shader can be lowered to FP16 by Mali drivers.
+                uint rawValue = texelFetch(uRaw, rawPixel, 0).r;
+                if (rawValue >= uint(ceil(uPhaseClippingLevels[phase]))) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        void main() {
+            ivec2 outputPixel = ivec2(gl_FragCoord.xy);
+            if (any(greaterThanEqual(outputPixel, uOutputSize))) {
+                oClippingMask = 1.0;
+                return;
+            }
+
+            // Long-frame acceptance uses RAW/4 (2x2 quads); Bento admission uses
+            // RAW/2 (one quad). Evaluate the center in the requested domain.
+            ivec2 referenceQuad = min(
+                outputPixel * uBayerQuadsPerTexel +
+                    ivec2(uBayerQuadsPerTexel / 2),
+                uBayerSize - ivec2(1)
+            );
+            vec2 referenceUv =
+                (vec2(referenceQuad) + vec2(0.5)) / vec2(uBayerSize);
+            vec2 flowUv =
+                referenceUv * uFlowScaleOffset.xy +
+                uFlowScaleOffset.zw;
+            vec2 sourceFlow = texture(uFlow, flowUv).xy * vec2(uBayerSize);
+            ivec2 sourceAnchor = ivec2(roundEven(vec2(referenceQuad) + sourceFlow));
+
+            bool clipped = false;
+            for (int y = -1; y <= 1; ++y) {
+                for (int x = -1; x <= 1; ++x) {
+                    clipped = clipped || quadIsNearClipping(sourceAnchor + ivec2(x, y));
+                }
+            }
+            oClippingMask = clipped ? 1.0 : 0.0;
+        }
+    """.trimIndent()
+
+    /**
+     * MergeBayerRaw transport recovered from the Halide AOT contract.
+     *
+     * Alignment and the spatial kernel operate on Bayer quads, and every output sample is
+     * reconstructed only from the same CFA phase in neighboring quads.
+     */
+    val mergeBayer = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        precision highp usampler2D;
+        uniform highp usampler2D uRaw;
+        uniform sampler2D uAlignment;
+        uniform sampler2D uFrameWeight;
+        uniform sampler2D uLinearKernelMask;
+        uniform ivec2 uRawSize;
+        uniform vec4 uGains;
+        uniform vec4 uBlackLevelsTimesGains;
+        uniform float uKernelSigma;
+        uniform float uGlobalFrameWeight;
+        uniform float uInterpolationFlowTolerance;
+        uniform int uCfaPattern;
+        uniform int uUseFrameWeight;
+        out vec4 oBayerAndWeight;
+
+        int phaseIndex(ivec2 phase) {
+            return (phase.y << 1) + phase.x;
+        }
+
+        int mirrorCoordinate(int coordinate, int extent) {
+            if (extent <= 1) return 0;
+            if (coordinate < 0) coordinate = -coordinate - 1;
+            if (coordinate >= extent) coordinate = 2 * extent - coordinate - 1;
+            return clamp(coordinate, 0, extent - 1);
+        }
+
+        ivec2 mirrorQuad(ivec2 quad, ivec2 extent) {
+            return ivec2(
+                mirrorCoordinate(quad.x, extent.x),
+                mirrorCoordinate(quad.y, extent.y)
+            );
+        }
+
+        float kernelWeight(vec2 pixelOffset, float kernelSigmaSquared) {
+            return exp(
+                -0.5 * dot(pixelOffset * pixelOffset, vec2(kernelSigmaSquared))
+            );
+        }
+
+        float linearKernelWeight(vec2 pixelOffset) {
+            return max(1.0 - length(pixelOffset) * 0.4, 0.0);
+        }
+
+        vec4 alignmentAt(ivec2 tile, ivec2 alignmentSize) {
+            return texelFetch(
+                uAlignment,
+                clamp(tile, ivec2(0), alignmentSize - ivec2(1)),
+                0
+            );
+        }
+
+        /**
+         * Exact GLES translation of MGC's interpolate_flow.cl/GetInterpolatedFlow.
+         *
+         * Flow samples live at 8x8 Bayer-quad tile centres. Interpolation is cancelled for
+         * the whole pixel when any of the four candidates differs from the current tile by
+         * at least the configured per-axis threshold, so motion boundaries stay discontinuous.
+         */
+        vec4 interpolatedAlignment(
+            ivec2 tileId,
+            ivec2 offsetWithinTile,
+            ivec2 alignmentSize
+        ) {
+            vec4 baseFlow = alignmentAt(tileId, alignmentSize);
+            if (uInterpolationFlowTolerance <= 0.0) {
+                return baseFlow;
+            }
+
+            bool leftHalf = offsetWithinTile.x <= 4;
+            bool topHalf = offsetWithinTile.y <= 4;
+            int tx0 = leftHalf ? tileId.x - 1 : tileId.x;
+            int ty0 = topHalf ? tileId.y - 1 : tileId.y;
+            ivec2 tile00 = ivec2(tx0, ty0);
+            ivec2 tile10 = tile00 + ivec2(1, 0);
+            ivec2 tile01 = tile00 + ivec2(0, 1);
+            ivec2 tile11 = tile00 + ivec2(1, 1);
+            vec2 flow00 = alignmentAt(tile00, alignmentSize).xy;
+            vec2 flow10 = alignmentAt(tile10, alignmentSize).xy;
+            vec2 flow01 = alignmentAt(tile01, alignmentSize).xy;
+            vec2 flow11 = alignmentAt(tile11, alignmentSize).xy;
+
+            float threshold = 8.0 * uInterpolationFlowTolerance;
+            bool cancelInterpolation =
+                any(greaterThanEqual(abs(flow00 - baseFlow.xy), vec2(threshold))) ||
+                any(greaterThanEqual(abs(flow10 - baseFlow.xy), vec2(threshold))) ||
+                any(greaterThanEqual(abs(flow01 - baseFlow.xy), vec2(threshold))) ||
+                any(greaterThanEqual(abs(flow11 - baseFlow.xy), vec2(threshold)));
+            if (cancelInterpolation) {
+                return baseFlow;
+            }
+
+            ivec2 pixelPosition = tileId * 8 + offsetWithinTile;
+            float ux = float(pixelPosition.x) / 8.0 - (float(tx0) + 0.5);
+            float uy = float(pixelPosition.y) / 8.0 - (float(ty0) + 0.5);
+            vec2 flow = mix(
+                mix(flow00, flow10, ux),
+                mix(flow01, flow11, ux),
+                uy
+            );
+            return vec4(flow, baseFlow.zw);
+        }
+
+        void main() {
+            ivec2 outputPixel = ivec2(gl_FragCoord.xy);
+            ivec2 phase = outputPixel & ivec2(1);
+            int phaseChannel = phaseIndex(phase);
+            ivec2 outputQuad = outputPixel / 2;
+            // MergeBayerRaw16 addresses the final AlignAlt output as one texel per
+            // 8x8 Bayer-quad tile. X/Y are displacements in Bayer-quad units.
+            ivec2 tileId = outputQuad / 8;
+            ivec2 offsetWithinTile = outputQuad - tileId * 8;
+            ivec2 alignmentSize = max(textureSize(uAlignment, 0), ivec2(1));
+            vec2 alignmentQuadOffset = interpolatedAlignment(
+                tileId,
+                offsetWithinTile,
+                alignmentSize
+            ).xy;
+            vec2 tilePosition =
+                vec2(tileId * 8) + alignmentQuadOffset;
+            ivec2 alignedTileQuad = ivec2(roundEven(tilePosition));
+            vec2 subquadPixelOffset =
+                2.0 * (vec2(alignedTileQuad) - tilePosition);
+            ivec2 anchor = alignedTileQuad + offsetWithinTile;
+            // MGC samples the final RAW/4 acceptance weight separately for all four Bayer
+            // phases. Normalized GLES coordinates preserve each RAW-pixel center, so adjacent
+            // phases retain linearly interpolated confidence instead of sharing one texel.
+            vec2 rawPixelUv =
+                (vec2(outputPixel) + vec2(0.5)) / vec2(uRawSize);
+            float frameWeight = uUseFrameWeight != 0
+                ? texture(uFrameWeight, rawPixelUv).r
+                : 1.0;
+            frameWeight *= uGlobalFrameWeight;
+            // UpdateLinearKernelMask is sampled once at the center of each Bayer quad.
+            vec2 quadCenterUv =
+                (2.0 * vec2(outputQuad) + vec2(1.0)) / vec2(uRawSize);
+            float linearKernelMix = texture(
+                uLinearKernelMask,
+                quadCenterUv
+            ).r;
+            ivec2 quadExtent = max(uRawSize / 2, ivec2(1));
+            float kernelSigmaSquared = uKernelSigma * uKernelSigma;
+            float intensity = 0.0;
+            float accumulatedWeight = 0.0;
+            for (int y = -1; y <= 1; ++y) {
+                float sampleOffsetY =
+                    subquadPixelOffset.y + 2.0 * float(y);
+                if (abs(sampleOffsetY) > 2.5) continue;
+                for (int x = -1; x <= 1; ++x) {
+                    vec2 sampleOffset =
+                        subquadPixelOffset + 2.0 * vec2(x, y);
+                    ivec2 quad = mirrorQuad(
+                        anchor + ivec2(x, y),
+                        quadExtent
+                    );
+                    ivec2 rawPixel = quad * 2 + phase;
+                    if (
+                        abs(sampleOffset.x) <= 1.5 &&
+                        abs(sampleOffset.y) <= 1.5
+                    ) {
+                        float rawValue = float(
+                            texelFetch(uRaw, rawPixel, 0).r
+                        );
+                        float normalized =
+                            rawValue * uGains[phaseChannel] +
+                            uBlackLevelsTimesGains[phaseChannel];
+                        float weight = mix(
+                            kernelWeight(
+                                sampleOffset,
+                                kernelSigmaSquared
+                            ),
+                            linearKernelWeight(sampleOffset),
+                            linearKernelMix
+                        );
+                        intensity += normalized * weight;
+                        accumulatedWeight += weight;
+                    }
+
+                    bool diagonalGreenPair =
+                        (uCfaPattern == 0 || uCfaPattern == 3) &&
+                        (phaseChannel == 1 || phaseChannel == 2);
+                    bool cornerGreenPair =
+                        (uCfaPattern == 1 || uCfaPattern == 2) &&
+                        (phaseChannel == 0 || phaseChannel == 3);
+                    // SampleNeighborhoodDualKernel always merges the two green lattices.
+                    // The linear-kernel mask only selects the kernel shape; it does not enable
+                    // or disable this cross-phase green support.
+                    if (
+                        (diagonalGreenPair || cornerGreenPair)
+                    ) {
+                        int otherPhase = phaseChannel;
+                        vec2 diagonalOffset = vec2(0.0);
+                        if (diagonalGreenPair) {
+                            if (phaseChannel == 1) {
+                                otherPhase = 2;
+                                diagonalOffset = vec2(-1.0, 1.0);
+                            } else {
+                                otherPhase = 1;
+                                diagonalOffset = vec2(1.0, -1.0);
+                            }
+                        } else if (phaseChannel == 0) {
+                            otherPhase = 3;
+                            diagonalOffset = vec2(1.0);
+                        } else {
+                            otherPhase = 0;
+                            diagonalOffset = vec2(-1.0);
+                        }
+                        vec2 otherPixelOffset =
+                            sampleOffset + diagonalOffset;
+                        if (
+                            abs(otherPixelOffset.x) <= 1.5 &&
+                            abs(otherPixelOffset.y) <= 1.5
+                        ) {
+                            ivec2 otherPhaseCoordinate = ivec2(
+                                otherPhase & 1,
+                                otherPhase >> 1
+                            );
+                            ivec2 otherRawPixel =
+                                quad * 2 + otherPhaseCoordinate;
+                            float otherRawValue = float(
+                                texelFetch(uRaw, otherRawPixel, 0).r
+                            );
+                            float otherNormalized =
+                                otherRawValue * uGains[otherPhase] +
+                                uBlackLevelsTimesGains[otherPhase];
+                            float otherWeight = mix(
+                                kernelWeight(
+                                    otherPixelOffset,
+                                    kernelSigmaSquared
+                                ),
+                                linearKernelWeight(otherPixelOffset),
+                                linearKernelMix
+                            );
+                            intensity += otherNormalized * otherWeight;
+                            accumulatedWeight += otherWeight;
+                        }
+                    }
+                }
+            }
+            oBayerAndWeight = vec4(
+                intensity * frameWeight,
+                accumulatedWeight * frameWeight,
+                0.0,
+                0.0
+            );
+        }
+    """.trimIndent()
+
+    /**
+     * MGC Sabre Bayer merge, translated from sabre_merge.cc's
+     * SampleNeighborhoodRBF. MGC normally extracts a 2x2 Bayer quad into RGBA before this
+     * pass. Direct R16UI fetches preserve the same native-CFA neighborhoods without introducing
+     * an intermediate texture or a precision-changing conversion.
+     */
+    val sabreMergeBayer = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        precision highp usampler2D;
+        uniform highp usampler2D uRaw;
+        uniform sampler2D uAlignment;
+        uniform sampler2D uFrameWeight;
+        uniform sampler2D uCovariance;
+        uniform ivec2 uRawSize;
+        uniform vec4 uGains;
+        uniform vec4 uBlackLevelsTimesGains;
+        uniform vec4 uCovRangeRg;
+        uniform vec2 uCovRangeB;
+        uniform float uGlobalFrameWeight;
+        uniform int uCfaPattern;
+        uniform int uUseFrameWeight;
+        out vec4 oBayerAndWeight;
+
+        int canonicalChannel(ivec2 p) {
+            int phase = ((p.y & 1) << 1) + (p.x & 1);
+            if (uCfaPattern == 1) {
+                if (phase == 0) return 1;
+                if (phase == 1) return 0;
+                if (phase == 2) return 3;
+                return 2;
+            }
+            if (uCfaPattern == 2) {
+                if (phase == 0) return 2;
+                if (phase == 1) return 3;
+                if (phase == 2) return 0;
+                return 1;
+            }
+            if (uCfaPattern == 3) {
+                if (phase == 0) return 3;
+                if (phase == 1) return 2;
+                if (phase == 2) return 1;
+                return 0;
+            }
+            return phase;
+        }
+
+        int mirrorCoordinate(int coordinate, int extent) {
+            if (extent <= 1) return 0;
+            if (coordinate < 0) coordinate = -coordinate - 1;
+            if (coordinate >= extent) coordinate = 2 * extent - coordinate - 1;
+            return clamp(coordinate, 0, extent - 1);
+        }
+
+        ivec2 mirrorPixel(ivec2 p) {
+            return ivec2(
+                mirrorCoordinate(p.x, uRawSize.x),
+                mirrorCoordinate(p.y, uRawSize.y)
+            );
+        }
+
+        float gainedRaw(ivec2 p) {
+            p = mirrorPixel(p);
+            int channel = canonicalChannel(p);
+            return float(texelFetch(uRaw, p, 0).r) * uGains[channel] +
+                uBlackLevelsTimesGains[channel];
+        }
+
+        float sabreKernelWeight(vec2 pixelOffset, vec3 covariance) {
+            float kernelDistance =
+                pixelOffset.x * pixelOffset.x * covariance.x +
+                pixelOffset.y * pixelOffset.y * covariance.y +
+                pixelOffset.x * pixelOffset.y * covariance.z * 2.0;
+            return exp2(-0.5 * kernelDistance) + 0.00005;
+        }
+
+        vec3 unpackCovariance(vec3 packed) {
+            return vec3(
+                packed.x * uCovRangeRg.y + uCovRangeRg.x,
+                packed.y * uCovRangeRg.w + uCovRangeRg.z,
+                packed.z * uCovRangeB.y + uCovRangeB.x
+            );
+        }
+
+        vec2 alignmentAt(vec2 rawPixel) {
+            vec2 quadPosition = rawPixel * 0.5;
+            ivec2 tile = ivec2(floor(quadPosition / 8.0));
+            ivec2 size = max(textureSize(uAlignment, 0), ivec2(1));
+            return texelFetch(uAlignment, clamp(tile, ivec2(0), size - ivec2(1)), 0).xy;
+        }
+
+        void main() {
+            ivec2 outputPixel = ivec2(gl_FragCoord.xy);
+            vec2 referencePixel = vec2(outputPixel) + vec2(0.5);
+            vec2 sourcePixel = referencePixel + 2.0 * alignmentAt(referencePixel);
+            vec2 sourceUv = sourcePixel / vec2(uRawSize);
+            vec3 covariance = unpackCovariance(
+                texture(uCovariance, clamp(sourceUv, vec2(0.0), vec2(1.0))).xyz
+            );
+            ivec2 anchor = ivec2(floor(sourcePixel));
+            vec2 subpixelOffset = vec2(anchor) + vec2(0.5) - sourcePixel;
+            int targetChannel = canonicalChannel(outputPixel);
+            float intensity = 0.0;
+            float accumulatedWeight = 0.0;
+            for (int y = -1; y <= 1; ++y) {
+                for (int x = -1; x <= 1; ++x) {
+                    ivec2 samplePixel = anchor + ivec2(x, y);
+                    int sampleChannel = canonicalChannel(mirrorPixel(samplePixel));
+                    bool targetIsGreen = targetChannel == 1 || targetChannel == 2;
+                    if (targetIsGreen
+                        ? !(sampleChannel == 1 || sampleChannel == 2)
+                        : sampleChannel != targetChannel) continue;
+                    vec2 offset = subpixelOffset + vec2(x, y);
+                    float weight = sabreKernelWeight(offset, covariance);
+                    intensity += gainedRaw(samplePixel) * weight;
+                    accumulatedWeight += weight;
+                }
+            }
+            vec2 weightUv = referencePixel / vec2(uRawSize);
+            float frameWeight = uUseFrameWeight != 0
+                ? texture(uFrameWeight, clamp(weightUv, vec2(0.0), vec2(1.0))).r
+                : 1.0;
+            frameWeight *= uGlobalFrameWeight;
+            oBayerAndWeight = vec4(
+                intensity * frameWeight,
+                accumulatedWeight * frameWeight,
+                0.0,
+                0.0
+            );
+        }
+    """.trimIndent()
+
+    val normalizeBayer = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        uniform sampler2D uBayerAndWeight;
+        uniform ivec2 uOutputSize;
+        uniform float uOutputExposureScale;
+        layout(location = 0) out highp uint oBayer16;
+        void main() {
+            ivec2 p = clamp(
+                ivec2(gl_FragCoord.xy),
+                ivec2(0),
+                uOutputSize - ivec2(1)
+            );
+            vec2 valueAndWeight = texelFetch(uBayerAndWeight, p, 0).rg;
+            float normalized =
+                valueAndWeight.x / max(valueAndWeight.y, 1.0e-8) *
+                uOutputExposureScale;
+            oBayer16 = uint(round(clamp(normalized, 0.0, 1.0) * 65535.0));
+        }
+    """.trimIndent()
+
+    /**
+     * Packs the full-resolution normalized Bayer mosaic into MGC Fixed16.
+     *
+     * DownsampleRawF16ToFloatTileSize16 does not consume IEEE FP16. Its F16
+     * input is signed Q14 and has Halide dimensions [quadX, quadY, phase].
+     * The four phase planes are stacked vertically so the readback has the
+     * same conventional planar strides requested by the Halide bounds query:
+     *
+     *   address = quadX + quadY * quadWidth
+     *       + phase * quadWidth * quadHeight
+     */
+    val packBayerFixed16 = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        uniform sampler2D uBayerAndWeight;
+        uniform ivec2 uSourceSize;
+        uniform ivec2 uQuadSize;
+        layout(location = 0) out highp int oBayerFixed16;
+        void main() {
+            ivec2 packed = clamp(
+                ivec2(gl_FragCoord.xy),
+                ivec2(0),
+                ivec2(uQuadSize.x - 1, uQuadSize.y * 4 - 1)
+            );
+            int phase = packed.y / uQuadSize.y;
+            ivec2 quad = ivec2(packed.x, packed.y - phase * uQuadSize.y);
+            ivec2 phaseOffset = ivec2(phase & 1, phase >> 1);
+            ivec2 source = min(quad * 2 + phaseOffset, uSourceSize - ivec2(1));
+            vec2 valueAndWeight = texelFetch(uBayerAndWeight, source, 0).rg;
+            float normalized = max(
+                valueAndWeight.x / max(valueAndWeight.y, 1.0e-8),
+                0.0
+            );
+            oBayerFixed16 = int(round(clamp(normalized * 16384.0, 0.0, 32767.0)));
+        }
+    """.trimIndent()
+
+    /**
+     * V25 DownsampleRaw16ToGrayHalide (wrapper 0x3c0430c, worker 0x3c0108c):
+     * sum each Bayer quad, apply its asymmetric U16 separable half-add filter, then
+     * subtract the four-phase black sum and apply the scalar alignment gain.
+     */
+    val rawToGray = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        precision highp usampler2D;
+        uniform highp usampler2D uRaw;
+        uniform ivec2 uRawSize;
+        uniform ivec2 uGraySize;
+        uniform int uCfaPattern;
+        uniform vec4 uBlackLevels;
+        uniform float uGain;
+        layout(location = 0) out highp int oGray;
+
+        uint quadSum(ivec2 q) {
+            q = clamp(q, ivec2(0), uGraySize - ivec2(1));
+            ivec2 p = clamp(q * 2, ivec2(0), uRawSize - ivec2(2));
+            return texelFetch(uRaw, p, 0).r +
+                texelFetch(uRaw, p + ivec2(1, 0), 0).r +
+                texelFetch(uRaw, p + ivec2(0, 1), 0).r +
+                texelFetch(uRaw, p + ivec2(1, 1), 0).r;
+        }
+
+        uint hadd(uint a, uint b) {
+            return (a + b) >> 1;
+        }
+
+        uint rhadd(uint a, uint b) {
+            return (a + b + 1u) >> 1;
+        }
+
+        uint verticalAt(ivec2 q) {
+            // V25 uses VHADD for the two outer rows, then VRHADD with the center.
+            return rhadd(
+                hadd(quadSum(q + ivec2(0, -1)), quadSum(q + ivec2(0, 1))),
+                quadSum(q)
+            );
+        }
+
+        void main() {
+            ivec2 q = ivec2(gl_FragCoord.xy);
+            // The horizontal stage deliberately reverses the rounding pair: VRHADD for
+            // the outer columns, then VHADD with the center. Keeping these stages in U16
+            // is observable at clipped/high-contrast edges before alignment or rejection.
+            uint filtered = hadd(
+                rhadd(verticalAt(q + ivec2(-1, 0)), verticalAt(q + ivec2(1, 0))),
+                verticalAt(q)
+            );
+            float scale = uGain * 0.25;
+            float blackSum = ((uBlackLevels.x + uBlackLevels.y) +
+                uBlackLevels.z) + uBlackLevels.w;
+            float offset = 0.5 - scale * blackSum;
+            float value = offset + scale * float(filtered);
+            // V25 truncates after the bias and clamps the Fixed14 guide symmetrically.
+            oGray = int(clamp(value, -16383.0, 16383.0));
+        }
+    """.trimIndent()
+
+    val grayDownsample = buildGrayDownsample(linearOutput = false)
+    val yuvGrayDownsample = buildGrayDownsample(linearOutput = true)
+
+    private fun buildGrayDownsample(linearOutput: Boolean) = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        precision highp isampler2D;
+        uniform highp isampler2D uInput;
+        uniform ivec2 uInputSize;
+        layout(location = 0) out highp int oGray;
+        ${if (linearOutput) "layout(location = 1) out highp vec2 oLinearGray;" else ""}
+        float valueAt(ivec2 p) {
+            return float(texelFetch(
+                uInput,
+                clamp(p, ivec2(0), uInputSize - ivec2(1)),
+                0
+            ).r);
+        }
+        void main() {
+            ivec2 p = ivec2(gl_FragCoord.xy) * 2;
+            float value = 0.0;
+            for (int y = -1; y <= 1; ++y) {
+                float wy = y == 0 ? 0.5 : 0.25;
+                for (int x = -1; x <= 1; ++x) {
+                    float wx = x == 0 ? 0.5 : 0.25;
+                    value += valueAt(p + ivec2(x, y)) * wx * wy;
+                }
+            }
+            // GrayPyramidDownsample converts the complete 3x3 result to S16 once,
+            // using floor(value + 0.5) for signed samples.
+            oGray = int(clamp(floor(value + 0.5), -32768.0, 32767.0));
+            ${if (linearOutput) "float coarseGray = floor(float(oGray) / 16.0); oLinearGray = vec2(coarseGray, float(oGray) - coarseGray * 16.0);" else ""}
+        }
+    """.trimIndent()
+
+    /**
+     * GrayPyramidDownsampleS16_4xHalide (worker 0x3c1c740, called by 0x38cd9b8).
+     * Two 2x triangle stages each round to S16. Collapsing their seven-tap kernel
+     * into one floating-point sum loses the intermediate rounding. Evaluate the
+     * intermediate halo from the clamped source, just as the original worker does.
+     */
+    val grayDownsample4 = buildGrayDownsample4(linearOutput = false)
+    val yuvGrayDownsample4 = buildGrayDownsample4(linearOutput = true)
+
+    private fun buildGrayDownsample4(linearOutput: Boolean) = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        precision highp isampler2D;
+        uniform highp isampler2D uInput;
+        uniform ivec2 uInputSize;
+        layout(location = 0) out highp int oGray;
+        ${if (linearOutput) "layout(location = 1) out highp vec2 oLinearGray;" else ""}
+        int valueAt(ivec2 p) {
+            return texelFetch(
+                uInput,
+                clamp(p, ivec2(0), uInputSize - ivec2(1)),
+                0
+            ).r;
+        }
+        int firstStageAt(ivec2 p) {
+            int sum = 0;
+            for (int y = -1; y <= 1; ++y) {
+                for (int x = -1; x <= 1; ++x) {
+                    sum += valueAt(p + ivec2(x, y)) *
+                        (2 - abs(x)) * (2 - abs(y));
+                }
+            }
+            return (sum + 8) >> 4;
+        }
+        void main() {
+            ivec2 p = ivec2(gl_FragCoord.xy) * 4;
+            int sum = 0;
+            for (int y = -1; y <= 1; ++y) {
+                for (int x = -1; x <= 1; ++x) {
+                    sum += firstStageAt(p + 2 * ivec2(x, y)) *
+                        (2 - abs(x)) * (2 - abs(y));
+                }
+            }
+            oGray = (sum + 8) >> 4;
+            ${if (linearOutput) "float coarseGray = floor(float(oGray) / 16.0); oLinearGray = vec2(coarseGray, float(oGray) - coarseGray * 16.0);" else ""}
+        }
+    """.trimIndent()
+
+    /**
+     * GradientAndGradientProductsHalide (0x3bf25c0; worker 0x3be9a1c). The generated kernel
+     * stores central differences as saturated S16. Cache the Hessian as xx, yy, xy, det(H).
+     * LK accumulates the image residual directly, so reference intensity products are not
+     * needed. Materializing det(H) before adding its +1 regularizer also prevents GLES
+     * reassociation from losing that unit beside the much larger xx*yy product.
+     */
+    val alignmentGradientProducts = buildAlignmentGradientProducts(sparseFineLevels = false)
+    val yuvAlignmentGradientProducts = buildAlignmentGradientProducts(sparseFineLevels = true)
+
+    private fun buildAlignmentGradientProducts(sparseFineLevels: Boolean) = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        precision highp isampler2D;
+        uniform highp isampler2D uReference;
+        uniform ivec2 uImageSize;
+        uniform int uTileStride;
+        uniform int uTileSize;
+        layout(location = 0) out vec4 oProducts0;
+
+        float valueAt(ivec2 p) {
+            return float(texelFetch(
+                uReference,
+                clamp(p, ivec2(0), uImageSize - ivec2(1)),
+                0
+            ).r);
+        }
+        vec2 gradientAt(ivec2 p) {
+            return clamp(
+                vec2(
+                    valueAt(p + ivec2(1, 0)) - valueAt(p - ivec2(1, 0)),
+                    valueAt(p + ivec2(0, 1)) - valueAt(p - ivec2(0, 1))
+                ),
+                vec2(-32768.0),
+                vec2(32767.0)
+            );
+        }
+        void main() {
+            ivec2 tile = ivec2(gl_FragCoord.xy);
+            // Halide's LK buffers have min=(1,1); the texture stores only that
+            // interior extent, so local texel zero is logical tile (1,1).
+            ivec2 origin = (tile + ivec2(1)) * uTileStride;
+            int sampleStep = ${if (sparseFineLevels) "uTileSize >= 32 ? 2 : 1" else "1"};
+            float count = float((uTileSize / sampleStep) * (uTileSize / sampleStep));
+            float xx = 0.0;
+            float yy = 0.0;
+            float xy = 0.0;
+            for (int y = 0; y < 64; y += sampleStep) {
+                if (y >= uTileSize) break;
+                for (int x = 0; x < 64; x += sampleStep) {
+                    if (x >= uTileSize) break;
+                    ivec2 p = origin + ivec2(x, y);
+                    vec2 gradient = gradientAt(p);
+                    xx += gradient.x * gradient.x;
+                    yy += gradient.y * gradient.y;
+                    xy += gradient.x * gradient.y;
+                }
+            }
+            float inverseCount = 1.0 / count;
+            vec3 hessian = vec3(
+                0.25 * xx * inverseCount,
+                0.25 * yy * inverseCount,
+                0.25 * xy * inverseCount
+            );
+            // A Gram determinant is non-negative. Form it from orthogonal residual energy
+            // instead of subtracting nearly equal xx*yy and xy*xy on one-dimensional edges.
+            // With a = max(xx, yy), c = xy: det(H) = a * mean((gMinor-c/a*gMajor)^2)/4.
+            bool xMajor = hessian.x >= hessian.y;
+            float major = xMajor ? hessian.x : hessian.y;
+            float slope = major > 0.0 ? hessian.z / major : 0.0;
+            float orthogonalEnergy = 0.0;
+            for (int y = 0; y < 64; y += sampleStep) {
+                if (y >= uTileSize) break;
+                for (int x = 0; x < 64; x += sampleStep) {
+                    if (x >= uTileSize) break;
+                    vec2 gradient = gradientAt(origin + ivec2(x, y));
+                    float residual = xMajor
+                        ? gradient.y - slope * gradient.x
+                        : gradient.x - slope * gradient.y;
+                    orthogonalEnergy += residual * residual;
+                }
+            }
+            oProducts0 = vec4(hessian, major * (0.25 * orthogonalEnergy * inverseCount));
+        }
+    """.trimIndent()
+
+    /**
+     * UpsampleAlignmentI16Halide (0x3c31de0; workers 0x3c31088/0x3c316a4).
+     * Tile centers, rather than tile origins, determine the nearest coarse flow and
+     * the next-nearest flow on each axis. The three whole candidates are evaluated
+     * against the target-level S16 images, avoiding a synthesized motion vector
+     * across an alignment discontinuity.
+     */
+    val upsampleAlignment = buildUpsampleAlignment(globalCandidateTexture = false)
+
+    val rawUpsampleAlignment = buildUpsampleAlignment(globalCandidateTexture = true)
+
+    val yuvUpsampleAlignment = buildUpsampleAlignment(globalCandidateTexture = true, sampleStep = 2)
+
+    private fun buildUpsampleAlignment(globalCandidateTexture: Boolean, sampleStep: Int = 1) = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        precision highp isampler2D;
+        uniform highp isampler2D uReference;
+        uniform highp isampler2D uCurrent;
+        uniform sampler2D uInitialAlignment;
+        uniform ivec2 uImageSize;
+        uniform ivec2 uInitialGridSize;
+        uniform int uInitialGridMin;
+        uniform int uTargetGridMin;
+        uniform int uInitialTileStride;
+        uniform int uTargetTileStride;
+        uniform int uTargetTileSize;
+        uniform ivec2 uTargetImageOffset;
+        uniform float uInitialScale;
+        uniform int uHasGlobalCandidate;
+        ${if (globalCandidateTexture) "uniform highp sampler2D uGlobalCandidateTexture;" else "uniform vec2 uGlobalCandidate;"}
+        out vec4 oAlignment;
+
+        int valueAt(highp isampler2D image, ivec2 p) {
+            return texelFetch(
+                image,
+                clamp(p, ivec2(0), uImageSize - ivec2(1)),
+                0
+            ).r;
+        }
+        ivec2 boundedInitialTile(ivec2 p) {
+            return clamp(p, ivec2(0), uInitialGridSize - ivec2(1));
+        }
+        vec2 candidateFlow(ivec2 p) {
+            return texelFetch(
+                uInitialAlignment,
+                boundedInitialTile(p),
+                0
+            ).xy * uInitialScale;
+        }
+        float candidateCost(ivec2 origin, vec2 flow) {
+            // The AArch64 worker rounds each candidate to an integer S16-image
+            // displacement and accumulates the block L1 residual in 32-bit integer
+            // lanes. Converting every pixel to float first loses integer precision once
+            // a high-contrast block total exceeds 2^24 and can flip a close whole-flow
+            // candidate, exposing the mistake as a 16-pixel mosaic tile.
+            ivec2 displacement = ivec2(roundEven(flow));
+            int cost = 0;
+            for (int y = 0; y < 64; y += $sampleStep) {
+                if (y >= uTargetTileSize) break;
+                for (int x = 0; x < 64; x += $sampleStep) {
+                    if (x >= uTargetTileSize) break;
+                    ivec2 p = origin + ivec2(x, y);
+                    cost += abs(
+                        valueAt(uReference, p) -
+                        valueAt(uCurrent, p + displacement)
+                    );
+                }
+            }
+            return float(cost) / float((uTargetTileSize / $sampleStep) * (uTargetTileSize / $sampleStep));
+        }
+        void main() {
+            ivec2 targetTile = ivec2(gl_FragCoord.xy);
+            ivec2 targetLogicalTile =
+                targetTile + ivec2(uTargetGridMin);
+            // Express the target tile center in the initial alignment grid. Using
+            // the tile origin here changes the nearest coarse tile at a regular
+            // half-grid cadence and produces block-shaped alignment discontinuities.
+            vec2 targetCenter =
+                (vec2(targetLogicalTile) + vec2(0.5)) *
+                float(uTargetTileStride);
+            vec2 initialGrid =
+                targetCenter /
+                (uInitialScale * float(uInitialTileStride)) -
+                vec2(float(uInitialGridMin) + 0.5);
+
+            vec2 nearestPosition = roundEven(initialGrid);
+            ivec2 nearest = ivec2(nearestPosition);
+            ivec2 nextX = nearest + ivec2(
+                initialGrid.x < nearestPosition.x ? -1 : 1,
+                0
+            );
+            ivec2 nextY = nearest + ivec2(
+                0,
+                initialGrid.y < nearestPosition.y ? -1 : 1
+            );
+            nearest = boundedInitialTile(nearest);
+            nextX = boundedInitialTile(nextX);
+            nextY = boundedInitialTile(nextY);
+
+            // Original AlignAlt shifts both image buffer minima by +offset. The
+            // corresponding physical image window therefore moves by -offset.
+            ivec2 origin = targetLogicalTile * uTargetTileStride - uTargetImageOffset;
+            vec2 bestFlow = candidateFlow(nearest);
+            vec2 nearestFlow = bestFlow;
+            float bestCost = candidateCost(origin, bestFlow);
+            float nearestCost = bestCost;
+            float candidateIndex = 0.0;
+
+            // The generated worker's candidate order is nearest, next X, next Y.
+            // Strict less-than comparison makes this ordering observable on equal costs.
+            // SAD depends only on the rounded displacement. Reuse its cost, but keep the
+            // original fractional flow and candidate order even when displacements coincide.
+            vec2 flowX = candidateFlow(nextX);
+            float costX = all(equal(roundEven(flowX), roundEven(nearestFlow))) ? nearestCost :
+                candidateCost(origin, flowX);
+            if (costX < bestCost) {
+                bestFlow = flowX;
+                bestCost = costX;
+                candidateIndex = 1.0;
+            }
+
+            vec2 flowY = candidateFlow(nextY);
+            float costY = all(equal(roundEven(flowY), roundEven(nearestFlow))) ? nearestCost :
+                all(equal(roundEven(flowY), roundEven(flowX))) ? costX :
+                candidateCost(origin, flowY);
+            if (costY < bestCost) {
+                bestFlow = flowY;
+                bestCost = costY;
+                candidateIndex = 2.0;
+            }
+
+            // AlignAlt's ordinary pyramid transitions use threshold=1 and include the
+            // whole-grid histogram candidate. The final merge-grid call at 0x38D29BC
+            // passes threshold=-1 and uses only the three neighboring candidates.
+            if (uHasGlobalCandidate != 0) {
+                vec2 globalFlow = ${if (globalCandidateTexture) "texelFetch(uGlobalCandidateTexture, ivec2(0), 0).xy" else "uGlobalCandidate"} * uInitialScale;
+                float globalCost = all(equal(roundEven(globalFlow), roundEven(nearestFlow))) ? nearestCost :
+                    all(equal(roundEven(globalFlow), roundEven(flowY))) ? costY :
+                    all(equal(roundEven(globalFlow), roundEven(flowX))) ? costX :
+                    candidateCost(origin, globalFlow);
+                if (globalCost < bestCost) {
+                    bestFlow = globalFlow;
+                    bestCost = globalCost;
+                    candidateIndex = 3.0;
+                }
+            }
+            oAlignment = vec4(bestFlow, bestCost, candidateIndex);
+        }
+    """.trimIndent()
+
+    /**
+     * BlockLucasKanadeHalide (0x3be51e4; normalized dispatch 0x3be5ed8 and unnormalized
+     * dispatch 0x3be7aa8). One draw is one generated-kernel iteration. Its input has already
+     * been expanded onto this LK grid by UpsampleAlignment. Bilinear weights below are the
+     * image-warp S16 Q15 conversion and saturating rounded shift used by the AArch64 worker.
+     */
+    val blockLucasKanade = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        precision highp isampler2D;
+        uniform highp isampler2D uReference;
+        uniform highp isampler2D uCurrent;
+        uniform sampler2D uProducts0;
+        uniform sampler2D uInitialAlignment;
+        uniform ivec2 uImageSize;
+        uniform ivec2 uGridSize;
+        uniform int uTileStride;
+        uniform int uTileSize;
+        uniform int uNormalize;
+        uniform int uHasInitialAlignment;
+        out vec4 oAlignment;
+
+        float referenceAt(ivec2 p) {
+            return float(texelFetch(
+                uReference,
+                clamp(p, ivec2(0), uImageSize - ivec2(1)),
+                0
+            ).r);
+        }
+        vec2 gradientAt(ivec2 p) {
+            return clamp(
+                vec2(
+                    referenceAt(p + ivec2(1, 0)) -
+                        referenceAt(p - ivec2(1, 0)),
+                    referenceAt(p + ivec2(0, 1)) -
+                        referenceAt(p - ivec2(0, 1))
+                ),
+                vec2(-32768.0),
+                vec2(32767.0)
+            );
+        }
+        int currentAt(ivec2 p) {
+            return texelFetch(
+                uCurrent,
+                clamp(p, ivec2(0), uImageSize - ivec2(1)),
+                0
+            ).r;
+        }
+        int q15Weight(float value) {
+            return clamp(int(floor(value * 32768.0)), 0, 32767);
+        }
+        int roundedShiftRight15(int value) {
+            // GLSL integer division truncates toward zero. Spell out floor division so
+            // negative accumulators match AArch64 SQRSHRN's signed rounded shift.
+            int biased = value + 16384;
+            return biased >= 0
+                ? biased / 32768
+                : -((-biased + 32767) / 32768);
+        }
+        float warpedCurrentAt(vec2 p) {
+            vec2 bounded = clamp(
+                p,
+                vec2(0.0),
+                vec2(uImageSize - ivec2(1))
+            );
+            ivec2 p0 = ivec2(floor(bounded));
+            vec2 fraction = fract(bounded);
+            int w00 = q15Weight((1.0 - fraction.x) * (1.0 - fraction.y));
+            int w10 = q15Weight(fraction.x * (1.0 - fraction.y));
+            int w01 = q15Weight((1.0 - fraction.x) * fraction.y);
+            int w11 = q15Weight(fraction.x * fraction.y);
+            // The non-negative bilinear weights sum to at most 32768, so four
+            // S16 products fit Int32. Keeping this integer matches SMULL/SMLAL;
+            // Float32 loses low accumulator bits on clipped/high-contrast edges.
+            int weighted =
+                currentAt(p0) * w00 +
+                currentAt(p0 + ivec2(1, 0)) * w10 +
+                currentAt(p0 + ivec2(0, 1)) * w01 +
+                currentAt(p0 + ivec2(1, 1)) * w11;
+            return float(clamp(roundedShiftRight15(weighted), -32768, 32767));
+        }
+        void main() {
+            ivec2 tile = ivec2(gl_FragCoord.xy);
+            vec3 initialAlignment = uHasInitialAlignment != 0
+                ? texelFetch(
+                    uInitialAlignment,
+                    clamp(tile, ivec2(0), uGridSize - ivec2(1)),
+                    0
+                ).xyz
+                : vec3(0.0);
+            vec2 flow = initialAlignment.xy;
+            ivec2 origin = (tile + ivec2(1)) * uTileStride;
+            float count = float(uTileSize * uTileSize);
+            float meanResidual = 0.0;
+            if (uNormalize != 0) {
+                for (int y = 0; y < 64; ++y) {
+                    if (y >= uTileSize) break;
+                    for (int x = 0; x < 64; ++x) {
+                        if (x >= uTileSize) break;
+                        meanResidual += warpedCurrentAt(
+                            vec2(origin + ivec2(x, y)) + flow
+                        ) - referenceAt(origin + ivec2(x, y));
+                    }
+                }
+                meanResidual /= count;
+            }
+
+            float targetX = 0.0;
+            float targetY = 0.0;
+            for (int y = 0; y < 64; ++y) {
+                if (y >= uTileSize) break;
+                for (int x = 0; x < 64; ++x) {
+                    if (x >= uTileSize) break;
+                    ivec2 p = origin + ivec2(x, y);
+                    // Subtract before reduction. Separately accumulating current*gradient
+                    // and reference*gradient loses small residuals to Float32 cancellation.
+                    float residual = warpedCurrentAt(vec2(p) + flow) -
+                        referenceAt(p) - meanResidual;
+                    vec2 gradient = gradientAt(p);
+                    targetX += residual * gradient.x;
+                    targetY += residual * gradient.y;
+                }
+            }
+            vec4 products0 = texelFetch(uProducts0, tile, 0);
+            float bx = 0.5 * targetX / count;
+            float by = 0.5 * targetY / count;
+            // det(H) crossed a Float32 texture boundary in the reference pass. Keep +1
+            // here: evaluating 1 + xx*yy - xy*xy can turn a rank-one tile into 1/0.
+            float inverseDeterminant = 1.0 / (1.0 + products0.w);
+            vec2 delta = inverseDeterminant * vec2(
+                products0.z * by - products0.y * bx,
+                products0.z * bx - products0.x * by
+            );
+            flow += clamp(delta, vec2(-1.0), vec2(1.0));
+            // BlockLucasKanadeHalide updates XY and carries the incoming candidate
+            // cost through unchanged in its third planar channel.
+            oAlignment = vec4(flow, initialAlignment.z, 0.0);
+        }
+    """.trimIndent()
+
+    /**
+     * AlignL1Halide UInt16 path (0x3be3c58). Candidate ties retain the first
+     * candidate. The quadratic correction is exactly
+     * .5*(Eminus-Eplus)/(Eminus+Eplus-2*Ecenter).
+     */
+    val alignL1 = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        precision highp isampler2D;
+        uniform highp isampler2D uReference;
+        uniform highp isampler2D uCurrent;
+        uniform sampler2D uInitialAlignment;
+        uniform ivec2 uImageSize;
+        uniform ivec2 uGridSize;
+        uniform ivec2 uInitialGridSize;
+        uniform int uTileStride;
+        uniform int uTileSize;
+        uniform int uSearchRadius;
+        uniform float uInitialScale;
+        uniform int uHasInitialAlignment;
+        out vec4 oAlignment;
+
+        float valueAt(highp isampler2D image, ivec2 p) {
+            return float(texelFetch(
+                image,
+                clamp(p, ivec2(0), uImageSize - ivec2(1)),
+                0
+            ).r);
+        }
+        float sadAt(ivec2 origin, ivec2 displacement) {
+            float sad = 0.0;
+            for (int y = 0; y < 16; ++y) {
+                if (y >= uTileSize) break;
+                for (int x = 0; x < 16; ++x) {
+                    if (x >= uTileSize) break;
+                    ivec2 p = origin + ivec2(x, y);
+                    sad += abs(
+                        valueAt(uReference, p) -
+                        valueAt(uCurrent, p + displacement)
+                    );
+                }
+            }
+            return sad / float(uTileSize * uTileSize);
+        }
+        void main() {
+            ivec2 tile = ivec2(gl_FragCoord.xy);
+            ivec2 initialTile = clamp(
+                ivec2(
+                    floor(
+                        (vec2(tile) + 0.5) *
+                        vec2(uInitialGridSize) / vec2(uGridSize)
+                    )
+                ),
+                ivec2(0),
+                uInitialGridSize - ivec2(1)
+            );
+            vec2 initial = uHasInitialAlignment != 0
+                ? texelFetch(uInitialAlignment, initialTile, 0).xy * uInitialScale
+                : vec2(0.0);
+            ivec2 center = ivec2(round(initial));
+            ivec2 origin = tile * uTileStride;
+            ivec2 best = center;
+            float bestCost = sadAt(origin, center);
+            for (int y = -3; y <= 3; ++y) {
+                for (int x = -3; x <= 3; ++x) {
+                    if (abs(x) > uSearchRadius || abs(y) > uSearchRadius) continue;
+                    if (x == 0 && y == 0) continue;
+                    ivec2 candidate = center + ivec2(x, y);
+                    float cost = sadAt(origin, candidate);
+                    if (cost < bestCost) {
+                        bestCost = cost;
+                        best = candidate;
+                    }
+                }
+            }
+            float minusX = sadAt(origin, best - ivec2(1, 0));
+            float plusX = sadAt(origin, best + ivec2(1, 0));
+            float minusY = sadAt(origin, best - ivec2(0, 1));
+            float plusY = sadAt(origin, best + ivec2(0, 1));
+            float denomX = minusX + plusX - 2.0 * bestCost;
+            float denomY = minusY + plusY - 2.0 * bestCost;
+            float subX = abs(denomX) > 1.0e-12
+                ? 0.5 * (minusX - plusX) / denomX
+                : 0.0;
+            float subY = abs(denomY) > 1.0e-12
+                ? 0.5 * (minusY - plusY) / denomY
+                : 0.0;
+            oAlignment = vec4(vec2(best) + clamp(vec2(subX, subY), -0.5, 0.5),
+                bestCost, 0.0);
+        }
+    """.trimIndent()
+
+    /** Component-wise 3x3 median used by the alignment graph. */
+    val medianAlignment = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        uniform sampler2D uAlignment;
+        uniform ivec2 uGridSize;
+        out vec4 oAlignment;
+        float median9(float v[9]) {
+            for (int i = 1; i < 9; ++i) {
+                float x = v[i];
+                int j = i - 1;
+                while (j >= 0 && v[j] > x) {
+                    v[j + 1] = v[j];
+                    --j;
+                }
+                v[j + 1] = x;
+            }
+            return v[4];
+        }
+        void main() {
+            ivec2 p = ivec2(gl_FragCoord.xy);
+            float x[9];
+            float y[9];
+            float z[9];
+            int i = 0;
+            for (int oy = -1; oy <= 1; ++oy) {
+                for (int ox = -1; ox <= 1; ++ox) {
+                    vec3 v = texelFetch(
+                        uAlignment,
+                        clamp(p + ivec2(ox, oy), ivec2(0), uGridSize - ivec2(1)),
+                        0
+                    ).xyz;
+                    x[i] = v.x;
+                    y[i] = v.y;
+                    z[i] = v.z;
+                    ++i;
+                }
+            }
+            oAlignment = vec4(median9(x), median9(y), median9(z), 0.0);
+        }
+    """.trimIndent()
+
+    /**
+     * ConvertAlignmentHalide (0x362479c) evaluates the 3x3 flow range on the alignment grid.
+     * Sabre retains that sparse grid (tile size 1 here); Spatial expands each tile-owned
+     * value onto RAW/2. Clamp the center tile before its neighborhood so the grid's halo
+     * uses the same complete converted value as nearest sampling of the sparse texture.
+     */
+    val convertAlignment = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        uniform sampler2D uAlignment;
+        uniform ivec2 uGridSize;
+        uniform int uAlignmentTileSize;
+        uniform int uAlignmentGridMin;
+        uniform float uAlignmentScale;
+        uniform vec2 uFlowNormalizationSize;
+        out vec4 oFlow;
+        vec2 flowAtTile(ivec2 tile) {
+            return texelFetch(
+                uAlignment,
+                clamp(tile, ivec2(0), uGridSize - ivec2(1)),
+                0
+            ).xy * uAlignmentScale;
+        }
+        void main() {
+            ivec2 p = ivec2(gl_FragCoord.xy);
+            ivec2 tile = clamp(
+                p / uAlignmentTileSize - ivec2(uAlignmentGridMin),
+                ivec2(0), uGridSize - ivec2(1)
+            );
+            vec2 flowPixels = flowAtTile(tile);
+            vec2 minimumFlow = vec2(1.0e20);
+            vec2 maximumFlow = vec2(-1.0e20);
+            for (int y = -1; y <= 1; ++y) {
+                for (int x = -1; x <= 1; ++x) {
+                    vec2 v = flowAtTile(tile + ivec2(x, y));
+                    minimumFlow = min(minimumFlow, v);
+                    maximumFlow = max(maximumFlow, v);
+                }
+            }
+            vec2 uvFlow = flowPixels / uFlowNormalizationSize;
+            vec2 normalizedRange =
+                (maximumFlow - minimumFlow) /
+                max(uFlowNormalizationSize, vec2(1.0));
+            // ConvertAlignmentHalide stores the Euclidean length of the normalized
+            // min/max flow extent. X and Y use their own output dimensions.
+            float localFlowVariation = length(normalizedRange);
+            oFlow = vec4(uvFlow, localFlowVariation, 0.0);
+        }
+    """.trimIndent()
+
+    /** Packs AlignPyramid's final MergeBayer/RGB grid without changing its Bayer-quad units. */
+    val strengthAlignment = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        uniform sampler2D uAlignment;
+        uniform ivec2 uOutputSize;
+        uniform ivec2 uOutputOrigin;
+        uniform int uComponent;
+        out float oAlignment;
+        void main() {
+            vec2 local = gl_FragCoord.xy - vec2(uOutputOrigin);
+            vec2 uv = local / vec2(uOutputSize);
+            oAlignment = texture(uAlignment, uv)[uComponent];
+        }
+    """.trimIndent()
+
+    val strengthRejection = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        uniform sampler2D uRejection;
+        uniform ivec2 uOutputSize;
+        uniform ivec2 uOutputOrigin;
+        uniform int uIdentityRejection;
+        uniform int uExactDomain;
+        out float oRejection;
+        void main() {
+            vec2 local = gl_FragCoord.xy - vec2(uOutputOrigin);
+            vec2 uv = local / vec2(uOutputSize);
+            oRejection = uIdentityRejection != 0
+                ? 1.0
+                : (uExactDomain != 0
+                    ? texelFetch(uRejection, ivec2(local), 0).r
+                    : texture(uRejection, uv).r);
+        }
+    """.trimIndent()
+
+    /**
+     * V25 UnblockerRaw16Halide (0x36380AC), operating on unpacked native RAW values.
+     *
+     * The original receives fullres_tile_size=8, scale=1 and offset=0.45. Each output cell
+     * therefore covers an 8x8 Bayer-quad / 16x16 full-resolution region. The 128/9 variance
+     * factor, four-noise subtraction, sqrt, offset/scale mapping and byte-domain truncation are
+     * retained.
+     */
+    val unblocker = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        precision highp usampler2D;
+        uniform highp usampler2D uRaw;
+        uniform ivec2 uRawSize;
+        uniform ivec2 uGridSize;
+        uniform ivec2 uTileOffset;
+        uniform int uCfaPattern;
+        uniform float uBlackLevelGreen;
+        uniform float uNoiseQuadratic;
+        uniform float uNoiseScale;
+        uniform float uNoiseOffset;
+        uniform float uOutputScale;
+        uniform float uOutputOffset;
+        out float oUnblocker;
+
+        uvec2 greensAt(ivec2 q) {
+            // Raw16 Unblocker mirrors Bayer quads, repeating the boundary quad.
+            ivec2 period = (uRawSize / 2) * 2;
+            q = (q % period + period) % period;
+            ivec2 p = min(q, period - ivec2(1) - q) * 2;
+            uint p00 = texelFetch(uRaw, p, 0).r;
+            uint p10 = texelFetch(uRaw, p + ivec2(1, 0), 0).r;
+            uint p01 = texelFetch(uRaw, p + ivec2(0, 1), 0).r;
+            uint p11 = texelFetch(uRaw, p + ivec2(1), 0).r;
+            uvec4 v;
+            if (uCfaPattern == 0) v = uvec4(p00, p10, p01, p11);
+            else if (uCfaPattern == 1) v = uvec4(p10, p00, p11, p01);
+            else if (uCfaPattern == 2) v = uvec4(p01, p11, p00, p10);
+            else v = uvec4(p11, p01, p10, p00);
+            return v.yz;
+        }
+        uint averageGreen(ivec2 q) {
+            uvec2 g = greensAt(q);
+            return (g.x + g.y + 1u) >> 1u;
+        }
+        uint verticalGreen(ivec2 q) {
+            uint outer = (averageGreen(q - ivec2(0, 1)) +
+                averageGreen(q + ivec2(0, 1))) >> 1u;
+            return (outer + averageGreen(q) + 1u) >> 1u;
+        }
+        uint blurredGreen(ivec2 q) {
+            uint outer = (verticalGreen(q - ivec2(1, 0)) +
+                verticalGreen(q + ivec2(1, 0)) + 1u) >> 1u;
+            return (outer + verticalGreen(q)) >> 1u;
+        }
+        // Low/high limbs preserve the original integer moments for RAW16 as well
+        // as RAW10. A float sum loses low bits before the variance subtraction.
+        uvec2 addWide(uvec2 a, uvec2 b) {
+            uint low = a.x + b.x;
+            return uvec2(low, a.y + b.y + (low < a.x ? 1u : 0u));
+        }
+        float roundedVariance(uint sum, uvec2 squareSum, uint countShift) {
+            uvec2 numerator = uvec2(
+                squareSum.x << countShift,
+                (squareSum.y << countShift) | (squareSum.x >> (32u - countShift))
+            );
+            // sum <= 128 * 65535, so the doubled 16-bit cross product fits U32.
+            // Keep this in ES 3.00 without extended-integer built-ins.
+            uint lo16 = sum & 65535u;
+            uint hi16 = sum >> 16u;
+            uint cross = 2u * lo16 * hi16;
+            uvec2 squared = addWide(uvec2(lo16 * lo16, hi16 * hi16),
+                uvec2(cross << 16u, cross >> 16u));
+            numerator = uvec2(
+                numerator.x - squared.x,
+                numerator.y - squared.y - (numerator.x < squared.x ? 1u : 0u)
+            );
+            uint divisorShift = countShift * 2u;
+            numerator = addWide(numerator, uvec2(1u << (divisorShift - 1u), 0u));
+            return float((numerator.x >> divisorShift) |
+                (numerator.y << (32u - divisorShift)));
+        }
+        void main() {
+            // The original AOT evaluates one extra cell on every side before its
+            // UnblockerBlur pass. uTileOffset is (-1, -1) for that padded domain.
+            ivec2 tile = ivec2(gl_FragCoord.xy) + uTileOffset;
+            ivec2 origin = tile * 8;
+            uint preSum = 0u;
+            uvec2 preSquareSum = uvec2(0u);
+            uint postSum = 0u;
+            uvec2 postSquareSum = uvec2(0u);
+            for (int y = 0; y < 8; ++y) {
+                for (int x = 0; x < 8; ++x) {
+                    ivec2 q = origin + ivec2(x, y);
+                    uvec2 g = greensAt(q);
+                    uint b = blurredGreen(q);
+                    preSum += g.x + g.y;
+                    preSquareSum = addWide(preSquareSum, uvec2(g.x * g.x, 0u));
+                    preSquareSum = addWide(preSquareSum, uvec2(g.y * g.y, 0u));
+                    postSum += b;
+                    postSquareSum = addWide(postSquareSum, uvec2(b * b, 0u));
+                }
+            }
+            float preMean = float((preSum + 64u) >> 7u);
+            float preVariance = roundedVariance(preSum, preSquareSum, 7u);
+            float postVariance = roundedVariance(postSum, postSquareSum, 6u);
+            float signal = max(preMean - uBlackLevelGreen, 0.0);
+            float predictedNoise =
+                (uNoiseQuadratic * signal + uNoiseScale) * signal +
+                uNoiseOffset;
+            float correctedVariance = max(
+                preVariance - 4.0 * predictedNoise,
+                0.0
+            );
+            float denominator = postVariance * (128.0 / 9.0);
+            float ratio = denominator > 0.0
+                ? correctedVariance / denominator
+                : 0.0;
+            float mapped = denominator > 0.0
+                ? uOutputScale * (sqrt(max(ratio, 0.0)) - uOutputOffset)
+                : (correctedVariance > 0.0 ? uOutputScale : 0.0);
+            // The AOT converts with fcvtzs before storing U8. Quantize explicitly so the
+            // normalized GL_R8 conversion cannot round a boundary upward.
+            oUnblocker = floor(clamp(mapped, 0.0, 1.0) * 255.0) / 255.0;
+        }
+    """.trimIndent()
+
+    /**
+     * Final UnblockerBlur stage used by both the ordinary three-stage path and the
+     * direct UnblockerRaw10Halide path. The AOT implements this as U8 NEON halving
+     * adds, so retain its intermediate floor/ceil rounding rather than replacing it
+     * with a floating-point Gaussian sample.
+     */
+    val unblockerBlur = """
+        #version 300 es
+        precision highp float;
+        precision highp sampler2D;
+        precision highp int;
+        uniform sampler2D uPreBlur;
+        out float oUnblocker;
+
+        int valueAt(ivec2 p) {
+            return int(floor(texelFetch(uPreBlur, p, 0).r * 255.0 + 0.5));
+        }
+        int halvingAdd(int a, int b) {
+            return (a + b) >> 1;
+        }
+        int roundedHalvingAdd(int a, int b) {
+            return (a + b + 1) >> 1;
+        }
+        void main() {
+            // The output cell (x,y) is centered at (x+1,y+1) in the padded map.
+            ivec2 p = ivec2(gl_FragCoord.xy);
+            int topLeft = valueAt(p + ivec2(0, 0));
+            int top = valueAt(p + ivec2(1, 0));
+            int topRight = valueAt(p + ivec2(2, 0));
+            int left = valueAt(p + ivec2(0, 1));
+            int center = valueAt(p + ivec2(1, 1));
+            int right = valueAt(p + ivec2(2, 1));
+            int bottomLeft = valueAt(p + ivec2(0, 2));
+            int bottom = valueAt(p + ivec2(1, 2));
+            int bottomRight = valueAt(p + ivec2(2, 2));
+
+            int leftPair = halvingAdd(topLeft, bottomLeft);
+            int rightPair = halvingAdd(topRight, bottomRight);
+            int leftColumn = roundedHalvingAdd(leftPair, left);
+            int rightColumn = roundedHalvingAdd(rightPair, right);
+            int outerColumns = roundedHalvingAdd(leftColumn, rightColumn);
+            int middlePair = halvingAdd(top, bottom);
+            int middleColumn = roundedHalvingAdd(middlePair, center);
+            int filtered = halvingAdd(outerColumns, middleColumn);
+            oUnblocker = float(filtered) / 255.0;
+        }
+    """.trimIndent()
+
+}

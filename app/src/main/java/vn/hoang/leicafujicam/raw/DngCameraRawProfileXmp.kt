@@ -1,0 +1,139 @@
+package vn.hoang.leicafujicam.raw
+
+import java.security.MessageDigest
+import java.io.StringReader
+import javax.xml.parsers.DocumentBuilderFactory
+import org.xml.sax.InputSource
+
+/**
+ * Camera Raw treats ProfileGainTableMap and ProfileToneCurve as weighted profile operations.
+ * The DNG tags provide the data; this Look enables exactly the operations supplied by the caller.
+ */
+internal object DngCameraRawProfileXmp {
+    const val TAG_XMP = 700
+
+    private const val CAMERA_RAW_VERSION = "16.0"
+    private const val PROCESS_VERSION = "15.4"
+    private const val PHOTON_NAMESPACE = "https://vn.hoang.leicafujicam/xmp/1.0/"
+
+    /** Reads the single Photon recipe summary from embedded DNG XMP. */
+    fun readSceneExposureSummary(xmp: String?): String? {
+        if (xmp == null || xmp.length > 1024 * 1024 ||
+            xmp.contains("<!DOCTYPE", ignoreCase = true)
+        ) return null
+        return runCatching {
+            val builder = DocumentBuilderFactory.newInstance().apply {
+                isNamespaceAware = true
+                isExpandEntityReferences = false
+            }.newDocumentBuilder()
+            builder.setEntityResolver { _, _ -> InputSource(StringReader("")) }
+            val document = builder.parse(InputSource(StringReader(xmp)))
+            val summaries = document.getElementsByTagNameNS(PHOTON_NAMESPACE, "SummaryText")
+            if (summaries.length != 1) return@runCatching null
+            summaries.item(0).textContent?.takeIf { it.isNotBlank() && it.length <= 256 * 1024 }
+        }.getOrNull()
+    }
+
+    fun build(
+        profileLookName: String,
+        includeProfileGainTableMap: Boolean,
+        includeProfileToneCurve: Boolean,
+        rawSceneExposureSummaryText: String? = null,
+    ): ByteArray {
+        require(profileLookName.isNotBlank()) { "Camera Raw Look name must not be blank" }
+        val escapedProfileLookName = escapeXmlAttribute(profileLookName)
+        val escapedRawSceneExposureSummaryText = rawSceneExposureSummaryText
+            ?.takeIf { it.isNotBlank() }
+            ?.let(::escapeXmlText)
+        val hasProfileOperations = includeProfileGainTableMap || includeProfileToneCurve
+        require(hasProfileOperations || escapedRawSceneExposureSummaryText != null) {
+            "XMP must contain a Camera Raw Look or RAW AE summary"
+        }
+        val lookUuid = stableLookUuid(profileLookName)
+        val profileOperationAttributes = buildList {
+            if (includeProfileGainTableMap) add("crs:ProfileGainTableMap=\"100\"")
+            if (includeProfileToneCurve) add("crs:ProfileToneCurve=\"100\"")
+        }.joinToString(separator = "\n                  ")
+        val cameraRawLook = if (hasProfileOperations) {
+            """
+                <crs:Look>
+                 <rdf:Description
+                  crs:Name="$escapedProfileLookName"
+                  crs:Amount="1"
+                  crs:UUID="$lookUuid"
+                  crs:SupportsMonochrome="false"
+                  crs:SupportsOutputReferred="false">
+                  <crs:Group>
+                   <rdf:Alt>
+                    <rdf:li xml:lang="x-default">Profiles</rdf:li>
+                   </rdf:Alt>
+                  </crs:Group>
+                  <crs:Parameters
+                   crs:Version="$CAMERA_RAW_VERSION"
+                   crs:ProcessVersion="$PROCESS_VERSION"
+                   $profileOperationAttributes
+                   crs:ConvertToGrayscale="False"/>
+                 </rdf:Description>
+                </crs:Look>
+            """.trimIndent()
+        } else {
+            ""
+        }
+        return """
+            <x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="leicafujicam">
+             <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+              <rdf:Description rdf:about=""
+               xmlns:crs="http://ns.adobe.com/camera-raw-settings/1.0/"
+               xmlns:photon="https://vn.hoang.leicafujicam/xmp/1.0/"
+               crs:Version="$CAMERA_RAW_VERSION"
+               crs:ProcessVersion="$PROCESS_VERSION"
+               crs:HasSettings="True"
+               crs:AlreadyApplied="False">
+               ${escapedRawSceneExposureSummaryText?.let {
+                   "<photon:SummaryText>$it</photon:SummaryText>"
+               }.orEmpty()}
+               $cameraRawLook
+              </rdf:Description>
+             </rdf:RDF>
+            </x:xmpmeta>
+        """.trimIndent().toByteArray(Charsets.UTF_8)
+    }
+
+    private fun stableLookUuid(profileLookName: String): String {
+        // The Look identity must not change when its bound base profile is renamed;
+        // otherwise Camera Raw keeps both identities in its profile cache.
+        val digest = MessageDigest.getInstance("SHA-256")
+            .digest("leicafujicam Camera Raw Look:$profileLookName".toByteArray(Charsets.UTF_8))
+        return digest.take(16).joinToString(separator = "") { byte ->
+            "%02X".format(byte.toInt() and 0xFF)
+        }
+    }
+
+    private fun escapeXmlAttribute(value: String): String = buildString(value.length) {
+        value.forEach { character ->
+            append(
+                when (character) {
+                    '&' -> "&amp;"
+                    '<' -> "&lt;"
+                    '>' -> "&gt;"
+                    '"' -> "&quot;"
+                    '\'' -> "&apos;"
+                    else -> character
+                }
+            )
+        }
+    }
+
+    private fun escapeXmlText(value: String): String = buildString(value.length) {
+        value.forEach { character ->
+            append(
+                when (character) {
+                    '&' -> "&amp;"
+                    '<' -> "&lt;"
+                    '>' -> "&gt;"
+                    else -> character
+                },
+            )
+        }
+    }
+}

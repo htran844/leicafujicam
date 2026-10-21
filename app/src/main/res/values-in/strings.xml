@@ -1,0 +1,491 @@
+<resources>
+    <string name="app_name">LeicaFujiCam</string>
+    
+    <!-- Camera Controls -->
+    <string name="switch_camera">Ganti Kamera</string>
+    <string name="settings">Pengaturan</string>
+    <string name="flash">Lampu Kilat</string>
+    <string name="timer">Timer</string>
+    <string name="histogram">Histogram</string>
+    <string name="back">Kembali</string>
+    
+    <!-- Exposure Controls -->
+    
+    <!-- Focus -->
+    
+    <!-- Aspect Ratio -->
+    <string name="aspect_ratio">Rasio Aspek</string>
+    
+    <!-- Permissions -->
+    <string name="camera_permission_required">Izin Kamera dan Mikrofon diperlukan</string>
+    <string name="grant_permission">Berikan Izin</string>
+    
+    <!-- Zoom -->
+    
+    <!-- Gallery -->
+    <string name="share">Bagikan</string>
+    <string name="delete">Hapus</string>
+    <string name="export">Ekspor</string>
+    <string name="export_video_select_resolution">Pilih resolusi ekspor</string>
+    <string name="export_video_resolution_original">Resolusi asli</string>
+    <string name="export_video_resolution_8k">8K</string>
+    <string name="export_video_resolution_4k">4K</string>
+    <string name="export_video_resolution_1080p">1080p</string>
+    <string name="export_video_resolution_720p">720p</string>
+    <string name="export_video_resolution_may_fail">Dukungan tidak dapat dipastikan; ekspor mungkin gagal</string>
+    <string name="export_video_resolution_unsupported">Tidak didukung oleh perangkat ini</string>
+    <string name="export_video_resolution_source_too_small">Lebih tinggi dari resolusi sumber</string>
+    <string name="export_video_resolution_details">%1$d × %2$d · %3$s</string>
+    <string name="export_success">Foto berhasil diekspor</string>
+    <string name="export_failed">Gagal mengekspor foto</string>
+    <string name="edit">Edit</string>
+    <string name="select_all">Pilih Semua</string>
+    <string name="cancel">Batal</string>
+    <string name="save">Simpan</string>
+    <string name="crop">Pangkas</string>
+    <string name="delete_confirm">Hapus foto ini?</string>
+    <string name="delete_multiple_confirm">Hapus %d foto?</string>
+    <string name="delete_exported_videos_count">Hapus juga %d video yang diekspor</string>
+    <string name="no_photos">Belum ada foto</string>
+    <string name="photo_info">Info Foto</string>
+    <string name="filter">LUT</string>
+    <string name="export_confirm">Ekspor foto dengan LUT yang diterapkan?</string>
+    <string name="items_selected">%d Terpilih</string>
+    <string name="selected">Terpilih</string>
+    <string name="imported">Diimpor</string>
+    <string name="photo_info_date">Tanggal</string>
+    <string name="photo_info_resolution">Resolusi</string>
+    <string name="photo_info_size">Ukuran</string>
+    <string name="photo_info_focal_length">Panjang Fokus</string>
+    <string name="photo_info_aperture">Apertur</string>
+    <string name="photo_info_iso">ISO</string>
+    <string name="photo_info_shutter_speed">Kecepatan Rana</string>
+    
+    <!-- Frame Watermark -->
+    <string name="frame">Bingkai</string>
+    <string name="none">Tidak ada</string>
+    <string name="show_app_branding">Tampilkan Branding Aplikasi</string>
+    <string name="import_photo">Impor</string>
+    <string name="watermark_adjustment">Penyesuaian Tanda Air</string>
+    <string name="logo">LOGO</string>
+    <string name="text_content">Konten Teks</string>
+    <string name="device_model">Model Perangkat</string>
+    <string name="brand_name">Nama Merek</string>
+    <string name="date_label">Tanggal (DATE)</string>
+    <string name="time_label">Waktu (TIME)</string>
+    <string name="datetime_label">Tanggal/Waktu (DATETIME)</string>
+    <string name="default_from_photo">Default dari foto</string>
+    <string name="font_option">Font</string>
+    <string name="default_text">Default</string>
+    <string name="custom_import">Impor...</string>
+    
+    <!-- Settings -->
+    <string name="settings_title">Pengaturan</string>
+    <string name="settings_section_capture">Tangkap</string>
+    <string name="settings_use_raw">Tangkapan RAW</string>
+    <string name="settings_use_raw_description">Tangkap foto dalam format RAW (DNG) untuk kualitas lebih tinggi.</string>
+    <string name="settings_level_indicator">Level Horizontal</string>
+    <string name="settings_level_description">Tampilkan indikator level horizontal saat memotret</string>
+    <string name="settings_grid_lines">Garis Kisi</string>
+    <string name="settings_grid_description">Tampilkan garis kisi untuk komposisi</string>
+    <string name="settings_grid_style">Gaya Kisi</string>
+    <string name="grid_style_thirds">Aturan Sepertiga</string>
+    <string name="grid_style_diagonals">Diagonal</string>
+    <string name="grid_style_golden_ratio">Rasio Emas</string>
+    <string name="grid_style_golden_triangle">Segitiga Emas</string>
+    <string name="grid_style_golden_spiral">Spiral Emas</string>
+    <string name="settings_use_live_photo">Foto Live</string>
+    <string name="settings_use_live_photo_description">Tangkap klip video pendek bersama foto Anda untuk efek foto live yang dinamis.</string>
+    <string name="settings_develop_animation_description">Tampilkan animasi foto setelah mengambil gambar.</string>
+    <string name="settings_develop_animation_style">Gaya animasi</string>
+    <string name="settings_develop_animation_style_description">Pilih efek pengembangan film atau cetak foto dengan bingkai yang dipilih.</string>
+    <string name="settings_develop_animation_style_film">Pengembangan film</string>
+    <string name="settings_develop_animation_style_instant_print">Cetak instan</string>
+    <string name="settings_section_frame">Tanda Air Bingkai</string>
+    <string name="settings_frame_style">Gaya Bingkai</string>
+    <string name="settings_frame_description">Tambahkan bingkai dekoratif dan tanda air ke foto</string>
+    <string name="settings_section_software_processing">Fine Tuning</string>
+    <string name="settings_shutter_sound">Suara Rana</string>
+    <string name="settings_shutter_sound_description">Mainkan suara saat mengambil foto</string>
+    <string name="settings_vibration">Getaran</string>
+    <string name="settings_vibration_description">Bergetar saat mengambil foto</string>
+    <string name="settings_keep_screen_on">Layar Tetap Menyala</string>
+    <string name="settings_keep_screen_on_description">Menjaga layar tetap aktif saat menggunakan kamera. Perekaman video selalu membuatnya tetap aktif.</string>
+    <string name="settings_window_screen_brightness">Kecerahan Layar</string>
+    <string name="settings_window_screen_brightness_description">Atur kecerahan layar untuk jendela aplikasi ini. Matikan untuk memakai bawaan sistem.</string>
+    <string name="settings_volume_key_action">Aksi Tombol Volume</string>
+    <string name="settings_volume_key_action_description">Pilih aksi tombol volume saat pengambilan</string>
+    <string name="settings_volume_key_action_none">Kontrol Volume</string>
+    <string name="settings_volume_key_action_capture">Rana</string>
+    <string name="settings_volume_key_action_exposure">Kompensasi Eksposur</string>
+    <string name="settings_volume_key_action_zoom">Ganti Fokus</string>
+    <string name="settings_auto_save">Simpan Otomatis</string>
+    <string name="settings_auto_save_description">Simpan foto secara otomatis setelah tangkapan</string>
+    <string name="settings_nr_level">Tingkat Pengurangan Noise</string>
+    <string name="settings_nr_level_description">Sesuaikan mode pengurangan noise perangkat keras. \"Off\" dapat digunakan bersama algoritma pengurangan noise multi-frame untuk mendapatkan lebih banyak detail.</string>
+    <string name="settings_nr_level_off">Mati</string>
+    <string name="settings_nr_level_minimal">Minimal</string>
+    <string name="settings_nr_level_fast">Cepat</string>
+    <string name="settings_nr_level_high_quality">HQ</string>
+    <string name="settings_nr_level_zsl">ZSL</string>
+    <string name="settings_edge_level">Tingkat Penajaman</string>
+    <string name="settings_edge_level_description">Sesuaikan mode peningkatan tepi perangkat keras (penajaman).</string>
+    <string name="settings_sharpening">Penajaman</string>
+    <string name="settings_sharpening_description">Meningkatkan ketajaman gambar dan definisi tepi</string>
+    <string name="settings_noise_reduction">Pengurangan Noise</string>
+    <string name="settings_noise_reduction_description">Mengurangi noise gambar sambil menjaga detail</string>
+    <string name="settings_chroma_noise_reduction">Pengurangan Noise Chroma</string>
+    <string name="settings_chroma_noise_reduction_description">Mengurangi noise warna dan artefak</string>
+    <string name="settings_detail_enhancement_description">Parameter penajaman dan pengurangan noise mendalam</string>
+    <string name="settings_photo_quality">Kualitas Foto</string>
+    <string name="settings_photo_quality_description">Pilih kualitas kompresi JPEG untuk foto (lebih tinggi = kualitas lebih baik, ukuran file lebih besar)</string>
+    <string name="settings_background">Latar Belakang</string>
+    <string name="settings_background_description">Ganti gambar latar belakang aplikasi</string>
+    <string name="settings_custom_background">Kustom...</string>
+    
+    <!-- LUT -->
+    <string name="filter_intensity">Intensitas LUT</string>
+    <string name="filters_panel">LUT</string>
+    <string name="toggle_display_mode">Alihkan Mode Tampilan</string>
+    
+    <!-- Billing & Premium -->
+    <string name="billing_vip_tag">VIP</string>
+    <string name="billing_premium_unlock_title">Buka Semua LUT VIP</string>
+    <string name="billing_premium_unlock_description">Pembayaran satu kali untuk akses seumur hidup ke semua filter LUT premium dan fitur pro di masa mendatang.</string>
+    <string name="billing_feature_all_luts">Akses semua LUT khusus</string>
+    <string name="billing_feature_support_dev">Dukung pengembangan independen</string>
+    <string name="billing_feature_lifetime">Pembelian satu kali, gunakan seumur hidup</string>
+    <string name="billing_premium_get_access">Dapatkan Akses Premium</string>
+    <string name="billing_price_region_notice">Harga bervariasi menurut wilayah</string>
+    <string name="settings_premium_title">leicafujicam Pro</string>
+    <string name="settings_premium_description">Buka semua LUT premium dan dukung kami.</string>
+    
+    <!-- Custom Import -->
+    <string name="custom_tag">KUSTOM</string>
+    <string name="delete_confirm_title">Konfirmasi Hapus</string>
+    <string name="name">Nama</string>
+    <string name="confirm">Konfirmasi</string>
+    
+    <!-- Color Recipe -->
+    <string name="color_recipe">Resep Warna</string>
+    
+    <!-- Color Recipe Parameters -->
+    <string name="recipe_param_exposure">Eksposur</string>
+    <string name="recipe_param_contrast">Kontras</string>
+    <string name="recipe_param_saturation">Saturasi</string>
+    <string name="recipe_param_temperature">Temperatur</string>
+    <string name="recipe_param_tint">Rona</string>
+    <string name="recipe_param_fade">Pudar</string>
+    <string name="recipe_param_color">Vibrance</string>
+    <string name="recipe_param_highlights">Sorotan</string>
+    <string name="recipe_param_shadows">Bayangan</string>
+    <string name="recipe_param_film_grain">Grain</string>
+    <string name="recipe_param_vignette">Vinyet</string>
+    <string name="recipe_param_flash">Lampu Kilat</string>
+    <string name="recipe_param_bleach_bypass">Bleach Bypass</string>
+    <string name="recipe_param_clarity">Kejernihan</string>
+    <string name="recipe_param_bloom">Bloom</string>
+    <string name="recipe_param_soft_light">Cahaya Lembut</string>
+    <string name="recipe_param_halation">Halasi</string>
+    <string name="recipe_param_lut_intensity">LUT</string>
+    
+    <!-- Color Recipe Tabs -->
+    <string name="edit_sync_lut_recipe">Sinkronkan LUT</string>
+    <string name="edit_sync_lut_recipe_description">Warna, efek, dan intensitas LUT juga disimpan ke LUT yang dipilih.</string>
+    <string name="edit_select_lut_hint">Pilih LUT sebelum menyesuaikan warna dan efek.</string>
+    <string name="edit_color_and_effects">Sesuaikan warna dan efek</string>
+    <string name="recipe_tab_color">Warna</string>
+    <string name="recipe_color_basic">Dasar</string>
+    <string name="recipe_color_style">Gaya</string>
+    <string name="recipe_color_grading">Gradasi</string>
+    <string name="recipe_grading_midtones">Nada Tengah</string>
+    <string name="recipe_grading_luminance">Luminans</string>
+    <string name="recipe_grading_balance">Keseimbangan</string>
+    <string name="recipe_grading_blending">Transisi</string>
+    <string name="recipe_tab_light">Cahaya</string>
+    <string name="effects_group_light">Efek Cahaya</string>
+    <string name="effects_group_optics">Optik</string>
+    <string name="effects_group_texture">Tekstur</string>
+    <string name="recipe_tab_post">Pasca</string>
+    
+    <!-- Post-Processing Parameters (Capture/Edit only) -->
+    
+    <!-- Developer Options -->
+    <string name="settings_log_viewer">Penampil Log</string>
+    <string name="settings_log_viewer_description">Lihat dan ekspor log aplikasi untuk diagnostik</string>
+    <string name="logs">Log</string>
+    
+    <!-- Filter/Frame Management -->
+    <string name="settings_section_management">Manajemen Konten</string>
+    <string name="settings_filter_management">Manajemen LUT</string>
+    <string name="settings_filter_management_description">Kelola LUT, setel default, urutkan ulang</string>
+    <string name="settings_frame_management">Manajemen Bingkai</string>
+    <string name="settings_frame_management_description">Kelola bingkai, setel default, urutkan ulang</string>
+    <string name="filter_management_title">Manajemen LUT</string>
+    <string name="frame_management_title">Manajemen Bingkai</string>
+    <string name="category_custom">Kustom</string>
+    <string name="current_default">Default</string>
+    <string name="rename">Ganti Nama</string>
+    <string name="import_filter">Impor LUT</string>
+    <string name="import_frame_json">Impor Konfig Bingkai</string>
+    <string name="delete_filter_confirm_message">Hapus LUT \"%s\"?</string>
+    <string name="delete_frame_confirm_message">Hapus bingkai \"%s\"?</string>
+    <string name="rename_dialog_title">Ganti Nama</string>
+    <string name="copy">Salin</string>
+    <string name="copy_lut_dialog_title">Salin LUT</string>
+    <string name="copy_suffix"> (Salinan)</string>
+    <string name="edit_category">Edit Kategori</string>
+    <string name="batch_edit_category">Edit Kategori Massal</string>
+    <string name="drag_to_reorder_categories">Tarik pegangan untuk mengatur ulang tab</string>
+    <string name="selected_count">%d Terpilih</string>
+    <string name="category">Kategori</string>
+    <string name="category_management_title">Manajemen Kategori</string>
+    <string name="new_category">Kategori Baru</string>
+    <string name="category_name">Nama Kategori</string>
+    <string name="import_to_category">Impor ke Kategori</string>
+    <string name="import_success">Berhasil mengimpor %d item</string>
+    <string name="import_failed">Gagal mengimpor: %d item</string>
+    <string name="common_categories">Kategori Umum</string>
+    <string name="delete_category_title">Hapus Kategori</string>
+    <string name="delete_category_message">Apakah Anda yakin ingin menghapus kategori \"%s\"? LUT di bawah kategori ini akan diatur ulang ke tidak berkategori.</string>
+    <string name="built_in">Bawaan</string>
+    <string name="custom">Kustom</string>
+    <string name="input_curve">Kurva Input</string>
+    
+    <!-- Frame Import Help -->
+    
+    <!-- Camera Calibration -->
+    <string name="settings_section_calibration">Kalibrasi Kamera</string>
+    <string name="settings_camera_orientation">Orientasi Foto</string>
+    <string name="settings_camera_orientation_description">Atur koreksi rotasi foto secara terpisah untuk setiap lensa.</string>
+    <string name="settings_orientation_normal">0°</string>
+    <string name="settings_orientation_90">90°</string>
+    <string name="settings_orientation_180">180°</string>
+    <string name="settings_orientation_270">270°</string>
+    <string name="rear_camera">Kamera Belakang</string>
+    <string name="front_camera">Kamera Depan</string>
+    <string name="camera">Kamera</string>
+    <string name="current_camera">Kamera Saat Ini</string>
+    
+    <!-- About & Donation -->
+    <string name="settings_donation">Donasi</string>
+    <string name="settings_donation_description">Dukung pengembangan LeicaFujiCam</string>
+    <string name="settings_default_focal_length">Panjang Fokus Default</string>
+    <string name="settings_default_focal_length_description">Setel panjang fokus untuk beralih secara otomatis saat aplikasi dimulai.</string>
+    <string name="refresh">Segarkan</string>
+    <string name="refresh_success">Pratinjau disegarkan</string>
+    <string name="refresh_failed">Gagal menyegarkan pratinjau</string>
+    <string name="settings_dro_mode">Pengoptimal Rentang Dinamis RAW (DRO)</string>
+    <string name="settings_dro_off">Mati</string>
+    <string name="settings_dro_dr100">DR100</string>
+    <string name="settings_dro_dr200">DR200</string>
+    <string name="settings_dro_dr400">DR400</string>
+    <string name="settings_use_p010">P010 (10-bit YUV)</string>
+    <string name="settings_use_p010_description">Aktifkan output YUV 10-bit untuk presisi data gambar yang lebih baik. Efektif pada perangkat yang didukung saat RAW dinonaktifkan.</string>
+    <string name="settings_raw_color_engine_hncs_description">Hasselblad Natural Colour Solution: sistem manajemen warna yang dikembangkan secara independen oleh Hasselblad</string>
+    <string name="settings_raw_max_default_sharpening">Penajaman HDR+ default</string>
+    <string name="settings_raw_max_default_sharpening_description">Penajaman yang diterapkan secara default saat memproses tangkapan HDR+.</string>
+    <string name="preset_import">Impor Preset</string>
+    <string name="preset_export">Ekspor Preset</string>
+    <string name="preset_import_success">%1$d preset berhasil diimpor</string>
+    <string name="preset_import_failed">Gagal mengimpor %1$d preset</string>
+    <string name="preset_import_partial">%1$d preset diimpor; %2$d gagal</string>
+    <string name="preset_export_success">Preset berhasil diekspor</string>
+    <string name="preset_export_failed">Gagal mengekspor preset</string>
+    <string name="settings_language">Bahasa</string>
+    <string name="settings_language_description">Pilih bahasa yang digunakan aplikasi</string>
+    <string name="settings_language_system">Ikuti sistem</string>
+    <string name="settings_video_nr_level_description">Atur pengurangan noise perangkat keras untuk pratinjau dan perekaman video secara terpisah dari foto.</string>
+    <string name="settings_video_edge_level_description">Atur penajaman perangkat keras untuk pratinjau dan perekaman video secara terpisah dari foto.</string>
+    <string name="video_log_lut_monitor_only">Pratinjau saja</string>
+    <string name="video_log_lut_bake_in">Terapkan ke video</string>
+    <string name="video_log_lut_monitor_hint">Pratinjau memakai LUT; rekaman tetap dalam Log.</string>
+    <string name="video_log_lut_bake_hint">LUT dan penyesuaian warna diterapkan ke video.</string>
+    <string name="video_log_format">Format Log</string>
+    <string name="video_log_color_space_auto">Ruang warna disesuaikan otomatis dengan format Log.</string>
+    <string name="settings_raw_camera_color_matching">Koreksi warna</string>
+    <string name="settings_raw_camera_color_matching_description">Saat aktif, mengoreksi warna berdasarkan karakteristik perangkat yang digunakan untuk mengambil foto, seperti ponsel Anda, sebelum menerapkan gaya Hasselblad atau LUMIX. Saat nonaktif, gaya yang dipilih langsung diterapkan tanpa koreksi warna perangkat pemotretan.</string>
+    <string name="settings_jpg_multi_frame_denoise_output_scale">Skala keluaran denoise multi-frame</string>
+    <string name="settings_jpg_multi_frame_denoise_output_scale_description">1x mempertahankan dimensi asli. Lebar dan tinggi hingga 2x. Hanya berlaku untuk denoise multi-frame.</string>
+    <string name="settings_jpg_multi_frame_denoise_output_scale_value">%1$.2f×</string>
+    <string name="settings_color_palette">Palet warna</string>
+    <string name="settings_color_palette_description">Tampilkan palet warna di editor untuk menyesuaikan tonalitas dan saturasi secara bersamaan.</string>
+    <string name="settings_auto_rotate">Putar otomatis</string>
+    <string name="settings_auto_rotate_description">Putar kontrol dan pratinjau di layar mengikuti orientasi perangkat.</string>
+    <string name="recipe_palette_tone">Tonalitas</string>
+    <string name="settings_raw_max_quality_tuning">Penyetelan kualitas gambar HDR+</string>
+    <string name="settings_raw_max_quality_tuning_description">Sesuaikan estimasi derau penggabungan dan pengurangan derau dengan ukuran fisik sensor. Saat nonaktif, gunakan parameter gambar bawaan.</string>
+    <string name="settings_shutter_sound_single">Suara satu bidikan</string>
+    <string name="settings_shutter_sound_burst">Suara beruntun</string>
+    <string name="settings_shutter_sound_custom_description">Impor klip audio hingga 3 detik, 48 kHz, mono atau stereo. Audio beruntun akan diulang selama pemotretan.</string>
+    <string name="settings_shutter_sound_default">Default</string>
+    <string name="settings_shutter_sound_choose">Pilih audio</string>
+    <string name="settings_shutter_sound_preview">Pratinjau</string>
+    <string name="settings_shutter_sound_reset">Pulihkan default</string>
+    <string name="settings_shutter_sound_importing">Mengimpor audio…</string>
+    <string name="settings_shutter_sound_import_failed">Audio ini tidak dapat diimpor. Pilih klip yang dapat diputar hingga 3 detik, 48 kHz, mono atau stereo (maksimal 10 MB).</string>
+    <string name="settings_shutter_sound_save_failed">Setelan suara tidak dapat disimpan. Silakan coba lagi.</string>
+    <string name="settings_shutter_sound_preview_failed">Suara ini tidak dapat diputar. Silakan impor ulang atau pulihkan default.</string>
+    <string name="settings_retain_capture_settings">Pertahankan pengaturan kamera kustom</string>
+    <string name="settings_retain_capture_settings_description">Pulihkan kompensasi eksposur, kecepatan rana, ISO, fokus, dan keseimbangan putih beserta mode otomatis/manual masing-masing saat kamera dibuka kembali. Menonaktifkan opsi ini akan menghapus pengaturan yang tersimpan.</string>
+    <string name="settings_raw_digital_zoom_resampling">Pulihkan resolusi zoom digital</string>
+    <string name="settings_raw_digital_zoom_resampling_description">Mengambil sampel ulang foto zoom digital ke resolusi lensa fisik saat ini, lalu menerapkan skala output.</string>
+    <string name="frame_editor_background_type">Latar belakang</string>
+    <string name="frame_editor_background_color">Warna solid</string>
+    <string name="frame_editor_background_blur">Buram Gaussian</string>
+    <string name="frame_editor_layout_vertical_padding">Jarak dalam vertikal (px)</string>
+    <string name="frame_editor_layout_border_height">Tinggi bingkai atas (px)</string>
+    <string name="frame_editor_design_width">Lebar Desain (px)</string>
+    <string name="frame_editor_design_height">Tinggi Desain (px)</string>
+    <string name="frame_editor_dimension_hint">Semua ukuran menggunakan piksel kanvas desain. Bingkai, teks, dan logo diskalakan seragam menurut lebar foto aktual ÷ lebar desain; area foto menyesuaikan tinggi aktual.</string>
+    <string name="frame_editor_element_spacing">Jarak Elemen (px)</string>
+    <string name="frame_editor_background_blur_radius">Intensitas keburaman (px)</string>
+    <string name="frame_editor_background_blur_hint">Isi latar belakang dengan salinan foto yang diburamkan. Dalam mode overlay, hanya area watermark yang diburamkan.</string>
+    <string name="frame_editor_background_glass">Kaca cair</string>
+    <string name="frame_editor_background_glass_hint">Tampilkan kapsul kaca cair di bagian bawah foto, dengan jarak di kedua sisi dan bagian bawah.</string>
+    <string name="settings_accent_color">Warna sorotan</string>
+    <string name="settings_accent_color_description">Gunakan satu warna sorotan untuk kontrol, parameter kamera, progres pengambilan gambar, dan mode Pro.</string>
+    <string name="settings_accent_color_reset">Pulihkan default</string>
+    <string name="settings_accent_color_hex_hint">Masukkan kode warna enam digit dalam format #RRGGBB.</string>
+    <string name="settings_accent_color_hex_error">Masukkan enam karakter heksadesimal (0–9, A–F).</string>
+    <string name="settings_raw_color_engine_leica_description">Warna dan tonal Leica M9.</string>
+    <string name="settings_raw_color_engine_spectral_film">Spektrafilm</string>
+    <string name="settings_raw_color_engine_spectral_film_description">Reproduksi warna negatif-dan-cetak spektral dari data film dan kertas, dengan penyetelan halus densitas sian, magenta, dan kuning.</string>
+    <string name="settings_raw_color_engine_fotufilm">Fotufilm</string>
+    <string name="settings_raw_color_engine_fotufilm_description">Simulasi film berbasis fisika yang lengkap: eksposur spektral, pengembangan, butiran, halasi, dan cetak, dengan kontrol lab dan cetak yang lengkap.</string>
+    <string name="settings_raw_canon_color_matrix">Matriks warna</string>
+    <string name="settings_raw_canon_color_matrix_description">Pilih matriks warna perangkat pengambilan gambar atau EOS R5 untuk kalibrasi warna RAW.</string>
+    <string name="settings_raw_canon_color_matrix_device">Default</string>
+    <string name="settings_raw_canon_color_matrix_r5">EOS R5</string>
+    <string name="settings_raw_leica_color_matrix">Matriks warna</string>
+    <string name="settings_raw_leica_color_matrix_description">Pilih matriks warna perangkat pengambilan gambar atau M9 untuk kalibrasi warna RAW.</string>
+    <string name="settings_raw_leica_color_matrix_device">Default</string>
+    <string name="settings_raw_leica_color_matrix_m9">M9</string>
+    <string name="camera_focus_point_label">Fokus</string>
+    <string name="camera_metering_point_label">Pengukuran</string>
+    <!-- Fotufilm controls -->
+    <string name="fotufilm_section_filmStock">Film</string>
+    <string name="fotufilm_section_filmGrain">Butiran</string>
+    <string name="fotufilm_section_filmHalation">Halasi</string>
+    <string name="fotufilm_section_filmEmulsion">Emulsi</string>
+    <string name="fotufilm_section_filmLab">Lab</string>
+    <string name="fotufilm_section_printPaper">Keluaran</string>
+    <string name="fotufilm_section_printLamp">Lampu</string>
+    <string name="fotufilm_section_lightExposure">Eksposur</string>
+    <string name="fotufilm_control_stock">Film</string>
+    <string name="fotufilm_control_stock_description">Pilih film yang digunakan untuk merender foto.</string>
+    <string name="fotufilm_control_gauge">Format</string>
+    <string name="fotufilm_control_gauge_description">Atur ukuran bingkai film, yang memengaruhi butiran dan halasi yang terlihat.</string>
+    <string name="fotufilm_control_grain">Butiran</string>
+    <string name="fotufilm_control_grain_description">Sesuaikan kekuatan butiran relatif terhadap film yang dipilih.</string>
+    <string name="fotufilm_control_grainMottle">Bercak</string>
+    <string name="fotufilm_control_grainMottle_description">Tambahkan gumpalan lebih besar dan lembut pada pola butiran.</string>
+    <string name="fotufilm_control_filmGrainSize">Ukuran Butiran</string>
+    <string name="fotufilm_control_filmGrainSize_description">Buat butiran lebih kasar atau halus pada granularitas terukur yang sama.</string>
+    <string name="fotufilm_control_filmColourGrain">Butiran Warna</string>
+    <string name="fotufilm_control_filmColourGrain_description">Campur butiran tiap lapisan dari bintik warna independen menuju satu butiran bersama.</string>
+    <string name="fotufilm_control_filmRedLayer">Lapisan Merah</string>
+    <string name="fotufilm_control_filmRedLayer_description">Skalakan butiran lapisan peka merah saat Model Butiran adalah Film.</string>
+    <string name="fotufilm_control_filmGreenLayer">Lapisan Hijau</string>
+    <string name="fotufilm_control_filmGreenLayer_description">Skalakan butiran lapisan peka hijau saat Model Butiran adalah Film.</string>
+    <string name="fotufilm_control_filmBlueLayer">Lapisan Biru</string>
+    <string name="fotufilm_control_filmBlueLayer_description">Skalakan butiran lapisan peka biru saat Model Butiran adalah Film.</string>
+    <string name="fotufilm_control_filmScanSoftness">Kelembutan Pindai</string>
+    <string name="fotufilm_control_filmScanSoftness_description">Membaca area film lebih luas per piksel seperti pindaian yang lebih lembut, menghaluskan butiran.</string>
+    <string name="fotufilm_control_grainModel">Model Butiran</string>
+    <string name="fotufilm_control_grainModel_description">Pilih cara butiran terbentuk di seluruh emulsi.</string>
+    <string name="fotufilm_control_halation">Halasi</string>
+    <string name="fotufilm_control_halation_description">Sesuaikan pendaran di sekitar area terang akibat pantulan cahaya di dalam film.</string>
+    <string name="fotufilm_control_halationColour">Warna Halo</string>
+    <string name="fotufilm_control_halationColour_description">Atur seberapa banyak halo mempertahankan warna sumber cahaya.</string>
+    <string name="fotufilm_control_couplers">Kopler</string>
+    <string name="fotufilm_control_couplers_description">Sesuaikan pengaruh pengembangan terhadap pemisahan warna dan kontras tepi.</string>
+    <string name="fotufilm_control_couplerReach">Pemisahan</string>
+    <string name="fotufilm_control_couplerReach_description">Sesuaikan seberapa kuat lapisan film yang berdekatan saling memengaruhi saat pengembangan.</string>
+    <string name="fotufilm_control_couplerSelf">Kontras Tepi</string>
+    <string name="fotufilm_control_couplerSelf_description">Sesuaikan kontras lokal di sekitar tepi yang terbentuk saat pengembangan.</string>
+    <string name="fotufilm_control_chromaticFringeAmount">Jumlah Pinggiran</string>
+    <string name="fotufilm_control_chromaticFringeAmount_description">Tambahkan efek warna yang lebih lebar di sekitar tepi.</string>
+    <string name="fotufilm_control_chromaticFringeRadius">Radius Pinggiran</string>
+    <string name="fotufilm_control_chromaticFringeRadius_description">Atur lebar pinggiran warna. Memerlukan Jumlah Pinggiran di atas nol.</string>
+    <string name="fotufilm_control_push">Push</string>
+    <string name="fotufilm_control_push_description">Kembangkan lebih lama atau singkat, diperkirakan dari respons push yang dipublikasikan proses.</string>
+    <string name="fotufilm_control_bleach">Bleach Bypass</string>
+    <string name="fotufilm_control_bleach_description">Biarkan perak dalam negatif untuk menaikkan kontras dan menurunkan saturasi.</string>
+    <string name="fotufilm_control_expired">Kedaluwarsa</string>
+    <string name="fotufilm_control_expired_description">Simulasikan film yang disimpan pada suhu ruang melewati tanggal kedaluwarsa, dalam tahun.</string>
+    <string name="fotufilm_control_shutter">Eksposur Panjang</string>
+    <string name="fotufilm_control_shutter_description">Atur waktu eksposur untuk menerapkan koreksi eksposur panjang terukur dari film.</string>
+    <string name="fotufilm_control_cameraPreflash">Pra-kilat Kamera</string>
+    <string name="fotufilm_control_cameraPreflash_description">Pra-ekspos bingkai untuk mengangkat kontras bayangan.</string>
+    <string name="fotufilm_control_paper">Media Keluaran</string>
+    <string name="fotufilm_control_paper_description">Pilih cara film dicetak, dipindai, atau dilihat.</string>
+    <string name="fotufilm_control_printLight">Iluminan Pengamatan</string>
+    <string name="fotufilm_control_printLight_description">Pilih cahaya untuk melihat hasil cetak.</string>
+    <string name="fotufilm_control_printCorrection">Penyesuaian Kontras Kanal</string>
+    <string name="fotufilm_control_printCorrection_description">Koreksi kontras kanal digital opsional; bukan penyesuaian cahaya printer.</string>
+    <string name="fotufilm_control_printerRed">Cahaya Merah</string>
+    <string name="fotufilm_control_printerRed_description">Poin printer; lebih banyak cahaya merah menambah sian pada cetakan.</string>
+    <string name="fotufilm_control_printerGreen">Cahaya Hijau</string>
+    <string name="fotufilm_control_printerGreen_description">Poin printer; lebih banyak cahaya hijau menambah magenta pada cetakan.</string>
+    <string name="fotufilm_control_printerBlue">Cahaya Biru</string>
+    <string name="fotufilm_control_printerBlue_description">Poin printer; lebih banyak cahaya biru menambah kuning pada cetakan.</string>
+    <string name="fotufilm_control_digitalReference">Konversi Layar</string>
+    <string name="fotufilm_control_digitalReference_description">Pilih cara film yang dikembangkan dikonversi pada Referensi Digital.</string>
+    <string name="fotufilm_control_screenCyan">Sian / Merah</string>
+    <string name="fotufilm_control_screenCyan_description">Positif menambah sian dengan mengurangi merah; negatif menambah merah.</string>
+    <string name="fotufilm_control_screenMagenta">Magenta / Hijau</string>
+    <string name="fotufilm_control_screenMagenta_description">Positif menambah magenta dengan mengurangi hijau; negatif menambah hijau.</string>
+    <string name="fotufilm_control_screenYellow">Kuning / Biru</string>
+    <string name="fotufilm_control_screenYellow_description">Positif menambah kuning dengan mengurangi biru; negatif menambah biru.</string>
+    <string name="fotufilm_control_labScanDodging">Dodging</string>
+    <string name="fotufilm_control_labScanDodging_description">Tahan sorotan luas dan buka bayangan gelap pada bingkai yang lebih lebar dari cetakan.</string>
+    <string name="fotufilm_control_labScanLook">Tampilan Pemindai</string>
+    <string name="fotufilm_control_labScanLook_description">Dari pindaian netral hingga warna dan nada akhir pemindai minilab.</string>
+    <string name="fotufilm_control_enlarger">Pembesar</string>
+    <string name="fotufilm_control_enlarger_description">Pilih pencahayaan pembesar yang digunakan untuk mencetak.</string>
+    <string name="fotufilm_control_printerPreflash">Pra-kilat Kertas</string>
+    <string name="fotufilm_control_printerPreflash_description">Pra-ekspos kertas cetak untuk melembutkan kontras sorotan.</string>
+    <string name="fotufilm_choice_grainMottle_film">Bawaan Film</string>
+    <string name="fotufilm_choice_grainMottle_none">Tidak ada</string>
+    <string name="fotufilm_choice_grainMottle_light" formatted="false">Ringan · 20%</string>
+    <string name="fotufilm_choice_grainMottle_moderate" formatted="false">Sedang · 45%</string>
+    <string name="fotufilm_choice_grainMottle_heavy" formatted="false">Berat · 70%</string>
+    <string name="fotufilm_choice_grainMottle_maximum" formatted="false">Maksimum · 90%</string>
+    <string name="fotufilm_choice_grainModel_clump">Standar</string>
+    <string name="fotufilm_choice_grainModel_film">Film</string>
+    <string name="fotufilm_choice_shutter_off">Seketika</string>
+    <string name="fotufilm_choice_paper_lab_scan">Pindai Lab</string>
+    <string name="fotufilm_choice_paper_telecine">Telecine</string>
+    <string name="fotufilm_choice_paper_screen">Referensi Digital</string>
+    <string name="fotufilm_choice_paper_negative">Negatif</string>
+    <string name="fotufilm_choice_printLight_Display_White___D65">Putih Layar · D65</string>
+    <string name="fotufilm_choice_printLight_Reference_Projector___Xenon_5400_K">Proyektor Referensi · Xenon 5400 K</string>
+    <string name="fotufilm_choice_printLight_Light_Table___D65">Meja Cahaya · D65</string>
+    <string name="fotufilm_choice_printLight_Proofing_Booth___D50">Bilik Proofing · D50</string>
+    <string name="fotufilm_choice_printLight_Reference_Booth___D50">Bilik Referensi · D50</string>
+    <string name="fotufilm_choice_printLight_Daylight___D65">Cahaya Siang · D65</string>
+    <string name="fotufilm_choice_printLight_Tungsten___2856_K">Tungsten · 2856 K</string>
+    <string name="fotufilm_choice_digitalReference_reference_exposure">Eksposur Referensi</string>
+    <string name="fotufilm_choice_digitalReference_graded_print">Cetak Bergradasi</string>
+    <string name="fotufilm_choice_digitalReference_auto_levels">Level Otomatis</string>
+    <string name="fotufilm_choice_enlarger_diffuser">Difuser</string>
+    <string name="fotufilm_choice_enlarger_condenser">Kondensor</string>
+    <string name="fotufilm_choice_gauge_super8">Super 8</string>
+    <string name="fotufilm_choice_gauge_16mm">16mm</string>
+    <string name="fotufilm_choice_gauge_super35">35mm film gerak (Super 35)</string>
+    <string name="fotufilm_choice_gauge_35mm">35mm foto</string>
+    <string name="fotufilm_choice_gauge_120">120 format medium (6×6)</string>
+    <string name="fotufilm_choice_gauge_4x5">4×5 format besar</string>
+    <string name="fotufilm_choice_gauge_instaxmini">instax mini</string>
+    <string name="fotufilm_choice_gauge_instaxsquare">instax SQUARE</string>
+    <string name="fotufilm_choice_gauge_instaxwide">instax wide</string>
+    <string name="fotufilm_choice_bleach_0">Mati</string>
+    <string name="fotufilm_choice_bleach_0_5">Setengah</string>
+    <string name="fotufilm_choice_bleach_1">Penuh</string>
+    <string name="fotufilm_value_off">Mati</string>
+    <string name="fotufilm_value_seconds">%1$s dtk</string>
+    <string name="fotufilm_value_minutes">%1$s mnt</string>
+    <string name="fotufilm_value_years">%1$s thn</string>
+    <!-- /Fotufilm controls -->
+</resources>

@@ -1,0 +1,2507 @@
+package vn.hoang.leicafujicam.ui.components
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.window.Dialog
+import android.graphics.Bitmap
+import android.hardware.camera2.CameraCharacteristics
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import vn.hoang.leicafujicam.ui.theme.AccentColor
+import vn.hoang.leicafujicam.ui.theme.OnAccentColor
+import vn.hoang.leicafujicam.R
+import vn.hoang.leicafujicam.camera.CameraInfo
+import vn.hoang.leicafujicam.lut.LutInfo
+import vn.hoang.leicafujicam.raw.DcpInfo
+import vn.hoang.leicafujicam.raw.HncsFilmCurveMode
+import vn.hoang.leicafujicam.raw.MeteringSystem
+import vn.hoang.leicafujicam.raw.RawCfaCorrection
+import vn.hoang.leicafujicam.raw.RawAdaptiveExposureMode
+import vn.hoang.leicafujicam.raw.RawProcessingPreferences.DROMode
+import vn.hoang.leicafujicam.raw.RawProfileToneMapMode
+import vn.hoang.leicafujicam.raw.LumixPhotoStyle
+import vn.hoang.leicafujicam.raw.CanonPictureStyle
+import vn.hoang.leicafujicam.raw.RawRenderingEngine
+import vn.hoang.leicafujicam.raw.RawToneMappingParameters
+import vn.hoang.leicafujicam.raw.RawWhiteLevelCorrection
+import vn.hoang.leicafujicam.raw.RawNoiseProfileInfo
+import vn.hoang.leicafujicam.raw.SpectralFilmSelection
+import vn.hoang.leicafujicam.raw.SpectralFilmUiInfo
+import vn.hoang.leicafujicam.raw.SpectralFilmTuning
+import vn.hoang.leicafujicam.raw.fotufilm.FotufilmDocument
+import kotlin.math.roundToInt
+import vn.hoang.leicafujicam.ui.settings.DropdownSettingItem
+import vn.hoang.leicafujicam.ui.icons.AppIcons
+
+enum class RawEditPanelContentMode {
+    FULL,
+    QUICK,
+}
+
+data class RawEmbeddedDngProfileOption(
+    val id: String,
+    val name: String,
+    val hasProfileGainTableMap: Boolean,
+)
+
+data class RawDcpLensOption(
+    val id: String,
+    val label: String
+)
+
+@Composable
+fun rawDcpLensOptions(cameras: List<CameraInfo>): List<RawDcpLensOption> {
+    return cameras.map { camera ->
+        val prefix = when (camera.lensFacing) {
+            CameraCharacteristics.LENS_FACING_BACK -> stringResource(R.string.rear_camera)
+            CameraCharacteristics.LENS_FACING_FRONT -> stringResource(R.string.front_camera)
+            else -> stringResource(R.string.camera)
+        }
+        val focalLength = if (camera.focalLength35mmEquivalent > 0) {
+            stringResource(R.string.settings_isz_lens_focal_length, camera.focalLength35mmEquivalent.roundToInt())
+        } else {
+            stringResource(R.string.settings_isz_lens_unknown_focal_length)
+        }
+        RawDcpLensOption(
+            id = camera.cameraId,
+            label = stringResource(R.string.settings_isz_lens_label, prefix, camera.cameraId, focalLength)
+        )
+    }
+}
+
+@Composable
+fun RawEditPanel(
+    selectedDcpId: String?,
+    rawDcpIdsByLens: Map<String, String?> = emptyMap(),
+    dcpLensOptions: List<RawDcpLensOption> = emptyList(),
+    availableDcps: List<DcpInfo>,
+    selectedBaselineLutId: String?,
+    onSelectBaselineLut: (String?) -> Unit,
+    onEditBaselineRecipe: (String) -> Unit,
+    availableLuts: List<LutInfo>,
+    thumbnail: Bitmap?,
+    rawExposureCompensation: Float,
+    rawHighlightsAdjustment: Float,
+    rawShadowsAdjustment: Float,
+    rawBlackPointCorrection: Float,
+    rawWhitePointCorrection: Float,
+    rawBlackLevelMode: String = RawCfaCorrection.MODE_DEFAULT,
+    rawCustomBlackLevel: Float = 0f,
+    rawWhiteLevelMode: String = RawWhiteLevelCorrection.MODE_DEFAULT,
+    rawCustomWhiteLevel: Float = 0f,
+    rawCfaCorrectionMode: String = RawCfaCorrection.MODE_DEFAULT,
+    rawRenderingEngine: RawRenderingEngine,
+    rawToneMappingParameters: RawToneMappingParameters = RawToneMappingParameters.DEFAULT,
+    spectralFilmSelection: SpectralFilmSelection?,
+    spectralFilmPrint: String?,
+    onSelectDcp: (String?) -> Unit,
+    onRawDcpIdsByLensChange: ((Map<String, String?>) -> Unit)? = null,
+    onImportDcp: () -> Unit,
+    onDeleteDcp: (DcpInfo) -> Unit,
+    onRawExposureCompensationChange: (Float) -> Unit,
+    onRawHighlightsAdjustmentChange: (Float) -> Unit,
+    onRawShadowsAdjustmentChange: (Float) -> Unit,
+    onRawBlackPointCorrectionChange: (Float) -> Unit,
+    onRawWhitePointCorrectionChange: (Float) -> Unit,
+    onRawBlackLevelModeChange: (String) -> Unit = {},
+    onRawCustomBlackLevelChange: (Float) -> Unit = {},
+    onRawWhiteLevelModeChange: (String) -> Unit = {},
+    onRawCustomWhiteLevelChange: (Float) -> Unit = {},
+    onRawCfaCorrectionModeChange: (String) -> Unit = {},
+    onRawColorEngineChange: (RawRenderingEngine) -> Unit,
+    onRawToneMappingParametersChange: (RawToneMappingParameters) -> Unit = {},
+    embeddedDngProfiles: List<RawEmbeddedDngProfileOption> = emptyList(),
+    selectedEmbeddedDngProfileId: String? = null,
+    onSelectEmbeddedDngProfile: ((RawEmbeddedDngProfileOption) -> Unit)? = null,
+    onSpectralFilmSelectionChange: (SpectralFilmSelection?) -> Unit,
+    onSpectralFilmPrintChange: (String?) -> Unit,
+    onAdjustmentStart: () -> Unit,
+    onAdjustmentEnd: () -> Unit,
+    fotufilmDocument: FotufilmDocument? = null,
+    onFotufilmDocumentChange: (FotufilmDocument) -> Unit = {},
+    onRawExposureCompensationReset: ((Float) -> Unit)? = null,
+    onOpenBaselineLutSheet: (() -> Unit)? = null,
+    showAdaptiveExposureControl: Boolean = false,
+    rawAdaptiveExposureMode: RawAdaptiveExposureMode = RawAdaptiveExposureMode.PHOTON_HDR,
+    onRawAdaptiveExposureModeChange: (RawAdaptiveExposureMode) -> Unit = {},
+    showDngMetadataControls: Boolean = false,
+    contentMode: RawEditPanelContentMode = RawEditPanelContentMode.FULL,
+    hncsFilmCurveMode: HncsFilmCurveMode = HncsFilmCurveMode.Standard,
+    onHncsFilmCurveModeChange: (HncsFilmCurveMode) -> Unit = {},
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 16.dp),
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        if (showAdaptiveExposureControl) {
+            RawSwitchSettingItem(
+                title = stringResource(R.string.settings_raw_photon_hdr),
+                description = stringResource(R.string.settings_raw_photon_hdr_edit_description),
+                checked = rawAdaptiveExposureMode.usesPhotonHdr,
+                onCheckedChange = { enabled ->
+                    onRawAdaptiveExposureModeChange(
+                        if (enabled) {
+                            RawAdaptiveExposureMode.PHOTON_HDR
+                        } else {
+                            RawAdaptiveExposureMode.OFF
+                        }
+                    )
+                },
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
+        RawRenderingEngineSettingsPanel(
+            selectedDcpId = selectedDcpId,
+            rawDcpIdsByLens = rawDcpIdsByLens,
+            dcpLensOptions = dcpLensOptions,
+            availableDcps = availableDcps,
+            rawRenderingEngine = rawRenderingEngine,
+            rawToneMappingParameters = rawToneMappingParameters,
+            spectralFilmSelection = spectralFilmSelection,
+            spectralFilmPrint = spectralFilmPrint,
+            onSelectDcp = onSelectDcp,
+            onRawDcpIdsByLensChange = onRawDcpIdsByLensChange,
+            onImportDcp = onImportDcp,
+            onDeleteDcp = onDeleteDcp,
+            onRawColorEngineChange = onRawColorEngineChange,
+            onRawToneMappingParametersChange = onRawToneMappingParametersChange,
+            embeddedDngProfiles = embeddedDngProfiles,
+            selectedEmbeddedDngProfileId = selectedEmbeddedDngProfileId,
+            onSelectEmbeddedDngProfile = onSelectEmbeddedDngProfile,
+            onSpectralFilmSelectionChange = onSpectralFilmSelectionChange,
+            onSpectralFilmPrintChange = onSpectralFilmPrintChange,
+            fotufilmDocument = fotufilmDocument,
+            onFotufilmDocumentChange = onFotufilmDocumentChange,
+            hncsFilmCurveMode = hncsFilmCurveMode,
+            onHncsFilmCurveModeChange = onHncsFilmCurveModeChange,
+            onAdjustmentStart = onAdjustmentStart,
+            onAdjustmentEnd = onAdjustmentEnd,
+            inlineEngineOptions = false,
+            showToneMappingControls = contentMode != RawEditPanelContentMode.QUICK,
+        )
+
+        if (contentMode == RawEditPanelContentMode.FULL) {
+            SliderSettingItem(
+                title = stringResource(R.string.settings_raw_exposure_compensation),
+                value = rawExposureCompensation,
+                valueRange = MeteringSystem.RAW_EXPOSURE_MIN_EV..MeteringSystem.RAW_EXPOSURE_MAX_EV,
+                resetValue = 0f,
+                onResetValue = onRawExposureCompensationReset,
+                onValueChange = {
+                    onAdjustmentStart()
+                    onRawExposureCompensationChange(it)
+                },
+                onValueChangeFinished = onAdjustmentEnd
+            )
+            SliderSettingItem(
+                title = stringResource(R.string.settings_raw_highlights_adjustment),
+                value = rawHighlightsAdjustment,
+                valueRange = -1f..1f,
+                resetValue = 0f,
+                onValueChange = {
+                    onAdjustmentStart()
+                    onRawHighlightsAdjustmentChange(it)
+                },
+                onValueChangeFinished = onAdjustmentEnd
+            )
+            SliderSettingItem(
+                title = stringResource(R.string.settings_raw_shadows_adjustment),
+                value = rawShadowsAdjustment,
+                valueRange = -1f..1f,
+                resetValue = 0f,
+                onValueChange = {
+                    onAdjustmentStart()
+                    onRawShadowsAdjustmentChange(it)
+                },
+                onValueChangeFinished = onAdjustmentEnd
+            )
+            SliderSettingItem(
+                title = stringResource(R.string.settings_raw_blacks_adjustment),
+                value = rawBlackPointCorrection,
+                valueRange = -1f..1f,
+                resetValue = 0f,
+                onValueChange = {
+                    onAdjustmentStart()
+                    onRawBlackPointCorrectionChange(it)
+                },
+                onValueChangeFinished = onAdjustmentEnd
+            )
+            SliderSettingItem(
+                title = stringResource(R.string.settings_raw_whites_adjustment),
+                value = rawWhitePointCorrection,
+                valueRange = -1f..1f,
+                resetValue = 0f,
+                onValueChange = {
+                    onAdjustmentStart()
+                    onRawWhitePointCorrectionChange(it)
+                },
+                onValueChangeFinished = onAdjustmentEnd
+            )
+            if (showDngMetadataControls) {
+                RawDngMetadataCorrectionSettings(
+                    rawBlackLevelMode = rawBlackLevelMode,
+                    rawCustomBlackLevel = rawCustomBlackLevel,
+                    rawWhiteLevelMode = rawWhiteLevelMode,
+                    rawCustomWhiteLevel = rawCustomWhiteLevel,
+                    rawCfaCorrectionMode = rawCfaCorrectionMode,
+                    onRawBlackLevelModeChange = onRawBlackLevelModeChange,
+                    onRawCustomBlackLevelChange = onRawCustomBlackLevelChange,
+                    onRawWhiteLevelModeChange = onRawWhiteLevelModeChange,
+                    onRawCustomWhiteLevelChange = onRawCustomWhiteLevelChange,
+                    onRawCfaCorrectionModeChange = onRawCfaCorrectionModeChange
+                )
+            }
+        }
+
+        RawBaselineColorCorrectionSelector(
+            selectedLutId = selectedBaselineLutId,
+            availableLuts = availableLuts,
+            thumbnail = thumbnail,
+            onSelectLut = onSelectBaselineLut,
+            onEditRecipe = onEditBaselineRecipe,
+            onOpenSheet = onOpenBaselineLutSheet
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+    }
+}
+
+@Composable
+fun RawRenderingEngineSettingsPanel(
+    selectedDcpId: String?,
+    rawDcpIdsByLens: Map<String, String?> = emptyMap(),
+    dcpLensOptions: List<RawDcpLensOption> = emptyList(),
+    availableDcps: List<DcpInfo>,
+    rawRenderingEngine: RawRenderingEngine,
+    rawToneMappingParameters: RawToneMappingParameters,
+    spectralFilmSelection: SpectralFilmSelection?,
+    spectralFilmPrint: String?,
+    onSelectDcp: (String?) -> Unit,
+    onRawDcpIdsByLensChange: ((Map<String, String?>) -> Unit)? = null,
+    onImportDcp: () -> Unit,
+    onDeleteDcp: (DcpInfo) -> Unit,
+    onRawColorEngineChange: (RawRenderingEngine) -> Unit,
+    onRawToneMappingParametersChange: (RawToneMappingParameters) -> Unit,
+    embeddedDngProfiles: List<RawEmbeddedDngProfileOption> = emptyList(),
+    selectedEmbeddedDngProfileId: String? = null,
+    onSelectEmbeddedDngProfile: ((RawEmbeddedDngProfileOption) -> Unit)? = null,
+    onSpectralFilmSelectionChange: (SpectralFilmSelection?) -> Unit,
+    onSpectralFilmPrintChange: (String?) -> Unit,
+    fotufilmDocument: FotufilmDocument? = null,
+    onFotufilmDocumentChange: (FotufilmDocument) -> Unit = {},
+    hncsFilmCurveMode: HncsFilmCurveMode = HncsFilmCurveMode.Standard,
+    onHncsFilmCurveModeChange: (HncsFilmCurveMode) -> Unit = {},
+    onAdjustmentStart: () -> Unit = {},
+    onAdjustmentEnd: () -> Unit = {},
+    inlineEngineOptions: Boolean = false,
+    showToneMappingControls: Boolean = true,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier.fillMaxWidth()) {
+        RawRenderingEngineSelector(
+            selectedEngine = rawRenderingEngine,
+            onSelectEngine = onRawColorEngineChange,
+            inlineOptions = inlineEngineOptions,
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+
+        if (rawRenderingEngine.isHncs) {
+            RawSwitchSettingItem(
+                title = stringResource(R.string.settings_raw_camera_color_matching),
+                description = stringResource(R.string.settings_raw_camera_color_matching_description),
+                checked = rawToneMappingParameters.hncsColorMatchingEnabled,
+                onCheckedChange = { enabled ->
+                    onAdjustmentStart()
+                    onRawToneMappingParametersChange(
+                        rawToneMappingParameters.copy(hncsColorMatchingEnabled = enabled)
+                    )
+                    onAdjustmentEnd()
+                },
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            RawChoiceSetting(
+                title = stringResource(R.string.settings_raw_hncs_film_curve),
+                description = stringResource(R.string.settings_raw_hncs_film_curve_description),
+                levels = listOf(
+                    HncsFilmCurveMode.Standard.persistedValue to
+                        stringResource(R.string.settings_raw_hncs_film_curve_standard),
+                    HncsFilmCurveMode.Reproduction.persistedValue to
+                        stringResource(R.string.settings_raw_hncs_film_curve_reproduction),
+                ),
+                currentLevel = hncsFilmCurveMode.persistedValue,
+                onLevelSelected = { persistedValue ->
+                    onHncsFilmCurveModeChange(
+                        HncsFilmCurveMode.fromPersistedValue(persistedValue)
+                    )
+                },
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
+        if (rawRenderingEngine.isLumix) {
+            LumixPhotoStyleSelector(
+                selectedStyle = rawToneMappingParameters.lumixPhotoStyle,
+                onSelectStyle = {
+                    onAdjustmentStart()
+                    onRawToneMappingParametersChange(rawToneMappingParameters.copy(lumixPhotoStyle = it))
+                    onAdjustmentEnd()
+                },
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            RawSwitchSettingItem(
+                title = stringResource(R.string.settings_raw_camera_color_matching),
+                description = stringResource(R.string.settings_raw_camera_color_matching_description),
+                checked = rawToneMappingParameters.lumixColorMatchingEnabled,
+                onCheckedChange = { enabled ->
+                    onAdjustmentStart()
+                    onRawToneMappingParametersChange(
+                        rawToneMappingParameters.copy(lumixColorMatchingEnabled = enabled)
+                    )
+                    onAdjustmentEnd()
+                },
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
+        if (rawRenderingEngine.isCanon) {
+            CanonPictureStyleSelector(
+                selectedStyle = rawToneMappingParameters.canonPictureStyle,
+                onSelectStyle = {
+                    onAdjustmentStart()
+                    onRawToneMappingParametersChange(rawToneMappingParameters.copy(canonPictureStyle = it))
+                    onAdjustmentEnd()
+                },
+            )
+            CanonExposureCompensationSetting(
+                value = rawToneMappingParameters.canonExposureCompensationEv,
+                onValueChange = {
+                    onAdjustmentStart()
+                    onRawToneMappingParametersChange(rawToneMappingParameters.copy(canonExposureCompensationEv = it))
+                },
+                onValueChangeFinished = onAdjustmentEnd,
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            RawChoiceSetting(
+                title = stringResource(R.string.settings_raw_canon_color_matrix),
+                description = stringResource(R.string.settings_raw_canon_color_matrix_description),
+                levels = listOf(
+                    "device" to stringResource(R.string.settings_raw_canon_color_matrix_device),
+                    "r5" to stringResource(R.string.settings_raw_canon_color_matrix_r5),
+                ),
+                currentLevel = if (rawToneMappingParameters.canonUseR5ColorMatrix) "r5" else "device",
+                onLevelSelected = { source ->
+                    onAdjustmentStart()
+                    onRawToneMappingParametersChange(
+                        rawToneMappingParameters.copy(canonUseR5ColorMatrix = source == "r5")
+                    )
+                    onAdjustmentEnd()
+                },
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
+        if (rawRenderingEngine.isLeica) {
+            RawChoiceSetting(
+                title = stringResource(R.string.settings_raw_leica_color_matrix),
+                description = stringResource(R.string.settings_raw_leica_color_matrix_description),
+                levels = listOf(
+                    "device" to stringResource(R.string.settings_raw_leica_color_matrix_device),
+                    "m9" to stringResource(R.string.settings_raw_leica_color_matrix_m9),
+                ),
+                currentLevel = if (rawToneMappingParameters.leicaUseM9ColorMatrix) "m9" else "device",
+                onLevelSelected = { source ->
+                    onAdjustmentStart()
+                    onRawToneMappingParametersChange(
+                        rawToneMappingParameters.copy(leicaUseM9ColorMatrix = source == "m9")
+                    )
+                    onAdjustmentEnd()
+                },
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
+        if (rawRenderingEngine == RawRenderingEngine.AdobeCurve) {
+            RawDcpSelector(
+                selectedDcpId = selectedDcpId,
+                rawDcpIdsByLens = rawDcpIdsByLens,
+                lensOptions = dcpLensOptions,
+                availableDcps = availableDcps,
+                onSelectDcp = onSelectDcp,
+                onRawDcpIdsByLensChange = onRawDcpIdsByLensChange,
+                onImportDcp = onImportDcp,
+                onDeleteDcp = onDeleteDcp,
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            RawProfileToneMapSwitches(
+                params = rawToneMappingParameters.normalized(),
+                selectedDcpName = availableDcps.firstOrNull { it.id == selectedDcpId }?.getName(),
+                hasSelectedDcpId = selectedDcpId != null,
+                embeddedDngProfiles = embeddedDngProfiles,
+                selectedEmbeddedDngProfileId = selectedEmbeddedDngProfileId,
+                onSelectEmbeddedDngProfile = onSelectEmbeddedDngProfile,
+                onParamsChange = onRawToneMappingParametersChange,
+                onAdjustmentEnd = onAdjustmentEnd,
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
+        if (rawRenderingEngine == RawRenderingEngine.Spektrafilm) {
+            val isPositiveFilm = SpectralFilmUiInfo.isPositiveFilm(spectralFilmSelection?.id)
+            RawSpectralFilmSelector(
+                selectedFilm = spectralFilmSelection?.id,
+                onSelectFilm = { film ->
+                    onSpectralFilmSelectionChange(film?.let(::SpectralFilmSelection))
+                },
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            if (!isPositiveFilm) {
+                RawSpectralPrintSelector(
+                    selectedPrint = spectralFilmPrint,
+                    onSelectPrint = onSpectralFilmPrintChange,
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+        }
+
+        if (rawRenderingEngine.isFotufilm && fotufilmDocument != null) {
+            FotufilmControls(
+                document = fotufilmDocument,
+                onDocumentChange = onFotufilmDocumentChange,
+                onAdjustmentStart = onAdjustmentStart,
+                onAdjustmentEnd = onAdjustmentEnd,
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
+        if (showToneMappingControls) {
+            RawToneMappingControls(
+                rawRenderingEngine = rawRenderingEngine,
+                params = rawToneMappingParameters.normalized(),
+                spectralFilmSelection = spectralFilmSelection,
+                onParamsChange = onRawToneMappingParametersChange,
+                onSpectralFilmSelectionChange = onSpectralFilmSelectionChange,
+                onAdjustmentStart = onAdjustmentStart,
+                onAdjustmentEnd = onAdjustmentEnd,
+            )
+        }
+    }
+}
+
+/** Shared RAW DNG metadata correction controls for a lens-specific configuration. */
+@Composable
+fun RawDngMetadataCorrectionSettings(
+    rawBlackLevelMode: String,
+    rawCustomBlackLevel: Float,
+    rawWhiteLevelMode: String,
+    rawCustomWhiteLevel: Float,
+    rawCfaCorrectionMode: String,
+    onRawBlackLevelModeChange: (String) -> Unit,
+    onRawCustomBlackLevelChange: (Float) -> Unit,
+    onRawWhiteLevelModeChange: (String) -> Unit,
+    onRawCustomWhiteLevelChange: (Float) -> Unit,
+    onRawCfaCorrectionModeChange: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier.fillMaxWidth()) {
+        RawChoiceSetting(
+            title = stringResource(R.string.settings_raw_black_level_correction),
+            description = stringResource(R.string.settings_raw_black_level_correction_description),
+            levels = listOf(
+                RawCfaCorrection.MODE_DEFAULT to stringResource(R.string.settings_black_level_default),
+                "0" to "0",
+                "16" to "16",
+                "64" to "64",
+                "256" to "256",
+                "512" to "512",
+                "Custom" to stringResource(R.string.settings_black_level_custom)
+            ),
+            currentLevel = rawBlackLevelMode,
+            onLevelSelected = onRawBlackLevelModeChange
+        )
+        if (rawBlackLevelMode == "Custom") {
+            RawNumberInputSetting(
+                title = stringResource(R.string.settings_black_level_custom),
+                value = rawCustomBlackLevel,
+                onValueChange = onRawCustomBlackLevelChange
+            )
+        }
+        RawChoiceSetting(
+            title = stringResource(R.string.settings_raw_white_level_correction),
+            description = stringResource(R.string.settings_raw_white_level_correction_description),
+            levels = listOf(
+                RawWhiteLevelCorrection.MODE_DEFAULT to stringResource(R.string.settings_white_level_default),
+                RawWhiteLevelCorrection.MODE_RAW10 to stringResource(R.string.settings_white_level_raw10),
+                RawWhiteLevelCorrection.MODE_RAW12 to stringResource(R.string.settings_white_level_raw12),
+                RawWhiteLevelCorrection.MODE_RAW14 to stringResource(R.string.settings_white_level_raw14),
+                RawWhiteLevelCorrection.MODE_RAW_SENSOR to stringResource(R.string.settings_white_level_raw_sensor),
+                RawWhiteLevelCorrection.MODE_CUSTOM to stringResource(R.string.settings_white_level_custom)
+            ),
+            currentLevel = rawWhiteLevelMode,
+            onLevelSelected = onRawWhiteLevelModeChange
+        )
+        if (rawWhiteLevelMode == RawWhiteLevelCorrection.MODE_CUSTOM) {
+            RawNumberInputSetting(
+                title = stringResource(R.string.settings_white_level_custom),
+                value = rawCustomWhiteLevel,
+                onValueChange = onRawCustomWhiteLevelChange
+            )
+        }
+        RawChoiceSetting(
+            title = stringResource(R.string.settings_raw_cfa_correction),
+            description = stringResource(R.string.settings_raw_cfa_correction_description),
+            levels = listOf(
+                RawCfaCorrection.MODE_DEFAULT to stringResource(R.string.settings_cfa_correction_default),
+                RawCfaCorrection.MODE_2X2_RGGB to stringResource(R.string.settings_cfa_correction_2x2_rggb),
+                RawCfaCorrection.MODE_2X2_GRBG to stringResource(R.string.settings_cfa_correction_2x2_grbg),
+                RawCfaCorrection.MODE_2X2_GBRG to stringResource(R.string.settings_cfa_correction_2x2_gbrg),
+                RawCfaCorrection.MODE_2X2_BGGR to stringResource(R.string.settings_cfa_correction_2x2_bggr),
+                RawCfaCorrection.MODE_4X4_RGGB to stringResource(R.string.settings_cfa_correction_4x4_rggb),
+                RawCfaCorrection.MODE_4X4_GRBG to stringResource(R.string.settings_cfa_correction_4x4_grbg),
+                RawCfaCorrection.MODE_4X4_GBRG to stringResource(R.string.settings_cfa_correction_4x4_gbrg),
+                RawCfaCorrection.MODE_4X4_BGGR to stringResource(R.string.settings_cfa_correction_4x4_bggr),
+                RawCfaCorrection.MODE_8X8_RGGB to stringResource(R.string.settings_cfa_correction_8x8_rggb),
+                RawCfaCorrection.MODE_8X8_GRBG to stringResource(R.string.settings_cfa_correction_8x8_grbg),
+                RawCfaCorrection.MODE_8X8_GBRG to stringResource(R.string.settings_cfa_correction_8x8_gbrg),
+                RawCfaCorrection.MODE_8X8_BGGR to stringResource(R.string.settings_cfa_correction_8x8_bggr)
+            ),
+            currentLevel = rawCfaCorrectionMode,
+            onLevelSelected = onRawCfaCorrectionModeChange
+        )
+    }
+}
+
+@Composable
+fun LumixPhotoStyleSelector(
+    selectedStyle: LumixPhotoStyle,
+    onSelectStyle: (LumixPhotoStyle) -> Unit,
+) {
+    val title = stringResource(R.string.settings_raw_lumix_photo_style)
+    val labels = LumixPhotoStyle.entries.associateWith { style ->
+        stringResource(when (style) {
+            LumixPhotoStyle.Standard -> R.string.settings_raw_lumix_style_standard
+            LumixPhotoStyle.Vivid -> R.string.settings_raw_lumix_style_vivid
+            LumixPhotoStyle.Natural -> R.string.settings_raw_lumix_style_natural
+            LumixPhotoStyle.Landscape -> R.string.settings_raw_lumix_style_landscape
+            LumixPhotoStyle.Portrait -> R.string.settings_raw_lumix_style_portrait
+            LumixPhotoStyle.Monochrome -> R.string.settings_raw_lumix_style_monochrome
+            LumixPhotoStyle.LMonochrome -> R.string.settings_raw_lumix_style_l_monochrome
+            LumixPhotoStyle.LMonochromeD -> R.string.settings_raw_lumix_style_l_monochrome_d
+            LumixPhotoStyle.LMonochromeS -> R.string.settings_raw_lumix_style_l_monochrome_s
+            LumixPhotoStyle.LeicaMonochrome -> R.string.settings_raw_lumix_style_leica_monochrome
+            LumixPhotoStyle.LClassicNeo -> R.string.settings_raw_lumix_style_l_classicneo
+            LumixPhotoStyle.Flat -> R.string.settings_raw_lumix_style_flat
+            LumixPhotoStyle.CinelikeD2 -> R.string.settings_raw_lumix_style_cinelike_d2
+            LumixPhotoStyle.CinelikeV2 -> R.string.settings_raw_lumix_style_cinelike_v2
+            LumixPhotoStyle.Like709 -> R.string.settings_raw_lumix_style_709like
+            LumixPhotoStyle.VLog -> R.string.settings_raw_lumix_style_vlog
+        })
+    }
+    RawPhotoStyleSelector(
+        title = title,
+        description = stringResource(R.string.settings_raw_lumix_photo_style_description),
+        styles = LumixPhotoStyle.entries,
+        styleKey = { it.assetName },
+        labels = labels,
+        selectedStyle = selectedStyle,
+        onSelectStyle = onSelectStyle,
+    )
+}
+
+@Composable
+fun CanonPictureStyleSelector(
+    selectedStyle: CanonPictureStyle,
+    onSelectStyle: (CanonPictureStyle) -> Unit,
+) {
+    val labels = CanonPictureStyle.entries.associateWith { style ->
+        stringResource(when (style) {
+            CanonPictureStyle.Standard -> R.string.settings_raw_canon_style_standard
+            CanonPictureStyle.Portrait -> R.string.settings_raw_canon_style_portrait
+            CanonPictureStyle.Landscape -> R.string.settings_raw_canon_style_landscape
+            CanonPictureStyle.Neutral -> R.string.settings_raw_canon_style_neutral
+            CanonPictureStyle.Faithful -> R.string.settings_raw_canon_style_faithful
+            CanonPictureStyle.Monochrome -> R.string.settings_raw_canon_style_monochrome
+        })
+    }
+    RawPhotoStyleSelector(
+        title = stringResource(R.string.settings_raw_canon_picture_style),
+        description = stringResource(R.string.settings_raw_canon_picture_style_description),
+        styles = CanonPictureStyle.entries,
+        styleKey = { it.persistedValue },
+        labels = labels,
+        selectedStyle = selectedStyle,
+        onSelectStyle = onSelectStyle,
+    )
+}
+
+@Composable
+fun CanonExposureCompensationSetting(
+    value: Float,
+    onValueChange: (Float) -> Unit,
+    onValueChangeFinished: (() -> Unit)? = null,
+) {
+    SliderSettingItem(
+        title = stringResource(R.string.settings_raw_canon_exposure_compensation),
+        description = stringResource(R.string.settings_raw_canon_exposure_compensation_description),
+        value = value,
+        valueRange = RawToneMappingParameters.CANON_EXPOSURE_COMPENSATION_MIN..
+            RawToneMappingParameters.CANON_EXPOSURE_COMPENSATION_MAX,
+        resetValue = RawToneMappingParameters.CANON_EXPOSURE_COMPENSATION_DEFAULT,
+        onValueChange = onValueChange,
+        onValueChangeFinished = onValueChangeFinished,
+    )
+}
+
+@Composable
+private fun <T> RawPhotoStyleSelector(
+    title: String,
+    description: String,
+    styles: List<T>,
+    styleKey: (T) -> String,
+    labels: Map<T, String>,
+    selectedStyle: T,
+    onSelectStyle: (T) -> Unit,
+) {
+    var showDialog by remember { mutableStateOf(false) }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { showDialog = true }
+            .padding(vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(title, color = Color.White, fontSize = 16.sp)
+            Spacer(Modifier.height(2.dp))
+            Text(
+                description,
+                color = Color.White.copy(alpha = 0.6f),
+                fontSize = 13.sp,
+                lineHeight = 18.sp,
+            )
+            Spacer(Modifier.height(4.dp))
+            Text(
+                labels.getValue(selectedStyle),
+                color = AccentColor,
+                fontSize = 14.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+        Spacer(Modifier.width(16.dp))
+        Icon(AppIcons.ExpandMore, contentDescription = null, tint = Color.White.copy(alpha = 0.4f))
+    }
+
+    if (showDialog) {
+        // A long, anchor-positioned popup can be constrained and repositioned as the
+        // host panel/window moves. Keep this list in its own bounded dialog viewport.
+        Dialog(onDismissRequest = { showDialog = false }) {
+            Surface(shape = RoundedCornerShape(20.dp), color = Color(0xFF2C2C2E)) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(max = 560.dp)
+                        .padding(vertical = 16.dp),
+                ) {
+                    Text(
+                        title,
+                        color = Color.White,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
+                    )
+                    val listState = rememberLazyListState(initialFirstVisibleItemIndex = styles.indexOf(selectedStyle))
+                    LazyColumn(
+                        state = listState,
+                        modifier = Modifier.weight(1f, fill = false).fillMaxWidth().selectableGroup(),
+                        contentPadding = PaddingValues(horizontal = 12.dp),
+                    ) {
+                        items(styles, key = styleKey) { style ->
+                            val selected = style == selectedStyle
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .selectable(
+                                        selected = selected,
+                                        role = Role.RadioButton,
+                                        onClick = {
+                                            showDialog = false
+                                            onSelectStyle(style)
+                                        },
+                                    )
+                                    .heightIn(min = 48.dp)
+                                    .padding(horizontal = 12.dp, vertical = 12.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                Text(
+                                    labels.getValue(style),
+                                    color = if (selected) AccentColor else Color.White,
+                                    fontSize = 16.sp,
+                                    modifier = Modifier.weight(1f),
+                                )
+                                Spacer(Modifier.width(12.dp))
+                                // Reserve the indicator width for every row, including unselected rows.
+                                Box(Modifier.size(24.dp), contentAlignment = Alignment.Center) {
+                                    if (selected) {
+                                        Icon(Icons.Default.Check, contentDescription = null, tint = AccentColor)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    TextButton(
+                        onClick = { showDialog = false },
+                        modifier = Modifier.align(Alignment.End).padding(horizontal = 12.dp),
+                    ) {
+                        Text(stringResource(R.string.cancel))
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun RawChoiceSetting(
+    title: String,
+    description: String,
+    levels: List<Pair<String, String>>,
+    currentLevel: String,
+    onLevelSelected: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+    ) {
+        Text(
+            text = title,
+            color = Color.White,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Normal
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = description,
+            color = Color.White.copy(alpha = 0.6f),
+            fontSize = 13.sp,
+            lineHeight = 18.sp
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        FlowRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            levels.forEach { (level, label) ->
+                val selected = currentLevel == level
+                Box(
+                    modifier = Modifier
+                        .height(36.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(if (selected) AccentColor else Color.White.copy(alpha = 0.1f))
+                        .clickable { onLevelSelected(level) }
+                        .padding(horizontal = 12.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = label,
+                        color = if (selected) OnAccentColor else Color.White,
+                        fontSize = 12.sp,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun RawNumberInputSetting(
+    title: String,
+    value: Float,
+    onValueChange: (Float) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var text by remember(value) {
+        mutableStateOf(if (value == 0f) "" else value.toString())
+    }
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+    ) {
+        Text(
+            text = title,
+            color = Color.White,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Normal
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        OutlinedTextField(
+            value = text,
+            onValueChange = { input ->
+                text = input
+                input.toFloatOrNull()?.let(onValueChange)
+            },
+            singleLine = true,
+            textStyle = LocalTextStyle.current.copy(color = Color.White),
+            modifier = Modifier.fillMaxWidth(),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = Color.White,
+                unfocusedTextColor = Color.White,
+                cursorColor = Color.White,
+                focusedBorderColor = AccentColor,
+                unfocusedBorderColor = Color.White.copy(alpha = 0.25f),
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent
+            )
+        )
+    }
+}
+
+@Composable
+private fun RawProfileToneMapSwitches(
+    params: RawToneMappingParameters,
+    selectedDcpName: String?,
+    hasSelectedDcpId: Boolean,
+    embeddedDngProfiles: List<RawEmbeddedDngProfileOption>,
+    selectedEmbeddedDngProfileId: String?,
+    onSelectEmbeddedDngProfile: ((RawEmbeddedDngProfileOption) -> Unit)?,
+    onParamsChange: (RawToneMappingParameters) -> Unit,
+    onAdjustmentEnd: () -> Unit
+) {
+    val currentLevel = when (params.profileToneMapMode) {
+        RawProfileToneMapMode.Default -> RawProfileToneMapMode.Default.name
+        RawProfileToneMapMode.Profile -> when {
+            selectedDcpName != null -> PROFILE_TONE_MAP_DCP_LEVEL
+            hasSelectedDcpId -> RawProfileToneMapMode.Default.name
+            embeddedDngProfiles.any { it.id == selectedEmbeddedDngProfileId } ->
+                embeddedProfileLevel(selectedEmbeddedDngProfileId.orEmpty())
+            else -> RawProfileToneMapMode.Default.name
+        }
+        RawProfileToneMapMode.OppoMaster -> RawProfileToneMapMode.OppoMaster.name
+    }
+    RawChoiceSetting(
+        title = stringResource(R.string.settings_raw_profile_tone_map),
+        description = stringResource(R.string.settings_raw_profile_tone_map_description),
+        levels = buildList {
+            add(
+                RawProfileToneMapMode.Default.name to
+                    stringResource(R.string.settings_raw_profile_tone_map_default)
+            )
+            selectedDcpName?.let { add(PROFILE_TONE_MAP_DCP_LEVEL to it) }
+            embeddedDngProfiles.forEach { profile ->
+                add(embeddedProfileLevel(profile.id) to profile.name)
+            }
+            add(
+                RawProfileToneMapMode.OppoMaster.name to
+                    stringResource(R.string.settings_raw_profile_tone_map_oppo_master)
+            )
+        },
+        currentLevel = currentLevel,
+        onLevelSelected = { selected ->
+            when (selected) {
+                PROFILE_TONE_MAP_DCP_LEVEL -> {
+                    onParamsChange(params.withProfileToneMapMode(RawProfileToneMapMode.Profile))
+                }
+                else -> {
+                    val embeddedProfile = embeddedDngProfiles.firstOrNull {
+                        embeddedProfileLevel(it.id) == selected
+                    }
+                    if (embeddedProfile != null) {
+                        if (onSelectEmbeddedDngProfile != null) {
+                            onSelectEmbeddedDngProfile(embeddedProfile)
+                        } else {
+                            onParamsChange(
+                                params.withProfileToneMapMode(RawProfileToneMapMode.Profile)
+                            )
+                        }
+                    } else {
+                        val mode = RawProfileToneMapMode.values()
+                            .firstOrNull { it.name == selected }
+                            ?: RawProfileToneMapMode.Default
+                        onParamsChange(params.withProfileToneMapMode(mode))
+                    }
+                }
+            }
+            onAdjustmentEnd()
+        }
+    )
+}
+
+private const val PROFILE_TONE_MAP_DCP_LEVEL = "profile:dcp"
+private const val PROFILE_TONE_MAP_EMBEDDED_PREFIX = "profile:embedded:"
+
+private fun embeddedProfileLevel(profileId: String): String {
+    return PROFILE_TONE_MAP_EMBEDDED_PREFIX + profileId
+}
+
+/** AgX / Filmic 引擎的曲线参数滑块；其它引擎不绘制内容。 */
+@Composable
+fun RawEngineToneCurveControls(
+    rawRenderingEngine: RawRenderingEngine,
+    params: RawToneMappingParameters,
+    onParamsChange: (RawToneMappingParameters) -> Unit,
+    onAdjustmentStart: () -> Unit = {},
+    onAdjustmentEnd: () -> Unit = {},
+) {
+    fun updateParams(value: RawToneMappingParameters) {
+        onAdjustmentStart()
+        onParamsChange(value.normalized())
+    }
+
+    fun formatEv(value: Float): String = String.format("%.2f EV", value)
+    fun formatPower(value: Float): String = String.format("%.2f", value)
+
+    when (rawRenderingEngine) {
+        RawRenderingEngine.AgX -> {
+            SliderSettingItem(
+                title = stringResource(R.string.settings_raw_agx_white_relative_exposure),
+                value = params.agxWhiteRelativeExposure,
+                valueRange = RawToneMappingParameters.AGX_WHITE_RELATIVE_EXPOSURE_MIN..
+                    RawToneMappingParameters.AGX_WHITE_RELATIVE_EXPOSURE_MAX,
+                resetValue = RawToneMappingParameters.AGX_WHITE_RELATIVE_EXPOSURE_DEFAULT,
+                valueTextFormatter = ::formatEv,
+                onValueChange = {
+                    updateParams(params.copy(agxWhiteRelativeExposure = it))
+                },
+                onValueChangeFinished = onAdjustmentEnd
+            )
+            SliderSettingItem(
+                title = stringResource(R.string.settings_raw_agx_black_relative_exposure),
+                value = params.agxBlackRelativeExposure,
+                valueRange = RawToneMappingParameters.AGX_BLACK_RELATIVE_EXPOSURE_MIN..
+                    RawToneMappingParameters.AGX_BLACK_RELATIVE_EXPOSURE_MAX,
+                resetValue = RawToneMappingParameters.AGX_BLACK_RELATIVE_EXPOSURE_DEFAULT,
+                valueTextFormatter = ::formatEv,
+                onValueChange = {
+                    updateParams(params.copy(agxBlackRelativeExposure = it))
+                },
+                onValueChangeFinished = onAdjustmentEnd
+            )
+            SliderSettingItem(
+                title = stringResource(R.string.settings_raw_agx_shoulder),
+                value = params.agxShoulder,
+                valueRange = RawToneMappingParameters.AGX_SHOULDER_MIN..
+                    RawToneMappingParameters.AGX_SHOULDER_MAX,
+                resetValue = RawToneMappingParameters.AGX_SHOULDER_DEFAULT,
+                valueTextFormatter = ::formatPower,
+                onValueChange = {
+                    updateParams(params.copy(agxShoulder = it))
+                },
+                onValueChangeFinished = onAdjustmentEnd
+            )
+            SliderSettingItem(
+                title = stringResource(R.string.settings_raw_agx_toe),
+                value = params.agxToe,
+                valueRange = RawToneMappingParameters.AGX_TOE_MIN..
+                    RawToneMappingParameters.AGX_TOE_MAX,
+                resetValue = RawToneMappingParameters.AGX_TOE_DEFAULT,
+                valueTextFormatter = ::formatPower,
+                onValueChange = {
+                    updateParams(params.copy(agxToe = it))
+                },
+                onValueChangeFinished = onAdjustmentEnd
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+
+        RawRenderingEngine.DarktableFilmic -> {
+            SliderSettingItem(
+                title = stringResource(R.string.settings_raw_filmic_white_relative_exposure),
+                value = params.filmicWhiteRelativeExposure,
+                valueRange = RawToneMappingParameters.FILMIC_WHITE_RELATIVE_EXPOSURE_MIN..
+                    RawToneMappingParameters.FILMIC_WHITE_RELATIVE_EXPOSURE_MAX,
+                resetValue = RawToneMappingParameters.FILMIC_WHITE_RELATIVE_EXPOSURE_DEFAULT,
+                valueTextFormatter = ::formatEv,
+                onValueChange = {
+                    updateParams(params.copy(filmicWhiteRelativeExposure = it))
+                },
+                onValueChangeFinished = onAdjustmentEnd
+            )
+            SliderSettingItem(
+                title = stringResource(R.string.settings_raw_filmic_black_relative_exposure),
+                value = params.filmicBlackRelativeExposure,
+                valueRange = RawToneMappingParameters.FILMIC_BLACK_RELATIVE_EXPOSURE_MIN..
+                    RawToneMappingParameters.FILMIC_BLACK_RELATIVE_EXPOSURE_MAX,
+                resetValue = RawToneMappingParameters.FILMIC_BLACK_RELATIVE_EXPOSURE_DEFAULT,
+                valueTextFormatter = ::formatEv,
+                onValueChange = {
+                    updateParams(params.copy(filmicBlackRelativeExposure = it))
+                },
+                onValueChangeFinished = onAdjustmentEnd
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+
+        else -> Unit
+    }
+}
+
+@Composable
+private fun RawToneMappingControls(
+    rawRenderingEngine: RawRenderingEngine,
+    params: RawToneMappingParameters,
+    spectralFilmSelection: SpectralFilmSelection?,
+    onParamsChange: (RawToneMappingParameters) -> Unit,
+    onSpectralFilmSelectionChange: (SpectralFilmSelection?) -> Unit,
+    onAdjustmentStart: () -> Unit,
+    onAdjustmentEnd: () -> Unit
+) {
+    var localSpectralFilmTuning by remember(spectralFilmSelection?.id) {
+        mutableStateOf(spectralFilmSelection?.tuning ?: SpectralFilmTuning.DEFAULT)
+    }
+    var spectralFilmTuningExpanded by remember(spectralFilmSelection?.id) { mutableStateOf(false) }
+
+    LaunchedEffect(spectralFilmSelection) {
+        localSpectralFilmTuning = spectralFilmSelection?.tuning ?: SpectralFilmTuning.DEFAULT
+    }
+
+    fun updateSpectralFilmTuning(value: SpectralFilmTuning) {
+        onAdjustmentStart()
+        localSpectralFilmTuning = value
+    }
+
+    fun commitSpectralFilmDensityGains() {
+        val selection = spectralFilmSelection ?: return
+        onSpectralFilmSelectionChange(selection.copy(tuning = localSpectralFilmTuning.normalized()))
+        onAdjustmentEnd()
+    }
+
+    when (rawRenderingEngine) {
+        RawRenderingEngine.AdobeCurve,
+        RawRenderingEngine.Hncs,
+        RawRenderingEngine.Lumix,
+        RawRenderingEngine.Canon,
+        RawRenderingEngine.Leica -> Unit
+
+        RawRenderingEngine.AgX,
+        RawRenderingEngine.DarktableFilmic -> {
+            RawEngineToneCurveControls(
+                rawRenderingEngine = rawRenderingEngine,
+                params = params,
+                onParamsChange = onParamsChange,
+                onAdjustmentStart = onAdjustmentStart,
+                onAdjustmentEnd = onAdjustmentEnd,
+            )
+        }
+
+        RawRenderingEngine.Spektrafilm -> {
+            if (!SpectralFilmUiInfo.isPositiveFilm(spectralFilmSelection?.id)) {
+                RawSpectralFilmTuningHeader(
+                    expanded = spectralFilmTuningExpanded,
+                    onClick = { spectralFilmTuningExpanded = !spectralFilmTuningExpanded }
+                )
+                if (spectralFilmTuningExpanded) {
+                    SliderSettingItem(
+                        title = stringResource(R.string.settings_spectral_film_c_density_gain),
+                        value = localSpectralFilmTuning.cDensityGain,
+                        valueRange = SpectralFilmTuning.MIN_DENSITY_GAIN..SpectralFilmTuning.MAX_DENSITY_GAIN,
+                        resetValue = 1f,
+                        valueTextFormatter = { "${(it * 100f).roundToInt()}%" },
+                        onValueChange = {
+                            updateSpectralFilmTuning(localSpectralFilmTuning.copy(cDensityGain = it))
+                        },
+                        onValueChangeFinished = ::commitSpectralFilmDensityGains
+                    )
+                    SliderSettingItem(
+                        title = stringResource(R.string.settings_spectral_film_m_density_gain),
+                        value = localSpectralFilmTuning.mDensityGain,
+                        valueRange = SpectralFilmTuning.MIN_DENSITY_GAIN..SpectralFilmTuning.MAX_DENSITY_GAIN,
+                        resetValue = 1f,
+                        valueTextFormatter = { "${(it * 100f).roundToInt()}%" },
+                        onValueChange = {
+                            updateSpectralFilmTuning(localSpectralFilmTuning.copy(mDensityGain = it))
+                        },
+                        onValueChangeFinished = ::commitSpectralFilmDensityGains
+                    )
+                    SliderSettingItem(
+                        title = stringResource(R.string.settings_spectral_film_y_density_gain),
+                        value = localSpectralFilmTuning.yDensityGain,
+                        valueRange = SpectralFilmTuning.MIN_DENSITY_GAIN..SpectralFilmTuning.MAX_DENSITY_GAIN,
+                        resetValue = 1f,
+                        valueTextFormatter = { "${(it * 100f).roundToInt()}%" },
+                        onValueChange = {
+                            updateSpectralFilmTuning(localSpectralFilmTuning.copy(yDensityGain = it))
+                        },
+                        onValueChangeFinished = ::commitSpectralFilmDensityGains
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+        }
+
+        else -> Unit
+    }
+}
+
+@Composable
+private fun RawSpectralFilmTuningHeader(
+    expanded: Boolean,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(8.dp))
+            .clickable(onClick = onClick)
+            .padding(vertical = 10.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = stringResource(R.string.settings_spectral_film_tuning),
+                color = Color.White,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Normal
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = stringResource(R.string.settings_spectral_film_tuning_description),
+                color = Color.White.copy(alpha = 0.55f),
+                fontSize = 13.sp,
+                lineHeight = 18.sp
+            )
+        }
+        Icon(
+            imageVector = AppIcons.ChevronRight,
+            contentDescription = null,
+            tint = Color.White.copy(alpha = 0.75f),
+            modifier = Modifier
+                .size(22.dp)
+                .rotate(if (expanded) 90f else 0f)
+        )
+    }
+}
+
+@Composable
+private fun RawDROModeSettingItem(
+    title: String,
+    description: String,
+    currentMode: DROMode,
+    onModeSelected: (DROMode) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val levels = listOf(
+        DROMode.OFF to stringResource(R.string.settings_dro_off),
+        DROMode.DR100 to stringResource(R.string.settings_dro_dr100),
+        DROMode.DR200 to stringResource(R.string.settings_dro_dr200),
+        DROMode.DR400 to stringResource(R.string.settings_dro_dr400)
+    )
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+    ) {
+        Text(
+            text = title,
+            color = Color.White,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Normal
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = description,
+            color = Color.White.copy(alpha = 0.6f),
+            fontSize = 13.sp,
+            lineHeight = 18.sp
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        FlowRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            levels.forEach { (mode, label) ->
+                val isSelected = currentMode == mode
+                Box(
+                    modifier = Modifier
+                        .height(36.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(
+                            if (isSelected) AccentColor else Color.White.copy(alpha = 0.1f)
+                        )
+                        .clickable { onModeSelected(mode) },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = label,
+                        color = if (isSelected) OnAccentColor else Color.White,
+                        fontSize = 12.sp,
+                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .padding(horizontal = 8.dp)
+                            .widthIn(min = 48.dp)
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun RawSwitchSettingItem(
+    title: String,
+    description: String,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = title,
+                color = Color.White,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Normal
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = description,
+                color = Color.White.copy(alpha = 0.6f),
+                fontSize = 13.sp,
+                lineHeight = 18.sp
+            )
+        }
+        Spacer(modifier = Modifier.width(16.dp))
+        Switch(
+            checked = checked,
+            onCheckedChange = onCheckedChange,
+            colors = SwitchDefaults.colors(
+                checkedThumbColor = OnAccentColor,
+                checkedTrackColor = AccentColor,
+                uncheckedThumbColor = Color.Gray,
+                uncheckedTrackColor = Color.White.copy(alpha = 0.2f),
+                uncheckedBorderColor = Color.Transparent
+            )
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun RawRenderingEngineSelector(
+    selectedEngine: RawRenderingEngine,
+    onSelectEngine: (RawRenderingEngine) -> Unit,
+    inlineOptions: Boolean = false,
+) {
+    var showSheet by remember { mutableStateOf(false) }
+    val visibleEngines = RawRenderingEngine.entries
+
+    if (inlineOptions) {
+        visibleEngines.forEach { engine ->
+            RawColorEngineItem(
+                name = rawRenderingEngineName(engine),
+                description = rawColorEngineDescription(engine),
+                isSelected = engine == selectedEngine,
+                onClick = { onSelectEngine(engine) },
+            )
+        }
+        return
+    }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { showSheet = true }
+            .padding(vertical = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = stringResource(R.string.settings_raw_color_engine),
+                color = Color.White,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Normal
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = rawRenderingEngineName(selectedEngine),
+                color = Color.White.copy(alpha = 0.6f),
+                fontSize = 13.sp,
+                lineHeight = 18.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+        Spacer(modifier = Modifier.width(16.dp))
+        Icon(
+            imageVector = AppIcons.ChevronRight,
+            contentDescription = null,
+            tint = Color.White.copy(alpha = 0.6f)
+        )
+    }
+
+    if (showSheet) {
+        AppModalBottomSheet(
+            onDismissRequest = { showSheet = false },
+            dragHandle = { BottomSheetDefaults.DragHandle(color = Color.White.copy(alpha = 0.2f)) }
+        ) {
+            Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)) {
+                Text(
+                    text = stringResource(R.string.settings_raw_color_engine),
+                    color = Color.White,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f, fill = false),
+                    contentPadding = PaddingValues(bottom = 32.dp)
+                ) {
+                    items(visibleEngines, key = { it.name }) { engine ->
+                        RawColorEngineItem(
+                            name = rawRenderingEngineName(engine),
+                            description = rawColorEngineDescription(engine),
+                            isSelected = engine == selectedEngine,
+                            onClick = {
+                                onSelectEngine(engine)
+                                showSheet = false
+                            }
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun rawRenderingEngineName(engine: RawRenderingEngine): String {
+    return when (engine) {
+        RawRenderingEngine.AdobeCurve -> stringResource(R.string.settings_raw_color_engine_adobe_curve)
+        RawRenderingEngine.AgX -> stringResource(R.string.settings_raw_color_engine_agx)
+        RawRenderingEngine.DarktableSigmoid -> stringResource(R.string.settings_raw_color_engine_darktable_sigmoid)
+        RawRenderingEngine.DarktableFilmic -> stringResource(R.string.settings_raw_color_engine_darktable_filmic)
+        RawRenderingEngine.Spektrafilm -> stringResource(R.string.settings_raw_color_engine_spectral_film)
+        RawRenderingEngine.Hncs -> stringResource(R.string.settings_raw_color_engine_hncs)
+        RawRenderingEngine.Lumix -> stringResource(R.string.settings_raw_color_engine_lumix)
+        RawRenderingEngine.Canon -> stringResource(R.string.settings_raw_color_engine_canon)
+        RawRenderingEngine.Leica -> stringResource(R.string.settings_raw_color_engine_leica)
+        RawRenderingEngine.Fotufilm -> stringResource(R.string.settings_raw_color_engine_fotufilm)
+    }
+}
+
+@Composable
+private fun rawColorEngineDescription(engine: RawRenderingEngine): String {
+    return when (engine) {
+        RawRenderingEngine.AdobeCurve -> stringResource(R.string.settings_raw_color_engine_adobe_curve_description)
+        RawRenderingEngine.AgX -> stringResource(R.string.settings_raw_color_engine_agx_description)
+        RawRenderingEngine.DarktableSigmoid -> stringResource(R.string.settings_raw_color_engine_darktable_sigmoid_description)
+        RawRenderingEngine.DarktableFilmic -> stringResource(R.string.settings_raw_color_engine_darktable_filmic_description)
+        RawRenderingEngine.Spektrafilm -> stringResource(R.string.settings_raw_color_engine_spectral_film_description)
+        RawRenderingEngine.Hncs -> stringResource(R.string.settings_raw_color_engine_hncs_description)
+        RawRenderingEngine.Lumix -> stringResource(R.string.settings_raw_color_engine_lumix_description)
+        RawRenderingEngine.Canon -> stringResource(R.string.settings_raw_color_engine_canon_description)
+        RawRenderingEngine.Leica -> stringResource(R.string.settings_raw_color_engine_leica_description)
+        RawRenderingEngine.Fotufilm -> stringResource(R.string.settings_raw_color_engine_fotufilm_description)
+    }
+}
+
+@Composable
+private fun RawColorEngineItem(
+    name: String,
+    description: String,
+    isSelected: Boolean,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(12.dp))
+            .background(if (isSelected) AccentColor.copy(alpha = 0.15f) else Color.Transparent)
+            .clickable(onClick = onClick)
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = name,
+                color = if (isSelected) AccentColor else Color.White,
+                fontSize = 14.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = description,
+                color = Color.White.copy(alpha = 0.55f),
+                fontSize = 12.sp,
+                lineHeight = 16.sp
+            )
+        }
+        if (isSelected) {
+            Spacer(modifier = Modifier.width(12.dp))
+            Icon(
+                imageVector = Icons.Default.Check,
+                contentDescription = null,
+                tint = AccentColor,
+                modifier = Modifier.size(20.dp)
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun RawDcpSelector(
+    selectedDcpId: String?,
+    rawDcpIdsByLens: Map<String, String?> = emptyMap(),
+    lensOptions: List<RawDcpLensOption> = emptyList(),
+    availableDcps: List<DcpInfo>,
+    onSelectDcp: (String?) -> Unit,
+    onRawDcpIdsByLensChange: ((Map<String, String?>) -> Unit)? = null,
+    onImportDcp: (() -> Unit)? = null,
+    onDeleteDcp: ((DcpInfo) -> Unit)? = null
+) {
+    var showSheet by remember { mutableStateOf(false) }
+    var pendingDeleteDcp by remember { mutableStateOf<DcpInfo?>(null) }
+    var selectingUnifiedDcp by remember { mutableStateOf(false) }
+    var selectingLensId by remember { mutableStateOf<String?>(null) }
+    val supportsLensConfiguration = lensOptions.isNotEmpty() && onRawDcpIdsByLensChange != null
+    val unifiedDcpName = dcpDisplayName(selectedDcpId, availableDcps)
+    val selectedName = unifiedDcpName
+    val scopeName = when {
+        supportsLensConfiguration && rawDcpIdsByLens.isNotEmpty() -> {
+            stringResource(R.string.raw_dcp_summary_with_overrides, rawDcpIdsByLens.size)
+        }
+        supportsLensConfiguration -> stringResource(R.string.raw_dcp_scope_all_lenses)
+        else -> null
+    }
+
+    fun selectDcp(dcpId: String?) {
+        onSelectDcp(dcpId)
+    }
+
+    fun setLensDcp(lensId: String, dcpId: String?) {
+        val updated = rawDcpIdsByLens.toMutableMap()
+        updated[lensId] = dcpId
+        onRawDcpIdsByLensChange?.invoke(updated.toMap())
+    }
+
+    fun clearLensDcp(lensId: String) {
+        val updated = rawDcpIdsByLens.toMutableMap()
+        updated.remove(lensId)
+        onRawDcpIdsByLensChange?.invoke(updated.toMap())
+    }
+
+    fun closeDcpPicker() {
+        selectingUnifiedDcp = false
+        selectingLensId = null
+    }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { showSheet = true }
+            .padding(vertical = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = stringResource(R.string.raw_dcp_title),
+                color = Color.White,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Normal
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                    text = selectedName,
+                color = Color.White.copy(alpha = 0.6f),
+                fontSize = 13.sp,
+                lineHeight = 18.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            if (scopeName != null) {
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(
+                    text = scopeName,
+                    color = Color.White.copy(alpha = 0.45f),
+                    fontSize = 12.sp,
+                    lineHeight = 16.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.width(16.dp))
+
+        Icon(
+            imageVector = AppIcons.ChevronRight,
+            contentDescription = null,
+            tint = Color.White.copy(alpha = 0.6f)
+        )
+    }
+
+    if (showSheet) {
+        val selectedLens = lensOptions.firstOrNull { it.id == selectingLensId }
+        val isSelectingTarget = selectingUnifiedDcp || selectedLens != null
+        AppModalBottomSheet(
+            onDismissRequest = { showSheet = false },
+            dragHandle = { BottomSheetDefaults.DragHandle(color = Color.White.copy(alpha = 0.2f)) }
+        ) {
+            Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.weight(1f)) {
+                        if (isSelectingTarget) {
+                            IconButton(
+                                onClick = { closeDcpPicker() },
+                                modifier = Modifier.size(40.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                    contentDescription = stringResource(R.string.back),
+                                    tint = Color.White.copy(alpha = 0.8f)
+                                )
+                            }
+                            Spacer(modifier = Modifier.width(4.dp))
+                        }
+                        Text(
+                            text = when {
+                                selectingUnifiedDcp -> stringResource(R.string.raw_dcp_unified_title)
+                                selectedLens != null -> selectedLens.label
+                                else -> stringResource(R.string.raw_dcp_title)
+                            },
+                            color = Color.White,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                    if (!isSelectingTarget && onImportDcp != null) {
+                        TextButton(onClick = {
+                            showSheet = false
+                            onImportDcp()
+                        }) {
+                            Text(
+                                text = stringResource(R.string.raw_dcp_import),
+                                color = AccentColor,
+                                fontSize = 14.sp
+                            )
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                androidx.compose.foundation.lazy.LazyColumn(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentPadding = PaddingValues(bottom = 32.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    if (supportsLensConfiguration && !isSelectingTarget) {
+                        item {
+                            DcpTargetItem(
+                                name = stringResource(R.string.raw_dcp_unified_title),
+                                description = unifiedDcpName,
+                                onClick = { selectingUnifiedDcp = true }
+                            )
+                        }
+                        items(lensOptions.size, key = { lensOptions[it].id }) { index ->
+                            val lens = lensOptions[index]
+                            val hasOverride = rawDcpIdsByLens.containsKey(lens.id)
+                            val dcpId = rawDcpIdsByLens[lens.id]
+                            DcpTargetItem(
+                                name = lens.label,
+                                description = if (hasOverride) {
+                                    stringResource(
+                                        R.string.raw_dcp_lens_override_value,
+                                        dcpDisplayName(dcpId, availableDcps)
+                                    )
+                                } else {
+                                    stringResource(R.string.raw_dcp_lens_uses_unified, unifiedDcpName)
+                                },
+                                isSelected = hasOverride,
+                                onClick = { selectingLensId = lens.id }
+                            )
+                        }
+                    } else {
+                        val targetLens = selectedLens
+                        if (targetLens != null) {
+                            item {
+                                DcpItem(
+                                    name = stringResource(R.string.raw_dcp_use_unified, unifiedDcpName),
+                                    isSelected = !rawDcpIdsByLens.containsKey(targetLens.id),
+                                    onClick = {
+                                        clearLensDcp(targetLens.id)
+                                        closeDcpPicker()
+                                    }
+                                )
+                            }
+                        }
+                        val currentDcpId = targetLens?.let { rawDcpIdsByLens[it.id] } ?: selectedDcpId
+                        val hasLensOverride = targetLens?.let { rawDcpIdsByLens.containsKey(it.id) } == true
+                        item {
+                            DcpItem(
+                                name = stringResource(R.string.none),
+                                isSelected = if (targetLens != null) {
+                                    hasLensOverride && currentDcpId == null
+                                } else {
+                                    currentDcpId == null
+                                },
+                                onClick = {
+                                    if (targetLens != null) {
+                                        setLensDcp(targetLens.id, null)
+                                        closeDcpPicker()
+                                    } else {
+                                        selectDcp(null)
+                                        if (supportsLensConfiguration) closeDcpPicker() else showSheet = false
+                                    }
+                                }
+                            )
+                        }
+                        items(availableDcps.size, key = { availableDcps[it].id }) { index ->
+                            val dcp = availableDcps[index]
+                            DcpItem(
+                                name = dcp.getName(),
+                                isSelected = if (targetLens != null) {
+                                    hasLensOverride && currentDcpId == dcp.id
+                                } else {
+                                    currentDcpId == dcp.id
+                                },
+                                onClick = {
+                                    if (targetLens != null) {
+                                        setLensDcp(targetLens.id, dcp.id)
+                                        closeDcpPicker()
+                                    } else {
+                                        selectDcp(dcp.id)
+                                        if (supportsLensConfiguration) closeDcpPicker() else showSheet = false
+                                    }
+                                },
+                                isCustom = !dcp.isBuiltIn && onDeleteDcp != null,
+                                onDelete = if (onDeleteDcp != null) {
+                                    { pendingDeleteDcp = dcp }
+                                } else {
+                                    null
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    pendingDeleteDcp?.let { dcp ->
+        AlertDialog(
+            onDismissRequest = { pendingDeleteDcp = null },
+            title = { Text(stringResource(R.string.delete_confirm_title)) },
+            text = { Text(stringResource(R.string.delete_dcp_confirm_message, dcp.getName())) },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        onDeleteDcp?.invoke(dcp)
+                        pendingDeleteDcp = null
+                    }
+                ) {
+                    Text(stringResource(R.string.delete))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { pendingDeleteDcp = null }) {
+                    Text(stringResource(R.string.cancel))
+                }
+            }
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun RawNoiseProfileSelector(
+    selectedProfileId: String,
+    profileIdsByLens: Map<String, String> = emptyMap(),
+    lensOptions: List<RawDcpLensOption> = emptyList(),
+    availableProfiles: List<RawNoiseProfileInfo>,
+    onSelectProfile: (String) -> Unit,
+    onProfileIdsByLensChange: ((Map<String, String>) -> Unit)? = null,
+    onImportProfile: (() -> Unit)? = null,
+    onDeleteProfile: ((RawNoiseProfileInfo) -> Unit)? = null,
+) {
+    var showSheet by remember { mutableStateOf(false) }
+    var pendingDeleteProfile by remember { mutableStateOf<RawNoiseProfileInfo?>(null) }
+    var selectingUnifiedProfile by remember { mutableStateOf(false) }
+    var selectingLensId by remember { mutableStateOf<String?>(null) }
+    val supportsLensConfiguration = lensOptions.isNotEmpty() && onProfileIdsByLensChange != null
+    val unifiedName = rawNoiseProfileDisplayName(selectedProfileId, availableProfiles)
+    val scopeName = when {
+        supportsLensConfiguration && profileIdsByLens.isNotEmpty() -> stringResource(
+            R.string.raw_noise_profile_summary_with_overrides,
+            profileIdsByLens.size,
+        )
+        supportsLensConfiguration -> stringResource(R.string.raw_dcp_scope_all_lenses)
+        else -> null
+    }
+
+    fun setLensProfile(lensId: String, profileId: String) {
+        onProfileIdsByLensChange?.invoke(
+            profileIdsByLens.toMutableMap().apply { put(lensId, profileId) }.toMap(),
+        )
+    }
+
+    fun clearLensProfile(lensId: String) {
+        onProfileIdsByLensChange?.invoke(
+            profileIdsByLens.toMutableMap().apply { remove(lensId) }.toMap(),
+        )
+    }
+
+    fun closePicker() {
+        selectingUnifiedProfile = false
+        selectingLensId = null
+    }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { showSheet = true }
+            .padding(vertical = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = stringResource(R.string.raw_noise_profile_title),
+                color = Color.White,
+                fontSize = 16.sp,
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = unifiedName,
+                color = Color.White.copy(alpha = 0.6f),
+                fontSize = 13.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            scopeName?.let { scope ->
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(
+                    text = scope,
+                    color = Color.White.copy(alpha = 0.45f),
+                    fontSize = 12.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+        }
+        Spacer(modifier = Modifier.width(16.dp))
+        Icon(
+            imageVector = AppIcons.ChevronRight,
+            contentDescription = null,
+            tint = Color.White.copy(alpha = 0.6f),
+        )
+    }
+
+    if (showSheet) {
+        val selectedLens = lensOptions.firstOrNull { it.id == selectingLensId }
+        val isSelectingTarget = selectingUnifiedProfile || selectedLens != null
+        AppModalBottomSheet(
+            onDismissRequest = { showSheet = false },
+            dragHandle = { BottomSheetDefaults.DragHandle(color = Color.White.copy(alpha = 0.2f)) },
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.weight(1f)) {
+                        if (isSelectingTarget) {
+                            IconButton(onClick = { closePicker() }, modifier = Modifier.size(40.dp)) {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                    contentDescription = stringResource(R.string.back),
+                                    tint = Color.White.copy(alpha = 0.8f),
+                                )
+                            }
+                            Spacer(modifier = Modifier.width(4.dp))
+                        }
+                        Text(
+                            text = when {
+                                selectingUnifiedProfile -> stringResource(
+                                    R.string.raw_noise_profile_unified_title,
+                                )
+                                selectedLens != null -> selectedLens.label
+                                else -> stringResource(R.string.raw_noise_profile_title)
+                            },
+                            color = Color.White,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.weight(1f),
+                        )
+                    }
+                    if (!isSelectingTarget && onImportProfile != null) {
+                        TextButton(
+                            onClick = {
+                                showSheet = false
+                                onImportProfile()
+                            },
+                        ) {
+                            Text(
+                                text = stringResource(R.string.raw_noise_profile_import),
+                                color = AccentColor,
+                                fontSize = 14.sp,
+                            )
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                androidx.compose.foundation.lazy.LazyColumn(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentPadding = PaddingValues(bottom = 32.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    if (supportsLensConfiguration && !isSelectingTarget) {
+                        item {
+                            DcpTargetItem(
+                                name = stringResource(R.string.raw_noise_profile_unified_title),
+                                description = unifiedName,
+                                onClick = { selectingUnifiedProfile = true },
+                            )
+                        }
+                        items(lensOptions.size, key = { lensOptions[it].id }) { index ->
+                            val lens = lensOptions[index]
+                            val overrideId = profileIdsByLens[lens.id]
+                            DcpTargetItem(
+                                name = lens.label,
+                                description = if (overrideId != null) {
+                                    stringResource(
+                                        R.string.raw_noise_profile_lens_override_value,
+                                        rawNoiseProfileDisplayName(overrideId, availableProfiles),
+                                    )
+                                } else {
+                                    stringResource(
+                                        R.string.raw_noise_profile_lens_uses_unified,
+                                        unifiedName,
+                                    )
+                                },
+                                isSelected = overrideId != null,
+                                onClick = { selectingLensId = lens.id },
+                            )
+                        }
+                    } else {
+                        val targetLens = selectedLens
+                        if (targetLens != null) {
+                            item {
+                                DcpItem(
+                                    name = stringResource(
+                                        R.string.raw_noise_profile_use_unified,
+                                        unifiedName,
+                                    ),
+                                    isSelected = !profileIdsByLens.containsKey(targetLens.id),
+                                    onClick = {
+                                        clearLensProfile(targetLens.id)
+                                        closePicker()
+                                    },
+                                )
+                            }
+                        }
+                        val currentId = targetLens?.let { profileIdsByLens[it.id] }
+                            ?: selectedProfileId
+                        items(availableProfiles.size, key = { availableProfiles[it].id }) { index ->
+                            val profile = availableProfiles[index]
+                            DcpItem(
+                                name = rawNoiseProfileDisplayName(profile.id, availableProfiles),
+                                isSelected = currentId == profile.id,
+                                onClick = {
+                                    if (targetLens != null) {
+                                        setLensProfile(targetLens.id, profile.id)
+                                        closePicker()
+                                    } else {
+                                        onSelectProfile(profile.id)
+                                        if (supportsLensConfiguration) closePicker() else showSheet = false
+                                    }
+                                },
+                                isCustom = !profile.isBuiltIn && onDeleteProfile != null,
+                                onDelete = if (!profile.isBuiltIn && onDeleteProfile != null) {
+                                    { pendingDeleteProfile = profile }
+                                } else {
+                                    null
+                                },
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    pendingDeleteProfile?.let { profile ->
+        AlertDialog(
+            onDismissRequest = { pendingDeleteProfile = null },
+            title = { Text(stringResource(R.string.delete_confirm_title)) },
+            text = {
+                Text(
+                    stringResource(
+                        R.string.delete_raw_noise_profile_confirm_message,
+                        rawNoiseProfileDisplayName(profile.id, availableProfiles),
+                    ),
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        onDeleteProfile?.invoke(profile)
+                        pendingDeleteProfile = null
+                    },
+                ) { Text(stringResource(R.string.delete)) }
+            },
+            dismissButton = {
+                TextButton(onClick = { pendingDeleteProfile = null }) {
+                    Text(stringResource(R.string.cancel))
+                }
+            },
+        )
+    }
+}
+
+@Composable
+private fun rawNoiseProfileDisplayName(
+    profileId: String,
+    availableProfiles: List<RawNoiseProfileInfo>,
+): String {
+    val profile = availableProfiles.firstOrNull { it.id == profileId }
+    return profile?.nameResId?.let { stringResource(it) }
+        ?: profile?.getName()
+        ?: stringResource(R.string.raw_noise_profile_system)
+}
+
+@Composable
+private fun dcpDisplayName(dcpId: String?, availableDcps: List<DcpInfo>): String {
+    return availableDcps.firstOrNull { it.id == dcpId }?.getName()
+        ?: stringResource(R.string.none)
+}
+
+@Composable
+private fun DcpTargetItem(
+    name: String,
+    description: String,
+    onClick: () -> Unit,
+    isSelected: Boolean = false
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(12.dp))
+            .background(if (isSelected) AccentColor.copy(alpha = 0.12f) else Color.Transparent)
+            .clickable { onClick() }
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = name,
+                color = Color.White,
+                fontSize = 14.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = description,
+                color = if (isSelected) AccentColor else Color.White.copy(alpha = 0.58f),
+                fontSize = 12.sp,
+                lineHeight = 16.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+        Spacer(modifier = Modifier.width(12.dp))
+        Icon(
+            imageVector = AppIcons.ChevronRight,
+            contentDescription = null,
+            tint = Color.White.copy(alpha = 0.45f),
+            modifier = Modifier.size(20.dp)
+        )
+    }
+}
+
+@Composable
+private fun DcpItem(
+    name: String,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+    isCustom: Boolean = false,
+    onDelete: (() -> Unit)? = null
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(12.dp))
+            .background(if (isSelected) AccentColor.copy(alpha = 0.15f) else Color.Transparent)
+            .clickable { onClick() }
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = name,
+            color = if (isSelected) AccentColor else Color.White,
+            fontSize = 12.sp,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.weight(1f)
+        )
+        if (isSelected) {
+            Icon(
+                imageVector = Icons.Default.Check,
+                contentDescription = null,
+                tint = AccentColor,
+                modifier = Modifier.size(20.dp)
+            )
+        }
+        if (isCustom && onDelete != null) {
+            Spacer(modifier = Modifier.width(8.dp))
+            IconButton(
+                onClick = onDelete,
+                modifier = Modifier.size(36.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = stringResource(R.string.delete),
+                    tint = Color.White.copy(alpha = 0.7f),
+                    modifier = Modifier.size(18.dp)
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun RawBaselineColorCorrectionSelector(
+    selectedLutId: String?,
+    availableLuts: List<LutInfo>,
+    thumbnail: Bitmap?,
+    onSelectLut: (String?) -> Unit,
+    title: String = stringResource(R.string.settings_baseline_raw_title),
+    onEditRecipe: ((String) -> Unit)? = null,
+    onOpenSheet: (() -> Unit)? = null
+) {
+    var showSheet by remember { mutableStateOf(false) }
+    val selectedLut = availableLuts.find { it.id == selectedLutId }
+    val selectedName = selectedLut?.getName() ?: stringResource(R.string.none)
+
+    fun openSheet() {
+        if (onOpenSheet != null) {
+            onOpenSheet()
+        } else {
+            showSheet = true
+        }
+    }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .clickable { openSheet() }
+        ) {
+            Text(
+                text = title,
+                color = Color.White,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Normal
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = selectedName,
+                color = Color.White.copy(alpha = 0.6f),
+                fontSize = 13.sp,
+                lineHeight = 18.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+
+        Spacer(modifier = Modifier.width(16.dp))
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                imageVector = AppIcons.ChevronRight,
+                contentDescription = null,
+                tint = Color.White.copy(alpha = 0.6f),
+                modifier = Modifier.clickable { openSheet() }
+            )
+        }
+    }
+
+    if (showSheet) {
+        RawBaselineColorCorrectionBottomSheet(
+            selectedLutId = selectedLutId,
+            availableLuts = availableLuts,
+            thumbnail = thumbnail,
+            title = title,
+            onSelectLut = onSelectLut,
+            onEditRecipe = onEditRecipe,
+            onDismiss = { showSheet = false }
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun RawBaselineColorCorrectionBottomSheet(
+    selectedLutId: String?,
+    availableLuts: List<LutInfo>,
+    thumbnail: Bitmap?,
+    title: String = stringResource(R.string.settings_baseline_raw_title),
+    containerColor: Color? = null,
+    onSelectLut: (String?) -> Unit,
+    onEditRecipe: ((String) -> Unit)? = null,
+    onDismiss: () -> Unit
+) {
+    AppModalBottomSheet(
+        containerColor = containerColor,
+        style = AppSheetStyle.Translucent,
+        onDismissRequest = onDismiss,
+        dragHandle = { BottomSheetDefaults.DragHandle(color = Color.White.copy(alpha = 0.2f)) }
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .navigationBarsPadding()
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = title,
+                    color = Color.White,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                IconButton(onClick = onDismiss) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = stringResource(R.string.close),
+                        tint = Color.White.copy(alpha = 0.8f)
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = stringResource(R.string.settings_baseline_dialog_description),
+                color = Color.White.copy(alpha = 0.7f),
+                fontSize = 13.sp,
+                modifier = Modifier.padding(bottom = 12.dp)
+            )
+            LutSelector(
+                availableLuts = availableLuts,
+                currentLutId = selectedLutId,
+                thumbnail = thumbnail,
+                onLutSelected = { selected ->
+                    onSelectLut(selected)
+                }
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                TextButton(
+                    onClick = {
+                        onSelectLut(null)
+                    }
+                ) {
+                    Text(stringResource(R.string.settings_baseline_clear))
+                }
+                if (onEditRecipe != null) {
+                    TextButton(
+                        onClick = {
+                            if (selectedLutId != null) {
+                                onDismiss()
+                                onEditRecipe(selectedLutId)
+                            }
+                        },
+                        enabled = selectedLutId != null
+                    ) {
+                        Text(stringResource(R.string.settings_baseline_edit_recipe))
+                    }
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun RawSpectralFilmSelector(
+    selectedFilm: String?,
+    onSelectFilm: (String?) -> Unit
+) {
+    var showSheet by remember { mutableStateOf(false) }
+    val displayFilm = selectedFilm?.let { SpectralFilmUiInfo.getFilmDisplayName(it) }
+        ?: stringResource(R.string.none)
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { showSheet = true }
+            .padding(vertical = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = stringResource(R.string.settings_negative_film),
+                color = Color.White,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Normal
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = displayFilm,
+                color = Color.White.copy(alpha = 0.6f),
+                fontSize = 13.sp,
+                lineHeight = 18.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+
+        Spacer(modifier = Modifier.width(16.dp))
+
+        Icon(
+            imageVector = AppIcons.ChevronRight,
+            contentDescription = null,
+            tint = Color.White.copy(alpha = 0.6f)
+        )
+    }
+
+    if (showSheet) {
+        AppModalBottomSheet(
+            onDismissRequest = { showSheet = false },
+            dragHandle = { BottomSheetDefaults.DragHandle(color = Color.White.copy(alpha = 0.2f)) }
+        ) {
+            Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(R.string.settings_negative_film),
+                        color = Color.White,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                androidx.compose.foundation.lazy.LazyColumn(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentPadding = PaddingValues(bottom = 32.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(SpectralFilmUiInfo.availableFilms.size, key = { SpectralFilmUiInfo.availableFilms[it] }) { index ->
+                        val film = SpectralFilmUiInfo.availableFilms[index]
+                        val isSelected = selectedFilm == film
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(12.dp))
+                                .background(if (isSelected) AccentColor.copy(alpha = 0.15f) else Color.Transparent)
+                                .clickable {
+                                    onSelectFilm(film)
+                                    showSheet = false
+                                }
+                                .padding(16.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = SpectralFilmUiInfo.getFilmDisplayName(film),
+                                color = if (isSelected) AccentColor else Color.White,
+                                fontSize = 14.sp,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier.weight(1f)
+                            )
+                            if (isSelected) {
+                                Icon(
+                                    imageVector = Icons.Default.Check,
+                                    contentDescription = null,
+                                    tint = AccentColor,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun RawSpectralPrintSelector(
+    selectedPrint: String?,
+    onSelectPrint: (String?) -> Unit
+) {
+    var showSheet by remember { mutableStateOf(false) }
+    val displayPrint = selectedPrint?.let { SpectralFilmUiInfo.getPrintDisplayName(it) }
+        ?: stringResource(R.string.none)
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { showSheet = true }
+            .padding(vertical = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = stringResource(R.string.settings_print_paper),
+                color = Color.White,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Normal
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = displayPrint,
+                color = Color.White.copy(alpha = 0.6f),
+                fontSize = 13.sp,
+                lineHeight = 18.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+
+        Spacer(modifier = Modifier.width(16.dp))
+
+        Icon(
+            imageVector = AppIcons.ChevronRight,
+            contentDescription = null,
+            tint = Color.White.copy(alpha = 0.6f)
+        )
+    }
+
+    if (showSheet) {
+        AppModalBottomSheet(
+            onDismissRequest = { showSheet = false },
+            dragHandle = { BottomSheetDefaults.DragHandle(color = Color.White.copy(alpha = 0.2f)) }
+        ) {
+            Column(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(R.string.settings_print_paper),
+                        color = Color.White,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                androidx.compose.foundation.lazy.LazyColumn(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentPadding = PaddingValues(bottom = 32.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(SpectralFilmUiInfo.availablePrints.size, key = { SpectralFilmUiInfo.availablePrints[it] }) { index ->
+                        val print = SpectralFilmUiInfo.availablePrints[index]
+                        val isSelected = selectedPrint == print
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(12.dp))
+                                .background(if (isSelected) AccentColor.copy(alpha = 0.15f) else Color.Transparent)
+                                .clickable {
+                                    onSelectPrint(print)
+                                    showSheet = false
+                                }
+                                .padding(16.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = SpectralFilmUiInfo.getPrintDisplayName(print),
+                                color = if (isSelected) AccentColor else Color.White,
+                                fontSize = 14.sp,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier.weight(1f)
+                            )
+                            if (isSelected) {
+                                Icon(
+                                    imageVector = Icons.Default.Check,
+                                    contentDescription = null,
+                                    tint = AccentColor,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

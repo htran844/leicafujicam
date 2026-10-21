@@ -1,0 +1,125 @@
+package vn.hoang.leicafujicam.ui.components
+
+import vn.hoang.leicafujicam.ui.theme.AccentColor
+import vn.hoang.leicafujicam.ui.theme.OnAccentColor
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+
+/**
+ * 滑块设置项
+ */
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun SliderSettingItem(
+    title: String,
+    description: String? = null,
+    value: Float,
+    valueRange: ClosedFloatingPointRange<Float>,
+    onValueChange: (Float) -> Unit,
+    onValueChangeFinished: (() -> Unit)? = null,
+    valueTextFormatter: (Float) -> String = { String.format("%.2f", it) },
+    resetValue: Float? = null,
+    onResetValue: ((Float) -> Unit)? = null,
+    toggleValue: Boolean? = null,
+    onToggleChange: (Boolean) -> Unit = {},
+    enabled: Boolean = toggleValue ?: true,
+    modifier: Modifier = Modifier
+) {
+    val shouldShowSlider = enabled || toggleValue == null
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = title,
+                color = if (enabled) Color.White else Color.White.copy(alpha = 0.45f),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Normal
+            )
+
+            if (toggleValue != null) {
+                Spacer(modifier = Modifier.width(8.dp))
+                Switch(
+                    checked = toggleValue,
+                    onCheckedChange = onToggleChange,
+                    modifier = Modifier.scale(0.7f).size(40.dp, 24.dp),
+                    colors = SwitchDefaults.colors(
+                        checkedThumbColor = OnAccentColor,
+                        checkedTrackColor = AccentColor,
+                        uncheckedThumbColor = Color.Gray,
+                        uncheckedTrackColor = Color.White.copy(alpha = 0.2f),
+                        uncheckedBorderColor = Color.Transparent
+                    )
+                )
+            }
+
+            Spacer(modifier = Modifier.weight(1f))
+            
+            if (shouldShowSlider) {
+                Text(
+                    text = valueTextFormatter(value),
+                    color = Color.White.copy(alpha = if (enabled) 0.8f else 0.35f),
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+        }
+        
+        description?.let {
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = it,
+                color = Color.White.copy(alpha = if (enabled) 0.6f else 0.35f),
+                fontSize = 13.sp,
+                lineHeight = 18.sp
+            )
+        }
+        
+        if (shouldShowSlider) {
+            Spacer(modifier = Modifier.height(8.dp))
+
+            CustomSlider(
+                value = value,
+                onValueChange = onValueChange,
+                onValueChangeFinished = onValueChangeFinished,
+                enabled = enabled,
+                valueRange = valueRange,
+                thumbColor = Color.White.copy(alpha = if (enabled) 1f else 0.35f),
+                activeTrackColor = AccentColor.copy(alpha = if (enabled) 1f else 0.35f),
+                inactiveTrackColor = Color.White.copy(alpha = if (enabled) 0.2f else 0.12f),
+                onDoubleTap = {
+                    if (enabled && resetValue != null) {
+                        if (onResetValue != null) {
+                            onResetValue(resetValue)
+                        } else {
+                            onValueChange(resetValue)
+                            onValueChangeFinished?.invoke()
+                        }
+                    }
+                }
+            )
+        }
+    }
+}

@@ -1,0 +1,170 @@
+package vn.hoang.leicafujicam.lut
+
+import android.content.Context
+import android.util.Log
+import vn.hoang.leicafujicam.color.TransferCurve
+import vn.hoang.leicafujicam.raw.ColorSpace
+import vn.hoang.leicafujicam.utils.PLog
+import org.json.JSONObject
+import java.io.InputStream
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
+
+/**
+ * 3D LUT 解析器，支持 .cube (文本) 和 .plut (二进制) 格式
+ */
+object LutParser {
+    private const val TAG = "LutParser"
+    private const val MAGIC_PLUT = 0x54554C50 // 'PLUT' in Little Endian
+
+    /** Read only the binary header when building filter lists; do not load 3D textures. */
+    fun readInputEncoding(inputStream: InputStream): Pair<TransferCurve, ColorSpace> {
+        val input = java.io.DataInputStream(inputStream)
+        fun readInt() = Integer.reverseBytes(input.readInt())
+        require(readInt() == MAGIC_PLUT) { "Expected a PLUT header" }
+        val version = readInt()
+        require(version in 1..4) { "Unsupported PLUT version: $version" }
+        require(readInt() > 1) { "Invalid LUT size" }
+        require(readInt() in 0..1) { "Unsupported LUT data type" }
+        val curve = if (version >= 2) {
+            val id = readInt()
+            requireNotNull(TransferCurve.entries.firstOrNull { it.storageId == id })
+        } else TransferCurve.SRGB
+        val gamut = if (version >= 3) {
+            requireNotNull(ColorSpace.entries.getOrNull(readInt()))
+        } else ColorSpace.SRGB
+        return curve to gamut
+    }
+
+    /**
+     * 解析 LUT 文件（自动识别格式）
+     */
+    fun parse(inputStream: InputStream, title: String = ""): LutConfig {
+        val stream = if (inputStream.markSupported()) inputStream else inputStream.buffered()
+
+        // 先读取前 4 个字节判断是否为二进制格式
+        val header = ByteArray(4)
+        stream.mark(16)
+        val read = stream.read(header)
+        stream.reset()
+
+        if (read == 4) {
+            val magic = ByteBuffer.wrap(header).order(ByteOrder.LITTLE_ENDIAN).int
+            if (magic == MAGIC_PLUT) {
+                return parseBinary(stream, title)
+            }
+        }
+
+        // 默认回退到文本解析
+        return CubeLutParser.parse(stream)
+    }
+
+    /**
+     * 解析二进制 .plut 格式
+     */
+    private fun parseBinary(inputStream: InputStream, title: String): LutConfig {
+        val fullData = inputStream.readBytes()
+        val buffer = ByteBuffer.wrap(fullData).order(ByteOrder.LITTLE_ENDIAN)
+
+        val magic = buffer.int // Skip magic
+        val version = buffer.int
+        val size = buffer.int
+        val dataType = buffer.int
+        val curveStorageId = if (version >= 2) buffer.int else TransferCurve.SRGB.storageId
+        val curve = TransferCurve.fromStorageId(curveStorageId)
+        
+        val colorSpaceOrdinal = if (version >= 3) buffer.int else ColorSpace.SRGB.ordinal
+        val colorSpace = ColorSpace.entries.getOrElse(colorSpaceOrdinal) { ColorSpace.SRGB }
+
+        val count = size * size * size * 3
+        val bytesPerComponent = if (dataType == 1) 2 else 1
+        val expectedSize = count * bytesPerComponent
+
+        //dataType 0 = UINT8, 1 = UINT16 (新支持), 2 = FLOAT32 (未来扩展)
+        if (dataType == 0 || dataType == 1) {
+            val directBuffer = ByteBuffer.allocateDirect(expectedSize)
+                .order(ByteOrder.nativeOrder())
+
+            // 将数据拷贝到 DirectByteBuffer 以便 OpenGL 使用
+            val data = ByteArray(expectedSize)
+            buffer.get(data)
+            directBuffer.put(data)
+            directBuffer.position(0)
+
+            return LutConfig(
+                size = size,
+                byteBuffer = directBuffer,
+                title = title,
+                configDataType = if (dataType == 1) LutConfig.CONFIG_DATA_TYPE_UINT16 else LutConfig.CONFIG_DATA_TYPE_UINT8,
+                curve = curve,
+                colorSpace = colorSpace
+            )
+        } else {
+            // 未来可以支持 Float32
+            throw UnsupportedOperationException("Unsupported data type: $dataType")
+        }
+    }
+
+    /**
+     * 从 Assets 文件夹解析 LUT 文件
+     */
+    fun parseFromAssets(context: Context, fileName: String): LutConfig {
+        return context.assets.open(fileName).use { inputStream ->
+            parse(inputStream, fileName.substringAfterLast('/').substringBeforeLast('.'))
+        }
+    }
+
+    /**
+     * 列出 Assets 中可用的 LUT 文件（从 config.json 读取）
+     */
+    fun listAvailableLuts(context: Context, folder: String = "luts"): List<LutInfo> {
+        return try {
+            // 读取 config.json
+            val configPath = "$folder/config.json"
+            val configJson = context.assets.open(configPath).use {
+                it.bufferedReader().readText()
+            }
+
+            val jsonObject = JSONObject(configJson)
+            val lutsArray = jsonObject.getJSONArray("luts")
+
+            // 按配置文件中的顺序读取 LUT
+            val lutList = mutableListOf<LutInfo>()
+            for (i in 0 until lutsArray.length()) {
+                val lutObj = lutsArray.getJSONObject(i)
+                val id = lutObj.getString("id")
+                val path = lutObj.getString("path")
+                val nameObj = lutObj.getJSONObject("name")
+                val isDefault = lutObj.optBoolean("isDefault", false)
+                val isVip = lutObj.getBoolean("isVip")
+                val category = lutObj.optString("category", "").trim()
+                val isFavorite = lutObj.optBoolean("isFavorite", false)
+
+                // 读取多语言名称
+                val nameMap = mutableMapOf<String, String>()
+                nameObj.keys().forEach { lang ->
+                    nameMap[lang] = nameObj.getString(lang)
+                }
+
+                lutList.add(
+                    LutInfo(
+                        id = id,
+                        nameMap = nameMap,
+                        fileName = if (path.isBlank()) "" else "$folder/$path",
+                        isBuiltIn = true,
+                        isDefault = isDefault,
+                        isVip = isVip,
+                        category = category,
+                        isFavorite = isFavorite
+                    )
+                )
+            }
+
+            PLog.d(TAG, "Loaded ${lutList.size} LUTs from config.json")
+            lutList
+        } catch (e: Exception) {
+            PLog.w(TAG, "Failed to load LUT config", e)
+            emptyList()
+        }
+    }
+}

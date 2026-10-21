@@ -1,0 +1,783 @@
+package vn.hoang.leicafujicam.livephoto
+
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.media.*
+import android.opengl.*
+import android.os.Bundle
+import android.view.Surface
+import androidx.core.app.ActivityCompat
+import vn.hoang.leicafujicam.lut.LutConfig
+import vn.hoang.leicafujicam.model.ColorRecipeParams
+import vn.hoang.leicafujicam.utils.PLog
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import java.io.File
+import java.nio.ByteBuffer
+import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicReference
+
+/**
+ * Live Photo 录制管理器 (重构版 - 解决 OOM)
+ *
+ * 采用“实时编码+样本缓冲”方案：
+ * 1. 持续将预览帧发送到硬件编码器 (MediaCodec)。
+ * 2. 缓冲编码后的压缩数据 (H.264 Samples) 而非原始像素。
+ * 3. 内存占用从数百 MB 降低到约 2-5 MB。
+ */
+class LivePhotoRecorder(
+    private val context: Context,
+    private val bufferDurationMs: Long = 1500L,
+    private val postCaptureDurationMs: Long = 1500L,
+    private val frameRateHz: Int = 30
+) {
+    companion object {
+        private const val TAG = "LivePhotoRecorder"
+        private const val MIME_TYPE_VIDEO = MediaFormat.MIMETYPE_VIDEO_AVC
+        private const val VIDEO_BITRATE = 8_000_000
+        private const val I_FRAME_INTERVAL = 1
+        private const val CAPTURE_START_TIMEOUT_MS = 2_000L
+
+        private const val MIME_TYPE_AUDIO = MediaFormat.MIMETYPE_AUDIO_AAC
+        private const val AUDIO_SAMPLE_RATE = 44100
+        private const val AUDIO_BITRATE = 64000
+        private const val AUDIO_CHANNEL_COUNT = 1
+    }
+
+    // 核心组件
+    // 缓冲区大小增加一部分裕量 (如增加 2000ms)，以确保在裁剪时能找到前置关键帧
+    private val bufferCapacity = bufferDurationMs + postCaptureDurationMs + 2000L
+    private val circularVideoRecorder = CircularSampleRecorder(bufferCapacity)
+    private val circularAudioRecorder = CircularSampleRecorder(bufferCapacity)
+
+    @Volatile
+    private var videoEncoder: MediaCodec? = null
+    private var inputSurface: Surface? = null
+
+    @Volatile
+    private var audioEncoder: MediaCodec? = null
+    private var audioRecord: AudioRecord? = null
+
+    @Volatile
+    private var videoFormat: MediaFormat? = null
+
+    @Volatile
+    private var audioFormat: MediaFormat? = null
+
+    // 渲染组件 (负责将纹理绘制到编码器 Surface)
+    private var lutRenderer: HardwareLutVideoRenderer? = null
+
+    // 状态控制
+    @Volatile
+    private var isRunning = false
+    @Volatile
+    private var isCapturing = false
+    private var snapshotTimestampUs: Long = 0
+
+    private class PendingCaptureStart(val minimumTimestampUs: Long) {
+        val ready = CompletableDeferred<Long>()
+        var syncFrameRequested = false // Only accessed on renderDispatcher.
+    }
+
+    private val pendingCaptureStart = AtomicReference<PendingCaptureStart?>(null)
+    private val latestEncodedVideoTimestampUs = MutableStateFlow(Long.MIN_VALUE)
+    @Volatile
+    private var preCaptureBufferingEnabled = true
+    @Volatile
+    private var captureMinimumTimestampUs: Long? = null
+    @Volatile
+    private var acceptingTorchFrames = false
+
+    private val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+    private var videoDrainJob: Job? = null
+    private var audioDrainJob: Job? = null
+    private var audioRecordJob: Job? = null
+    private val renderDispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
+    private val hardwareMutex = Mutex()
+
+    @Volatile
+    private var lastFrameTimestampUs: Long = 0
+    private var lastSharedContext: EGLContext = EGL14.EGL_NO_CONTEXT
+    private var lastWidth: Int = 0
+    private var lastHeight: Int = 0
+    @Volatile
+    private var pendingRelease = false
+
+    /**
+     * 更新实时编码器的配置（如 LUT 或色彩配方）
+     */
+    fun updateConfig(lutConfig: LutConfig?, params: ColorRecipeParams?) {
+        lutRenderer?.updateConfig(lutConfig, params)
+    }
+
+    /**
+     * 开始录制 (当实况照片模式开启时调用)
+     */
+    fun startRecording() {
+        if (isRunning) return
+        circularVideoRecorder.startRecording()
+        circularAudioRecorder.startRecording()
+        latestEncodedVideoTimestampUs.value = Long.MIN_VALUE
+        isRunning = true
+        lastFrameTimestampUs = 0
+        captureMinimumTimestampUs = null
+        acceptingTorchFrames = false
+        PLog.d(TAG, "Live Photo recording prepared")
+    }
+
+    /**
+     * 停止录制 (当实况照片模式关闭或相机关闭时调用)
+     */
+    fun stopRecording() {
+        isRunning = false
+        pendingCaptureStart.getAndSet(null)?.let {
+            isCapturing = false
+            it.ready.cancel()
+        }
+        circularVideoRecorder.stopRecording()
+        circularAudioRecorder.stopRecording()
+        if (isCapturing) {
+            PLog.d(TAG, "Stop requested while capture in progress, delaying encoder release")
+            pendingRelease = true
+        } else {
+            release()
+        }
+        PLog.d(TAG, "Live Photo recording stopped")
+    }
+
+    /**
+     * 处理预览帧 (GL 线程调用)
+     */
+    fun onPreviewFrame(
+        textureId: Int,
+        transformMatrix: FloatArray,
+        width: Int,
+        height: Int,
+        timestampNs: Long,
+        lutConfig: LutConfig?,
+        params: ColorRecipeParams?,
+        sharedContext: EGLContext,
+        sharedDisplay: EGLDisplay
+    ) {
+        if (!isRunning) return
+        if (!preCaptureBufferingEnabled && !acceptingTorchFrames) return
+        if (timestampNs / 1000 < (captureMinimumTimestampUs ?: Long.MIN_VALUE)) return
+
+        lastFrameTimestampUs = timestampNs / 1000
+
+        val matrix = transformMatrix.clone()
+        scope.launch(renderDispatcher) {
+            hardwareMutex.withLock {
+                if (!isRunning) return@withLock
+                if (!preCaptureBufferingEnabled && !acceptingTorchFrames) return@withLock
+                if (timestampNs / 1000 < (captureMinimumTimestampUs ?: Long.MIN_VALUE)) return@withLock
+
+                // 如果上下文发生了变化（比如 App 重入）或者分辨率发生了变化（旋转），必须释放旧编码器并重新创建
+                if (videoEncoder != null && (
+                            (lastSharedContext != EGL14.EGL_NO_CONTEXT && lastSharedContext != sharedContext) ||
+                                    (lastWidth != width || lastHeight != height)
+                            )
+                ) {
+                    PLog.w(TAG, "Shared EGL Context or dimensions changed, forcing encoder re-init.")
+                    releaseHardwareLocked()
+                }
+
+                if (!isRunning) return@withLock
+
+                // 延迟初始化编码器
+                if (videoEncoder == null && sharedContext != EGL14.EGL_NO_CONTEXT) {
+                    initEncoder(width, height, lutConfig, params, sharedContext, sharedDisplay)
+                    lastSharedContext = sharedContext
+                    lastWidth = width
+                    lastHeight = height
+                    pendingRelease = false
+                }
+
+                if (!isRunning) return@withLock
+
+                try {
+                    pendingCaptureStart.get()?.let { pending ->
+                        if (!pending.syncFrameRequested && timestampNs / 1000 >= pending.minimumTimestampUs) {
+                            videoEncoder?.setParameters(Bundle().apply {
+                                putInt(MediaCodec.PARAMETER_KEY_REQUEST_SYNC_FRAME, 0)
+                            })
+                            pending.syncFrameRequested = true
+                        }
+                    }
+                    lutRenderer?.renderFrame(textureId, matrix, timestampNs / 1000)
+                } catch (e: Exception) {
+                    PLog.e(TAG, "Failed to render Live Photo frame: timestampUs=${timestampNs / 1000}", e)
+                    pendingCaptureStart.get()?.ready?.completeExceptionally(e)
+                }
+            }
+        }
+    }
+
+    private fun initEncoder(
+        width: Int,
+        height: Int,
+        lutConfig: LutConfig?,
+        params: ColorRecipeParams?,
+        sharedContext: EGLContext,
+        sharedDisplay: EGLDisplay
+    ) {
+        try {
+            var w = width
+            var h = height
+
+            // Ensure even dimensions
+            if (w % 2 != 0) w--
+            if (h % 2 != 0) h--
+
+            // Video Encoder
+            val videoFormat = MediaFormat.createVideoFormat(MIME_TYPE_VIDEO, w, h).apply {
+                setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface)
+                setInteger(MediaFormat.KEY_BIT_RATE, VIDEO_BITRATE)
+                setInteger(MediaFormat.KEY_FRAME_RATE, frameRateHz)
+                setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, I_FRAME_INTERVAL)
+            }
+
+            videoEncoder = MediaCodec.createEncoderByType(MIME_TYPE_VIDEO).apply {
+                configure(videoFormat, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE)
+                inputSurface = createInputSurface()
+                start()
+            }
+
+            // Audio Record & Encoder
+            initAudio()
+
+            lutRenderer = HardwareLutVideoRenderer(w, h, lutConfig, params).apply {
+                initialize(inputSurface!!, sharedContext, sharedDisplay)
+            }
+
+            startDraining()
+            PLog.d(TAG, "Encoders initialized: ${w}x${h}")
+        } catch (e: Exception) {
+            PLog.e(TAG, "Failed to init encoders", e)
+        }
+    }
+
+    private fun initAudio() {
+        try {
+            val bufferSize = AudioRecord.getMinBufferSize(
+                AUDIO_SAMPLE_RATE,
+                AudioFormat.CHANNEL_IN_MONO,
+                AudioFormat.ENCODING_PCM_16BIT
+            )
+            if (bufferSize <= 0) return
+
+            if (ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.RECORD_AUDIO
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                return
+            }
+            audioRecord = AudioRecord(
+                MediaRecorder.AudioSource.CAMCORDER,
+                AUDIO_SAMPLE_RATE,
+                AudioFormat.CHANNEL_IN_MONO,
+                AudioFormat.ENCODING_PCM_16BIT,
+                bufferSize * 2
+            ).apply {
+                if (state == AudioRecord.STATE_INITIALIZED) {
+                    startRecording()
+                } else {
+                    PLog.e(TAG, "AudioRecord state not initialized")
+                    return
+                }
+            }
+
+            val format = MediaFormat.createAudioFormat(MIME_TYPE_AUDIO, AUDIO_SAMPLE_RATE, AUDIO_CHANNEL_COUNT).apply {
+                setInteger(MediaFormat.KEY_BIT_RATE, AUDIO_BITRATE)
+                setInteger(MediaFormat.KEY_AAC_PROFILE, MediaCodecInfo.CodecProfileLevel.AACObjectLC)
+            }
+
+            audioEncoder = MediaCodec.createEncoderByType(MIME_TYPE_AUDIO).apply {
+                configure(format, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE)
+                start()
+            }
+
+            startAudioRecordingLoop()
+        } catch (e: Exception) {
+            PLog.e(TAG, "Failed to init audio", e)
+        }
+    }
+
+    private fun startAudioRecordingLoop() {
+        audioRecordJob = scope.launch {
+            val buffer = ByteArray(2048)
+            while (isActive && isRunning) {
+                try {
+                    val record = audioRecord ?: break
+                    val encoder = audioEncoder ?: break
+                    val len = record.read(buffer, 0, buffer.size)
+                    if (len > 0 && isRunning) {
+                        val inputBufferIndex = try {
+                            encoder.dequeueInputBuffer(10_000L)
+                        } catch (e: IllegalStateException) {
+                            break
+                        }
+                        if (!isActive || !isRunning) break
+                        if (inputBufferIndex >= 0) {
+                            val inputBuffer = encoder.getInputBuffer(inputBufferIndex)
+                            inputBuffer?.clear()
+                            if (inputBuffer == null || inputBuffer.remaining() < len) {
+                                PLog.w(
+                                    TAG,
+                                    "Audio input buffer too small: len=$len, remaining=${inputBuffer?.remaining() ?: -1}"
+                                )
+                                try {
+                                    encoder.queueInputBuffer(
+                                        inputBufferIndex,
+                                        0,
+                                        0,
+                                        android.os.SystemClock.elapsedRealtimeNanos() / 1000,
+                                        0
+                                    )
+                                } catch (e: IllegalStateException) {
+                                    break
+                                }
+                                continue
+                            }
+                            inputBuffer.put(buffer, 0, len)
+                            try {
+                                encoder.queueInputBuffer(
+                                    inputBufferIndex,
+                                    0,
+                                    len,
+                                    android.os.SystemClock.elapsedRealtimeNanos() / 1000,
+                                    0
+                                )
+                            } catch (e: IllegalStateException) {
+                                break
+                            }
+                        }
+                    }
+                } catch (e: Exception) {
+                    if (e !is IllegalStateException) {
+                        PLog.e(TAG, "Error in audio recording loop", e)
+                    }
+                    break
+                }
+            }
+        }
+    }
+
+    fun setPreCaptureBufferingEnabled(enabled: Boolean) {
+        preCaptureBufferingEnabled = enabled
+    }
+
+    fun finishTorchRecording(cancelled: Boolean = false) {
+        acceptingTorchFrames = false
+        if (cancelled) {
+            isCapturing = false
+            captureMinimumTimestampUs?.let(::releaseCaptureRetention)
+        }
+    }
+
+    private fun retainCaptureFrom(timestampUs: Long) {
+        circularVideoRecorder.retainFrom(timestampUs)
+        circularAudioRecorder.retainFrom(timestampUs)
+    }
+
+    private fun releaseCaptureRetention(timestampUs: Long) {
+        circularVideoRecorder.releaseRetention(timestampUs)
+        circularAudioRecorder.releaseRetention(timestampUs)
+    }
+
+    fun cancelCapture(captureStartTimestampUs: Long) {
+        releaseCaptureRetention(captureStartTimestampUs)
+        if (captureMinimumTimestampUs == captureStartTimestampUs) {
+            isCapturing = false
+        }
+    }
+
+    /** Begin a capture on a decodable frame after the camera confirms torch illumination. */
+    fun startCaptureAfterTorch(minimumTimestampUs: Long, onReady: (Long?) -> Unit): Job {
+        val pending = PendingCaptureStart(minimumTimestampUs)
+        retainCaptureFrom(minimumTimestampUs)
+        captureMinimumTimestampUs = minimumTimestampUs
+        pendingCaptureStart.getAndSet(pending)?.ready?.cancel()
+        isCapturing = true
+        acceptingTorchFrames = true
+        return scope.launch(start = CoroutineStart.UNDISPATCHED) {
+            var startTimestampUs: Long? = null
+            try {
+                check(isRunning) { "Live Photo recorder is not running" }
+                startTimestampUs = withTimeout(CAPTURE_START_TIMEOUT_MS) { pending.ready.await() }
+                if (startTimestampUs != minimumTimestampUs) {
+                    retainCaptureFrom(startTimestampUs)
+                    releaseCaptureRetention(minimumTimestampUs)
+                }
+                captureMinimumTimestampUs = startTimestampUs
+                snapshotTimestampUs = startTimestampUs
+                PLog.i(TAG, "Torch video started: minimum=$minimumTimestampUs, keyframe=$startTimestampUs")
+            } catch (e: TimeoutCancellationException) {
+                PLog.e(TAG, "Timed out waiting for torch video keyframe", e)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                PLog.e(TAG, "Failed to start torch video", e)
+            } finally {
+                if (pendingCaptureStart.compareAndSet(pending, null) && startTimestampUs == null) {
+                    isCapturing = false
+                    acceptingTorchFrames = false
+                }
+                if (startTimestampUs == null) releaseCaptureRetention(minimumTimestampUs)
+            }
+            onReady(startTimestampUs)
+        }
+    }
+
+    /**
+     * 触发快照 (拍照时调用)
+     */
+    fun snapshot(): Long? {
+        if (!isRunning) return null
+
+        // 使用最近一帧的时间戳作为基准，避免时钟源不一致问题
+        snapshotTimestampUs = lastFrameTimestampUs
+        if (snapshotTimestampUs == 0L) {
+            snapshotTimestampUs = android.os.SystemClock.elapsedRealtimeNanos() / 1000
+        }
+
+        isCapturing = true
+        val samples = circularVideoRecorder.snapshot()
+        val desiredStartUs = snapshotTimestampUs - bufferDurationMs * 1000
+        val keyframe = samples.lastOrNull {
+            it.info.presentationTimeUs <= desiredStartUs &&
+                (it.info.flags and MediaCodec.BUFFER_FLAG_KEY_FRAME) != 0
+        } ?: samples.firstOrNull {
+            (it.info.flags and MediaCodec.BUFFER_FLAG_KEY_FRAME) != 0
+        }
+        val retainedStartUs = keyframe?.info?.presentationTimeUs
+        retainedStartUs?.let(::retainCaptureFrom)
+        captureMinimumTimestampUs = retainedStartUs
+        PLog.i(TAG, "Live Photo snapshot: shutter=$snapshotTimestampUs, retainedStart=$retainedStartUs")
+        return retainedStartUs
+    }
+
+    /**
+     * 完成并生成视频 (拍照后延迟调用)
+     * @param imageTimestampUs 可选的图像精确时间戳（纳秒/1000），若不传则使用 snapshot 时的预览时间戳
+     */
+    fun recordVideo(
+        imageTimestampUs: Long? = null,
+        captureStartTimestampUs: Long? = null,
+        onCaptured: (File, Long) -> Unit
+    ) {
+        val centerTs = imageTimestampUs ?: snapshotTimestampUs
+        val startTimeUs = centerTs - bufferDurationMs * 1000
+        val endTimeUs = centerTs + postCaptureDurationMs * 1000
+        scope.launch {
+            try {
+                PLog.i(TAG, "Waiting for Live Photo post-roll: center=$centerTs, end=$endTimeUs, " +
+                    "preview=$lastFrameTimestampUs, encoded=${latestEncodedVideoTimestampUs.value}, " +
+                    "retainedStart=$captureStartTimestampUs")
+                // RAWmax processing can delay encoder output. Wait for the actual end
+                // of the requested interval instead of exporting whatever arrived in 2s.
+                withTimeout(postCaptureDurationMs + CAPTURE_START_TIMEOUT_MS) {
+                    latestEncodedVideoTimestampUs.first { it >= endTimeUs }
+                }
+
+                val currentVideoSamples = circularVideoRecorder.snapshot()
+                val currentAudioSamples = circularAudioRecorder.snapshot()
+                if (currentVideoSamples.isEmpty()) {
+                    PLog.e(TAG, "No video samples in buffer")
+                    onCaptured(File("error"), 0L)
+                    return@launch
+                }
+
+                val firstSampleTs = currentVideoSamples.first().info.presentationTimeUs
+                val lastSampleTs = currentVideoSamples.last().info.presentationTimeUs
+                check(centerTs in firstSampleTs..lastSampleTs && lastSampleTs >= endTimeUs) {
+                    "Live Photo interval unavailable: center=$centerTs, end=$endTimeUs, " +
+                        "available=[$firstSampleTs, $lastSampleTs], retainedStart=$captureStartTimestampUs"
+                }
+
+                PLog.i(TAG, "Live Photo interval: center=$centerTs, range=[$startTimeUs, $endTimeUs], " +
+                    "available=[$firstSampleTs, $lastSampleTs], retainedStart=$captureStartTimestampUs")
+
+                // Retention protects old samples while RAWmax collects/processes its frames;
+                // the photo timestamp still determines the 1.5s pre-roll to export.
+                val earliestStartUs = captureStartTimestampUs ?: Long.MIN_VALUE
+                var startIndex = currentVideoSamples.indexOfLast {
+                    it.info.presentationTimeUs in earliestStartUs..startTimeUs &&
+                        (it.info.flags and MediaCodec.BUFFER_FLAG_KEY_FRAME) != 0
+                }
+
+                // A newly opened camera or torch capture may not have a full pre-roll yet.
+                if (startIndex == -1) {
+                    startIndex = currentVideoSamples.indexOfFirst {
+                        it.info.presentationTimeUs >= earliestStartUs &&
+                            (it.info.flags and MediaCodec.BUFFER_FLAG_KEY_FRAME) != 0
+                    }
+                }
+
+                if (startIndex == -1 || videoFormat == null) {
+                    PLog.e(TAG, "No keyframe or format to mux (format=${videoFormat != null})")
+                    onCaptured(File("error"), 0L) // Notify failure to prevent hang
+                    return@launch
+                }
+
+                // 构建最终视频样本列表，直到 endTimeUs
+                val muxVideoSamples = mutableListOf<CircularSampleRecorder.Sample>()
+                for (i in startIndex until currentVideoSamples.size) {
+                    val sample = currentVideoSamples[i]
+                    muxVideoSamples.add(sample)
+                    if (sample.info.presentationTimeUs >= endTimeUs) break
+                }
+
+                if (muxVideoSamples.size < 2) {
+                    PLog.e(TAG, "Too few video samples for video: ${muxVideoSamples.size}")
+                    onCaptured(File("error"), 0L) // Notify failure
+                    return@launch
+                }
+
+                val finalVideoStartTs = muxVideoSamples.first().info.presentationTimeUs
+                val finalVideoEndTs = muxVideoSamples.last().info.presentationTimeUs
+                check(captureStartTimestampUs == null || centerTs in finalVideoStartTs..finalVideoEndTs) {
+                    "Still timestamp $centerTs outside Live Photo video [$finalVideoStartTs, $finalVideoEndTs]"
+                }
+
+                // 过滤出相同时间段的音频样本
+                val muxAudioSamples = currentAudioSamples.filter {
+                    it.info.presentationTimeUs in finalVideoStartTs..finalVideoEndTs
+                }
+
+                if (muxAudioSamples.isEmpty() && !currentAudioSamples.isEmpty()) {
+                    PLog.w(
+                        TAG,
+                        "Audio samples exist but none match video range. Video: [$finalVideoStartTs, $finalVideoEndTs], Audio range: [${currentAudioSamples.first().info.presentationTimeUs}, ${currentAudioSamples.last().info.presentationTimeUs}]"
+                    )
+                }
+
+                PLog.d(TAG, "Selected ${muxVideoSamples.size} video, ${muxAudioSamples.size} audio samples")
+                PLog.d(
+                    TAG,
+                    "Selected range: [$finalVideoStartTs, $finalVideoEndTs], duration: ${(finalVideoEndTs - finalVideoStartTs) / 1000}ms"
+                )
+
+                val videoFile = File(context.cacheDir, "livephoto_${java.util.UUID.randomUUID()}.mp4")
+
+                // 封装 MP4
+                muxVideo(videoFile, muxVideoSamples, muxAudioSamples)
+
+                // 计算拍照时刻在视频中的相对时间戳
+                val presentationTimestampUs = centerTs - finalVideoStartTs
+
+                onCaptured(videoFile, presentationTimestampUs)
+
+            } catch (e: Exception) {
+                PLog.e(TAG, "Failed to finish Live Photo capture: center=$centerTs, end=$endTimeUs, " +
+                    "preview=$lastFrameTimestampUs, encoded=${latestEncodedVideoTimestampUs.value}, " +
+                    "retainedStart=$captureStartTimestampUs, running=$isRunning, " +
+                    "draining=${videoDrainJob?.isActive}", e)
+                onCaptured(File("error"), 0L)
+            } finally {
+                captureStartTimestampUs?.let(::releaseCaptureRetention)
+                if (captureMinimumTimestampUs == captureStartTimestampUs) {
+                    isCapturing = false
+                }
+                if (pendingRelease) {
+                    PLog.d(TAG, "Executing delayed encoder release")
+                    release()
+                    pendingRelease = false
+                }
+            }
+        }
+    }
+
+    private fun startDraining() {
+        videoDrainJob = scope.launch {
+            val bufferInfo = MediaCodec.BufferInfo()
+            while (isActive && isRunning) {
+                try {
+                    val encoderRef = videoEncoder ?: break
+                    val outputBufferIndex = try {
+                        encoderRef.dequeueOutputBuffer(bufferInfo, 10_000L)
+                    } catch (e: IllegalStateException) {
+                        // 编码器可能在 dequeue 时被 stop 了
+                        PLog.d(TAG, "Video encoder dequeue cancelled (encoder stopped)")
+                        break
+                    }
+                    if (!isActive || !isRunning) break
+
+                    if (outputBufferIndex == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
+                        synchronized(this@LivePhotoRecorder) {
+                            videoFormat = encoderRef.outputFormat
+                        }
+                        PLog.d(TAG, "Video encoder format changed: $videoFormat")
+                    } else if (outputBufferIndex == MediaCodec.INFO_TRY_AGAIN_LATER) {
+                        //PLog.v(TAG, "Video encoder dequeue timeout")
+                    } else if (outputBufferIndex >= 0) {
+                        val outputBuffer = encoderRef.getOutputBuffer(outputBufferIndex)
+                        if (outputBuffer != null && bufferInfo.size > 0) {
+                            circularVideoRecorder.addSample(outputBuffer, bufferInfo)
+                            latestEncodedVideoTimestampUs.value = bufferInfo.presentationTimeUs
+                            pendingCaptureStart.get()?.let { pending ->
+                                if (bufferInfo.presentationTimeUs >= pending.minimumTimestampUs &&
+                                    (bufferInfo.flags and MediaCodec.BUFFER_FLAG_KEY_FRAME) != 0
+                                ) {
+                                    pending.ready.complete(bufferInfo.presentationTimeUs)
+                                }
+                            }
+                        }
+                        encoderRef.releaseOutputBuffer(outputBufferIndex, false)
+                    }
+                } catch (e: Exception) {
+                    PLog.e(TAG, "Error draining video encoder", e)
+                    break
+                }
+            }
+        }
+
+        audioDrainJob = scope.launch {
+            val bufferInfo = MediaCodec.BufferInfo()
+            while (isActive && isRunning) {
+                try {
+                    val encoderRef = audioEncoder ?: break
+                    val outputBufferIndex = try {
+                        encoderRef.dequeueOutputBuffer(bufferInfo, 10_000L)
+                    } catch (e: IllegalStateException) {
+                        PLog.d(TAG, "Audio encoder dequeue cancelled (encoder stopped)")
+                        break
+                    }
+                    if (!isActive || !isRunning) break
+
+                    if (outputBufferIndex == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
+                        synchronized(this@LivePhotoRecorder) {
+                            audioFormat = encoderRef.outputFormat
+                        }
+                        PLog.d(TAG, "Audio encoder format changed: $audioFormat")
+                    } else if (outputBufferIndex >= 0) {
+                        val outputBuffer = encoderRef.getOutputBuffer(outputBufferIndex)
+                        if (outputBuffer != null && bufferInfo.size > 0) {
+                            circularAudioRecorder.addSample(outputBuffer, bufferInfo)
+                        }
+                        encoderRef.releaseOutputBuffer(outputBufferIndex, false)
+                    }
+                } catch (e: IllegalStateException) {
+                    PLog.w(TAG, "Error draining audio encoder", e)
+                    break
+                } catch (e: Exception) {
+                    PLog.e(TAG, "Error draining audio encoder", e)
+                    break
+                }
+            }
+        }
+    }
+
+    private fun muxVideo(
+        outputFile: File,
+        videoSamples: List<CircularSampleRecorder.Sample>,
+        audioSamples: List<CircularSampleRecorder.Sample>
+    ) {
+        val vFormat = synchronized(this) { videoFormat }
+        val aFormat = synchronized(this) { audioFormat }
+        if (vFormat == null) {
+            PLog.e(TAG, "Cannot mux video: videoFormat is null")
+            return
+        }
+        val muxer = MediaMuxer(outputFile.absolutePath, MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4)
+        val videoTrackIndex = muxer.addTrack(vFormat)
+        val audioTrackIndex = if (aFormat != null && audioSamples.isNotEmpty()) muxer.addTrack(aFormat) else -1
+        muxer.start()
+
+        val baseTimeUs = videoSamples.first().info.presentationTimeUs
+        videoSamples.forEach { sample ->
+            val info = MediaCodec.BufferInfo()
+            info.set(0, sample.info.size, sample.info.presentationTimeUs - baseTimeUs, sample.info.flags)
+            val buffer = ByteBuffer.wrap(sample.data)
+            muxer.writeSampleData(videoTrackIndex, buffer, info)
+        }
+
+        if (audioTrackIndex != -1) {
+            audioSamples.forEach { sample ->
+                val info = MediaCodec.BufferInfo()
+                info.set(0, sample.info.size, sample.info.presentationTimeUs - baseTimeUs, sample.info.flags)
+                val buffer = ByteBuffer.wrap(sample.data)
+                muxer.writeSampleData(audioTrackIndex, buffer, info)
+            }
+        }
+
+        muxer.stop()
+        muxer.release()
+        PLog.d(TAG, "Muxed ${videoSamples.size} video and ${audioSamples.size} audio samples to ${outputFile.name}")
+    }
+
+    fun release() {
+        isRunning = false
+        // 不要在这里立刻置空 videoFormat，因为异步的 recordVideo 还需要它进行 mux
+        scope.launch(renderDispatcher) {
+            hardwareMutex.withLock {
+                releaseHardwareLocked()
+            }
+        }
+    }
+
+    private suspend fun releaseHardwareLocked() {
+        val jobs = listOfNotNull(videoDrainJob, audioDrainJob, audioRecordJob)
+        videoDrainJob = null
+        audioDrainJob = null
+        audioRecordJob = null
+
+        jobs.forEach { it.cancel() }
+        jobs.joinAll()
+
+        internalReleaseLocked()
+    }
+
+    private fun internalReleaseLocked() {
+        videoEncoder?.let {
+            try {
+                it.stop()
+                it.release()
+            } catch (e: Exception) {
+                PLog.w(TAG, "Error releasing video encoder: ${e.message}")
+            }
+        }
+        videoEncoder = null
+        inputSurface = null
+
+        audioEncoder?.let {
+            try {
+                it.stop()
+                it.release()
+            } catch (e: Exception) {
+                PLog.w(TAG, "Error releasing audio encoder: ${e.message}")
+            }
+        }
+        audioEncoder = null
+
+        audioRecord?.let {
+            try {
+                it.stop()
+                it.release()
+            } catch (e: Exception) {
+                PLog.w(TAG, "Error releasing audio record: ${e.message}")
+            }
+        }
+        audioRecord = null
+
+        lutRenderer?.release()
+        lutRenderer = null
+
+        // 核心修复：不要在这里调用 circularVideoRecorder.release()。
+        // 因为 release() 是异步执行的，如果此时用户已经重新打开了相机（Session B），
+        // 调用 circularVideoRecorder.release() 会把已经开始的 Session B 也关掉（isRecording=false）。
+        // 样本缓冲区的生命周期应由 startRecording / stopRecording 同步控制。
+
+        lastSharedContext = EGL14.EGL_NO_CONTEXT
+        PLog.d(TAG, "Live Photo hardware resources released")
+    }
+
+    // 简单透出状态
+    fun isRecording(): Boolean = isRunning
+    fun isCapturing(): Boolean = isCapturing
+}

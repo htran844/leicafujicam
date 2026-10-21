@@ -1,0 +1,792 @@
+package vn.hoang.leicafujicam.ui.settings
+
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import vn.hoang.leicafujicam.ui.theme.AccentColor
+import vn.hoang.leicafujicam.R
+import vn.hoang.leicafujicam.camera.AspectRatio
+import vn.hoang.leicafujicam.model.CameraPreset
+import vn.hoang.leicafujicam.model.ColorRecipeParams
+import vn.hoang.leicafujicam.model.EffectParams
+import vn.hoang.leicafujicam.ui.components.ColorRecipePanel
+import vn.hoang.leicafujicam.ui.components.LutSelector
+import vn.hoang.leicafujicam.ui.components.CurveChannel
+import vn.hoang.leicafujicam.raw.HncsFilmCurveMode
+import vn.hoang.leicafujicam.raw.RawProfileToneMapMode
+import vn.hoang.leicafujicam.raw.LumixPhotoStyle
+import vn.hoang.leicafujicam.raw.CanonPictureStyle
+import vn.hoang.leicafujicam.raw.RawToneMappingParameters
+import vn.hoang.leicafujicam.raw.RawRenderingEngine
+import vn.hoang.leicafujicam.raw.RawDenoiseDefaults
+import vn.hoang.leicafujicam.raw.RawSharpeningDefaults
+import vn.hoang.leicafujicam.raw.MeteringSystem
+import vn.hoang.leicafujicam.processor.DenoiseStrength
+import vn.hoang.leicafujicam.raw.SpectralFilmUiInfo
+import vn.hoang.leicafujicam.raw.fotufilm.FotufilmDocumentStorage
+import vn.hoang.leicafujicam.ui.components.FrameSelector
+import vn.hoang.leicafujicam.ui.components.RawBaselineColorCorrectionSelector
+import vn.hoang.leicafujicam.ui.components.LumixPhotoStyleSelector
+import vn.hoang.leicafujicam.ui.components.CanonPictureStyleSelector
+import vn.hoang.leicafujicam.ui.components.CanonExposureCompensationSetting
+import vn.hoang.leicafujicam.ui.components.RawDcpSelector
+import vn.hoang.leicafujicam.ui.components.RawEngineToneCurveControls
+import vn.hoang.leicafujicam.ui.components.FotufilmControls
+import vn.hoang.leicafujicam.ui.components.SliderSettingItem
+import vn.hoang.leicafujicam.ui.components.rawDcpLensOptions
+import vn.hoang.leicafujicam.ui.camera.LutEditBottomSheet
+import vn.hoang.leicafujicam.ui.camera.LutEditorTarget
+import vn.hoang.leicafujicam.viewmodel.CameraViewModel
+import java.util.UUID
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PresetEditorScreen(
+    viewModel: CameraViewModel,
+    presetId: String?,
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val haptic = LocalHapticFeedback.current
+    val cameraState by viewModel.state.collectAsState()
+    val allPresets by viewModel.allPresets.collectAsState()
+    val availableLuts = viewModel.availableLutList
+    val availableDcps = viewModel.availableDcps
+    val availableFrames = viewModel.availableFrameList
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val defaultNewPresetName = stringResource(R.string.preset_new_preset_default)
+
+    // 寻找是否存在编辑目标，如果不存在（新建预设），则尝试从 ViewModel.draftPreset 初始化，或者基于当前状态新建
+    val sourcePreset = remember(presetId, allPresets, defaultNewPresetName) {
+        if (presetId != null) {
+            allPresets.find { it.id == presetId }
+        } else {
+            viewModel.draftPreset ?: viewModel.prepareCurrentSettingsPresetDraft(defaultNewPresetName)
+        }
+    }
+
+    // 在编辑状态中维护各个字段，以便保存
+    var presetName by remember {
+        mutableStateOf(
+            sourcePreset?.name ?: defaultNewPresetName
+        )
+    }
+
+    var selectedLutId by remember { mutableStateOf(sourcePreset?.lutId) }
+    var colorRecipe by remember { mutableStateOf(sourcePreset?.colorRecipe ?: ColorRecipeParams.DEFAULT) }
+    var effects by remember { mutableStateOf(sourcePreset?.effects ?: EffectParams.DEFAULT) }
+
+
+    // 相机参数
+    var aspectRatio by remember { mutableStateOf(sourcePreset?.aspectRatio ?: AspectRatio.RATIO_4_3.name) }
+    var ultraHdrGainMapEnabled by remember {
+        mutableStateOf(sourcePreset?.ultraHdrGainMapEnabled ?: false)
+    }
+    var frameId by remember { mutableStateOf(sourcePreset?.frameId) }
+
+    // 专业模式参数
+    var rawDcpId by remember { mutableStateOf(sourcePreset?.rawDcpId) }
+    var rawDcpIdsByLens by remember { mutableStateOf(sourcePreset?.rawDcpIdsByLens ?: emptyMap()) }
+    var rawMaxSharpening by remember {
+        mutableStateOf(
+            sourcePreset?.rawMaxSharpening ?: RawSharpeningDefaults.DEFAULT_STRENGTH
+        )
+    }
+    var rawMaxNoiseReduction by remember {
+        mutableStateOf(
+            sourcePreset?.rawMaxNoiseReduction ?: RawDenoiseDefaults.RAW_MAX_LUMA_STRENGTH
+        )
+    }
+    var rawMaxChromaNoiseReduction by remember {
+        mutableStateOf(
+            sourcePreset?.rawMaxChromaNoiseReduction
+                ?: RawDenoiseDefaults.RAW_MAX_CHROMA_STRENGTH
+        )
+    }
+    var rawExposureCompensation by remember {
+        mutableStateOf(sourcePreset?.rawExposureCompensation ?: 0f)
+    }
+    var rawHighlightsAdjustment by remember {
+        mutableStateOf(sourcePreset?.rawHighlightsAdjustment ?: 0f)
+    }
+    var rawShadowsAdjustment by remember {
+        mutableStateOf(sourcePreset?.rawShadowsAdjustment ?: 0f)
+    }
+    var rawBlackPointCorrection by remember {
+        mutableStateOf(sourcePreset?.rawBlackPointCorrection ?: 0f)
+    }
+    var rawWhitePointCorrection by remember {
+        mutableStateOf(sourcePreset?.rawWhitePointCorrection ?: 0f)
+    }
+    var rawHncsFilmCurveMode by remember {
+        mutableStateOf(HncsFilmCurveMode.fromPersistedValue(sourcePreset?.rawHncsFilmCurveMode))
+    }
+    var rawHncsColorMatchingEnabled by remember {
+        mutableStateOf(sourcePreset?.rawHncsColorMatchingEnabled ?: true)
+    }
+    var rawLumixColorMatchingEnabled by remember {
+        mutableStateOf(sourcePreset?.rawLumixColorMatchingEnabled ?: true)
+    }
+    var rawEngineToneCurve by remember {
+        mutableStateOf(sourcePreset?.rawEngineToneCurve() ?: RawToneMappingParameters.DEFAULT)
+    }
+    var rawRenderingEngine by remember {
+        mutableStateOf(RawRenderingEngine.fromPersistedName(sourcePreset?.rawRenderingEngine))
+    }
+    var rawLumixPhotoStyle by remember {
+        mutableStateOf(LumixPhotoStyle.fromPersistedValue(sourcePreset?.rawLumixPhotoStyle))
+    }
+    var rawCanonPictureStyle by remember {
+        mutableStateOf(CanonPictureStyle.fromPersistedValue(sourcePreset?.rawCanonPictureStyle))
+    }
+    var rawCanonUseR5ColorMatrix by remember {
+        mutableStateOf(sourcePreset?.rawCanonUseR5ColorMatrix ?: false)
+    }
+    var rawLeicaUseM9ColorMatrix by remember {
+        mutableStateOf(sourcePreset?.rawLeicaUseM9ColorMatrix ?: false)
+    }
+    var rawCanonExposureCompensationEv by remember {
+        mutableStateOf(sourcePreset?.rawCanonExposureCompensationEv
+            ?: RawToneMappingParameters.CANON_EXPOSURE_COMPENSATION_DEFAULT)
+    }
+    var rawOppoMasterToneMap by remember { mutableStateOf(sourcePreset?.rawOppoMasterToneMap ?: false) }
+    var rawSpectralFilmStock by remember { mutableStateOf(sourcePreset?.rawSpectralFilmStock ?: "kodak_portra_400") }
+    var rawSpectralFilmPrint by remember { mutableStateOf(sourcePreset?.rawSpectralFilmPrint ?: "kodak_2383") }
+    var rawFotufilmDocument by remember {
+        mutableStateOf(
+            FotufilmDocumentStorage.decode(sourcePreset?.rawFotufilmDocument, "preset ${sourcePreset?.id}")
+                ?: if (RawRenderingEngine.fromPersistedName(sourcePreset?.rawRenderingEngine) == RawRenderingEngine.Fotufilm) {
+                    FotufilmDocumentStorage.defaultDocument()
+                } else {
+                    null
+                }
+        )
+    }
+    var rawDROMode by remember { mutableStateOf(sourcePreset?.rawDROMode ?: "OFF") }
+
+    // 专业模式基准色彩校正
+    var rawBaselineLutId by remember { mutableStateOf(sourcePreset?.rawBaselineLutId) }
+
+    // 折叠卡片展开控制
+    var expandProfessionalSettings by remember { mutableStateOf(false) }
+    var baselineRecipeEditLutId by remember { mutableStateOf<String?>(null) }
+    var baselineRecipeEditorTarget by remember { mutableStateOf<LutEditorTarget?>(null) }
+
+    // 保存方法
+    val onSave = {
+        val newPresetId = presetId ?: sourcePreset?.id ?: UUID.randomUUID().toString()
+        val isBuiltInFlag = sourcePreset?.isBuiltIn ?: false // 如果是内置预设的修改，依然保留 isBuiltIn 以展示内置标签
+        val savedPreset = CameraPreset(
+            id = newPresetId,
+            name = presetName,
+            lutId = selectedLutId,
+            colorRecipe = colorRecipe,
+            effects = effects,
+            aspectRatio = aspectRatio,
+            ultraHdrGainMapEnabled = ultraHdrGainMapEnabled,
+            frameId = frameId,
+            rawDcpId = rawDcpId,
+            rawDcpIdsByLens = rawDcpIdsByLens,
+            rawHncsFilmCurveMode = rawHncsFilmCurveMode.persistedValue,
+            rawRenderingEngine = rawRenderingEngine.name,
+            rawMaxSharpening = rawMaxSharpening,
+            rawMaxNoiseReduction = rawMaxNoiseReduction,
+            rawMaxChromaNoiseReduction = rawMaxChromaNoiseReduction,
+            rawExposureCompensation = rawExposureCompensation,
+            rawHighlightsAdjustment = rawHighlightsAdjustment,
+            rawShadowsAdjustment = rawShadowsAdjustment,
+            rawBlackPointCorrection = rawBlackPointCorrection,
+            rawWhitePointCorrection = rawWhitePointCorrection,
+            rawOppoMasterToneMap = rawOppoMasterToneMap,
+            rawLumixPhotoStyle = rawLumixPhotoStyle.assetName,
+            rawCanonPictureStyle = rawCanonPictureStyle.persistedValue,
+            rawCanonExposureCompensationEv = rawCanonExposureCompensationEv,
+            rawLumixColorMatchingEnabled = rawLumixColorMatchingEnabled,
+            rawHncsColorMatchingEnabled = rawHncsColorMatchingEnabled,
+            rawCanonUseR5ColorMatrix = rawCanonUseR5ColorMatrix,
+            rawLeicaUseM9ColorMatrix = rawLeicaUseM9ColorMatrix,
+            rawAgxBlackRelativeExposure = rawEngineToneCurve.agxBlackRelativeExposure,
+            rawAgxWhiteRelativeExposure = rawEngineToneCurve.agxWhiteRelativeExposure,
+            rawAgxToe = rawEngineToneCurve.agxToe,
+            rawAgxShoulder = rawEngineToneCurve.agxShoulder,
+            rawFilmicBlackRelativeExposure = rawEngineToneCurve.filmicBlackRelativeExposure,
+            rawFilmicWhiteRelativeExposure = rawEngineToneCurve.filmicWhiteRelativeExposure,
+            rawSpectralFilmStock = rawSpectralFilmStock,
+            rawSpectralFilmPrint = rawSpectralFilmPrint,
+            rawFotufilmDocument = FotufilmDocumentStorage.encode(rawFotufilmDocument),
+            rawDROMode = rawDROMode,
+            rawBaselineLutId = rawBaselineLutId,
+            isBuiltIn = isBuiltInFlag
+        )
+        viewModel.savePreset(savedPreset)
+        viewModel.draftPreset = null
+        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+        onBack()
+    }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = if (presetId != null) stringResource(R.string.preset_editor_title) else stringResource(R.string.preset_new),
+                        color = Color.White,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                },
+                navigationIcon = {
+                    IconButton(onClick = { onBack() }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.back),
+                            tint = Color.White
+                        )
+                    }
+                },
+                actions = {
+                    TextButton(onClick = { onSave() }) {
+                        Text(
+                            text = stringResource(R.string.preset_save),
+                            color = AccentColor,
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color(0xFF0F0F0F)
+                )
+            )
+        },
+        containerColor = Color(0xFF0A0A0A),
+        modifier = modifier.fillMaxSize()
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            SettingsSection(title = stringResource(R.string.preset_name_hint), isExpandable = false) {
+                BasicTextField(
+                    value = presetName,
+                    onValueChange = { presetName = it },
+                    textStyle = TextStyle(
+                        color = Color.White,
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold
+                    ),
+                    cursorBrush = SolidColor(Color.White),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(44.dp)
+                        .background(Color.White.copy(alpha = 0.05f), RoundedCornerShape(8.dp))
+                        .border(1.dp, Color.White.copy(alpha = 0.1f), RoundedCornerShape(8.dp))
+                        .padding(horizontal = 12.dp, vertical = 12.dp)
+                )
+            }
+
+            SettingsSection(title = stringResource(R.string.filter), isExpandable = false) {
+                LutSelector(
+                    availableLuts = availableLuts,
+                    currentLutId = selectedLutId,
+                    thumbnail = null,
+                    onLutSelected = { selectedLutId = it },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
+            Column {
+                Text(
+                    text = stringResource(R.string.edit),
+                    color = Color.White.copy(alpha = 0.6f),
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.padding(bottom = 12.dp)
+                )
+                ColorRecipePanel(
+                    currentParams = colorRecipe,
+                    onParamChange = { param, value ->
+                        colorRecipe = param.setValue(colorRecipe, value)
+                    },
+                    onParamsChange = { newParams ->
+                        colorRecipe = newParams
+                    },
+                    onRemarksChange = { remarks ->
+                        colorRecipe = colorRecipe.copy(remarks = remarks)
+                    },
+                    onCurveChange = { channel, points ->
+                        colorRecipe = when (channel) {
+                            CurveChannel.MASTER -> colorRecipe.copy(masterCurvePoints = points)
+                            CurveChannel.RED -> colorRecipe.copy(redCurvePoints = points)
+                            CurveChannel.GREEN -> colorRecipe.copy(greenCurvePoints = points)
+                            CurveChannel.BLUE -> colorRecipe.copy(blueCurvePoints = points)
+                        }
+                    },
+                    hideNonBakeable = true,
+                    showLutIntensity = true,
+                    currentEffects = effects,
+                    onEffectsChange = { effects = it },
+                    containerShape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
+            SettingsSection(title = stringResource(R.string.settings_section_frame), isExpandable = false) {
+                FrameSelector(
+                    availableFrames = availableFrames,
+                    currentFrameId = frameId,
+                    onFrameSelected = { frameId = it },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
+            SettingsSection(
+                title = stringResource(R.string.aspect_ratio),
+                showTitle = false,
+                isExpandable = false
+            ) {
+                val topSheetAspectRatios by viewModel.topSheetAspectRatios.collectAsState()
+                DropdownSettingItem(
+                    title = stringResource(R.string.aspect_ratio),
+                    value = AspectRatio.valueOf(aspectRatio).getDisplayName(),
+                    options = topSheetAspectRatios.map { it.getDisplayName() },
+                    isLoading = false,
+                    onExpanded = {},
+                    onOptionSelected = { selectedLabel ->
+                        val matchedKey = topSheetAspectRatios.find { it.getDisplayName() == selectedLabel }
+                        if (matchedKey != null) {
+                            aspectRatio = matchedKey.name
+                        }
+                    }
+                )
+            }
+
+            val editBaselineRecipe: (String, LutEditorTarget) -> Unit = { lutId, target ->
+                baselineRecipeEditLutId = lutId
+                baselineRecipeEditorTarget = target
+            }
+
+            if (baselineRecipeEditLutId != null && baselineRecipeEditorTarget != null) {
+                LutEditBottomSheet(
+                    lutId = baselineRecipeEditLutId!!,
+                    editorTarget = baselineRecipeEditorTarget!!,
+                    onDismiss = {
+                        baselineRecipeEditLutId = null
+                        baselineRecipeEditorTarget = null
+                    }
+                )
+            }
+
+            SettingsSection(
+                title = stringResource(R.string.settings_section_professional_mode),
+                description = stringResource(R.string.preset_professional_mode_only),
+                isExpandable = true,
+                isExpanded = expandProfessionalSettings,
+                onToggleExpand = { expandProfessionalSettings = !expandProfessionalSettings }
+            ) {
+                SwitchSettingItem(
+                    title = stringResource(R.string.settings_ultra_hdr_gain_map),
+                    description = stringResource(R.string.settings_ultra_hdr_gain_map_description),
+                    checked = ultraHdrGainMapEnabled,
+                    onCheckedChange = { ultraHdrGainMapEnabled = it },
+                )
+
+                HorizontalDivider(color = Color.White.copy(alpha = 0.05f), modifier = Modifier.padding(vertical = 8.dp))
+
+                SliderSettingItem(
+                    title = stringResource(R.string.settings_raw_exposure_compensation),
+                    value = rawExposureCompensation,
+                    valueRange = MeteringSystem.RAW_EXPOSURE_MIN_EV..MeteringSystem.RAW_EXPOSURE_MAX_EV,
+                    resetValue = 0f,
+                    onValueChange = { rawExposureCompensation = it },
+                )
+
+                SliderSettingItem(
+                    title = stringResource(R.string.settings_raw_highlights_adjustment),
+                    value = rawHighlightsAdjustment,
+                    valueRange = -1f..1f,
+                    resetValue = 0f,
+                    onValueChange = { rawHighlightsAdjustment = it },
+                )
+
+                SliderSettingItem(
+                    title = stringResource(R.string.settings_raw_shadows_adjustment),
+                    value = rawShadowsAdjustment,
+                    valueRange = -1f..1f,
+                    resetValue = 0f,
+                    onValueChange = { rawShadowsAdjustment = it },
+                )
+
+                SliderSettingItem(
+                    title = stringResource(R.string.settings_raw_blacks_adjustment),
+                    value = rawBlackPointCorrection,
+                    valueRange = -1f..1f,
+                    resetValue = 0f,
+                    onValueChange = { rawBlackPointCorrection = it },
+                )
+
+                SliderSettingItem(
+                    title = stringResource(R.string.settings_raw_whites_adjustment),
+                    value = rawWhitePointCorrection,
+                    valueRange = -1f..1f,
+                    resetValue = 0f,
+                    onValueChange = { rawWhitePointCorrection = it },
+                )
+
+                HorizontalDivider(color = Color.White.copy(alpha = 0.05f), modifier = Modifier.padding(vertical = 8.dp))
+
+                SliderSettingItem(
+                    title = stringResource(R.string.settings_raw_max_default_sharpening),
+                    description = stringResource(
+                        R.string.settings_raw_max_default_sharpening_description
+                    ),
+                    value = rawMaxSharpening,
+                    valueRange = 0f..1f,
+                    resetValue = RawSharpeningDefaults.DEFAULT_STRENGTH,
+                    onValueChange = { rawMaxSharpening = it },
+                )
+
+                HorizontalDivider(color = Color.White.copy(alpha = 0.05f), modifier = Modifier.padding(vertical = 8.dp))
+
+                SliderSettingItem(
+                    title = stringResource(R.string.settings_raw_max_default_luma_denoise),
+                    description = stringResource(
+                        R.string.settings_raw_max_default_luma_denoise_description
+                    ),
+                    value = rawMaxNoiseReduction,
+                    valueRange = DenoiseStrength.valueRange,
+                    resetValue = RawDenoiseDefaults.RAW_MAX_LUMA_STRENGTH,
+                    onValueChange = { rawMaxNoiseReduction = it },
+                )
+
+                HorizontalDivider(color = Color.White.copy(alpha = 0.05f), modifier = Modifier.padding(vertical = 8.dp))
+
+                SliderSettingItem(
+                    title = stringResource(R.string.settings_raw_max_default_chroma_denoise),
+                    description = stringResource(
+                        R.string.settings_raw_max_default_chroma_denoise_description
+                    ),
+                    value = rawMaxChromaNoiseReduction,
+                    valueRange = DenoiseStrength.valueRange,
+                    resetValue = RawDenoiseDefaults.RAW_MAX_CHROMA_STRENGTH,
+                    onValueChange = { rawMaxChromaNoiseReduction = it },
+                )
+
+                HorizontalDivider(color = Color.White.copy(alpha = 0.05f), modifier = Modifier.padding(vertical = 8.dp))
+
+                val engineNames = RawRenderingEngine.entries.associateWith { engine ->
+                    when (engine) {
+                        RawRenderingEngine.AdobeCurve -> stringResource(R.string.settings_raw_color_engine_adobe_curve)
+                        RawRenderingEngine.AgX -> stringResource(R.string.settings_raw_color_engine_agx)
+                        RawRenderingEngine.DarktableSigmoid -> stringResource(R.string.settings_raw_color_engine_darktable_sigmoid)
+                        RawRenderingEngine.DarktableFilmic -> stringResource(R.string.settings_raw_color_engine_darktable_filmic)
+                        RawRenderingEngine.Spektrafilm -> stringResource(R.string.settings_raw_color_engine_spectral_film)
+                        RawRenderingEngine.Lumix -> stringResource(R.string.settings_raw_color_engine_lumix)
+                        RawRenderingEngine.Canon -> stringResource(R.string.settings_raw_color_engine_canon)
+                        RawRenderingEngine.Leica -> stringResource(R.string.settings_raw_color_engine_leica)
+                        RawRenderingEngine.Fotufilm -> stringResource(R.string.settings_raw_color_engine_fotufilm)
+                        RawRenderingEngine.Hncs -> stringResource(
+                            R.string.settings_raw_color_engine_hncs
+                        )
+                    }
+                }
+                DropdownSettingItem(
+                    title = stringResource(R.string.settings_raw_color_engine),
+                    value = engineNames[rawRenderingEngine] ?: rawRenderingEngine.name,
+                    options = engineNames.values.toList(),
+                    isLoading = false,
+                    onExpanded = {},
+                    onOptionSelected = { selectedName ->
+                        engineNames.entries.find { it.value == selectedName }?.key?.let { engine ->
+                            rawRenderingEngine = engine
+                            if (engine == RawRenderingEngine.Spektrafilm) {
+                                if (rawSpectralFilmStock.isBlank()) rawSpectralFilmStock = "kodak_portra_400"
+                                if (rawSpectralFilmPrint.isBlank()) rawSpectralFilmPrint = "kodak_2383"
+                            }
+                            if (engine == RawRenderingEngine.Fotufilm && rawFotufilmDocument == null) {
+                                rawFotufilmDocument = FotufilmDocumentStorage.defaultDocument()
+                            }
+                        }
+                    }
+                )
+
+                AnimatedVisibility(visible = rawRenderingEngine.isHncs) {
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        SwitchSettingItem(
+                            title = stringResource(R.string.settings_raw_camera_color_matching),
+                            description = stringResource(R.string.settings_raw_camera_color_matching_description),
+                            checked = rawHncsColorMatchingEnabled,
+                            onCheckedChange = { rawHncsColorMatchingEnabled = it },
+                        )
+                        val filmCurveLabels = mapOf(
+                            HncsFilmCurveMode.Standard to stringResource(R.string.settings_raw_hncs_film_curve_standard),
+                            HncsFilmCurveMode.Reproduction to stringResource(R.string.settings_raw_hncs_film_curve_reproduction),
+                        )
+                        DropdownSettingItem(
+                            title = stringResource(R.string.settings_raw_hncs_film_curve),
+                            description = stringResource(R.string.settings_raw_hncs_film_curve_description),
+                            value = filmCurveLabels[rawHncsFilmCurveMode].orEmpty(),
+                            options = filmCurveLabels.values.toList(),
+                            isLoading = false,
+                            onExpanded = {},
+                            onOptionSelected = { selectedLabel ->
+                                filmCurveLabels.entries.firstOrNull { it.value == selectedLabel }
+                                    ?.key
+                                    ?.let { rawHncsFilmCurveMode = it }
+                            },
+                        )
+                    }
+                }
+
+                AnimatedVisibility(visible = rawRenderingEngine.isLumix) {
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        LumixPhotoStyleSelector(
+                            selectedStyle = rawLumixPhotoStyle,
+                            onSelectStyle = { rawLumixPhotoStyle = it },
+                        )
+                        SwitchSettingItem(
+                            title = stringResource(R.string.settings_raw_camera_color_matching),
+                            description = stringResource(R.string.settings_raw_camera_color_matching_description),
+                            checked = rawLumixColorMatchingEnabled,
+                            onCheckedChange = { rawLumixColorMatchingEnabled = it },
+                        )
+                    }
+                }
+
+                AnimatedVisibility(
+                    visible = rawRenderingEngine == RawRenderingEngine.AgX ||
+                        rawRenderingEngine == RawRenderingEngine.DarktableFilmic
+                ) {
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        RawEngineToneCurveControls(
+                            rawRenderingEngine = rawRenderingEngine,
+                            params = rawEngineToneCurve,
+                            onParamsChange = { rawEngineToneCurve = it.engineToneCurve() },
+                        )
+                    }
+                }
+
+                AnimatedVisibility(visible = rawRenderingEngine.isCanon) {
+                    val matrixLabels = mapOf(
+                        false to stringResource(R.string.settings_raw_canon_color_matrix_device),
+                        true to stringResource(R.string.settings_raw_canon_color_matrix_r5),
+                    )
+                    DropdownSettingItem(
+                        title = stringResource(R.string.settings_raw_canon_color_matrix),
+                        description = stringResource(R.string.settings_raw_canon_color_matrix_description),
+                        value = matrixLabels.getValue(rawCanonUseR5ColorMatrix),
+                        options = matrixLabels.values.toList(),
+                        isLoading = false,
+                        onExpanded = {},
+                        onOptionSelected = { selectedLabel ->
+                            rawCanonUseR5ColorMatrix = matrixLabels.entries
+                                .first { it.value == selectedLabel }.key
+                        },
+                    )
+                }
+
+                AnimatedVisibility(visible = rawRenderingEngine.isLeica) {
+                    val matrixLabels = mapOf(
+                        false to stringResource(R.string.settings_raw_leica_color_matrix_device),
+                        true to stringResource(R.string.settings_raw_leica_color_matrix_m9),
+                    )
+                    DropdownSettingItem(
+                        title = stringResource(R.string.settings_raw_leica_color_matrix),
+                        description = stringResource(R.string.settings_raw_leica_color_matrix_description),
+                        value = matrixLabels.getValue(rawLeicaUseM9ColorMatrix),
+                        options = matrixLabels.values.toList(),
+                        isLoading = false,
+                        onExpanded = {},
+                        onOptionSelected = { selectedLabel ->
+                            rawLeicaUseM9ColorMatrix = matrixLabels.entries
+                                .first { it.value == selectedLabel }.key
+                        },
+                    )
+                }
+
+                AnimatedVisibility(visible = rawRenderingEngine.isCanon) {
+                    Column {
+                        CanonPictureStyleSelector(
+                            selectedStyle = rawCanonPictureStyle,
+                            onSelectStyle = { rawCanonPictureStyle = it },
+                        )
+                        CanonExposureCompensationSetting(
+                            value = rawCanonExposureCompensationEv,
+                            onValueChange = { rawCanonExposureCompensationEv = it },
+                        )
+                    }
+                }
+
+                AnimatedVisibility(visible = rawRenderingEngine == RawRenderingEngine.AdobeCurve) {
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        HorizontalDivider(
+                            color = Color.White.copy(alpha = 0.05f),
+                            modifier = Modifier.padding(vertical = 8.dp)
+                        )
+
+                        val toneMapLabels = mapOf(
+                            RawProfileToneMapMode.Default to stringResource(R.string.settings_raw_profile_tone_map_default),
+                            RawProfileToneMapMode.OppoMaster to stringResource(R.string.settings_raw_profile_tone_map_oppo_master),
+                        )
+                        val selectedToneMapMode = when {
+                            rawOppoMasterToneMap -> RawProfileToneMapMode.OppoMaster
+                            else -> RawProfileToneMapMode.Default
+                        }
+                        DropdownSettingItem(
+                            title = stringResource(R.string.settings_raw_profile_tone_map),
+                            description = stringResource(R.string.settings_raw_profile_tone_map_description),
+                            value = toneMapLabels[selectedToneMapMode].orEmpty(),
+                            options = RawProfileToneMapMode.values().mapNotNull { toneMapLabels[it] },
+                            isLoading = false,
+                            onExpanded = {},
+                            onOptionSelected = { selectedLabel ->
+                                val selectedMode = toneMapLabels.entries
+                                    .firstOrNull { it.value == selectedLabel }
+                                    ?.key
+                                    ?: RawProfileToneMapMode.Default
+                                rawOppoMasterToneMap = selectedMode == RawProfileToneMapMode.OppoMaster
+                            }
+                        )
+
+                        HorizontalDivider(
+                            color = Color.White.copy(alpha = 0.05f),
+                            modifier = Modifier.padding(vertical = 8.dp)
+                        )
+
+                        RawDcpSelector(
+                            selectedDcpId = rawDcpId,
+                            rawDcpIdsByLens = rawDcpIdsByLens,
+                            lensOptions = rawDcpLensOptions(cameraState.availableCameras),
+                            availableDcps = availableDcps,
+                            onSelectDcp = { rawDcpId = it },
+                            onRawDcpIdsByLensChange = { rawDcpIdsByLens = it }
+                        )
+                    }
+                }
+
+                AnimatedVisibility(visible = rawRenderingEngine == RawRenderingEngine.Spektrafilm) {
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        val currentStockLabel = SpectralFilmUiInfo.getFilmDisplayName(rawSpectralFilmStock)
+                        val stockMap = SpectralFilmUiInfo.availableFilms.associateWith { SpectralFilmUiInfo.getFilmDisplayName(it) }
+                        DropdownSettingItem(
+                            title = stringResource(R.string.settings_negative_film),
+                            value = currentStockLabel,
+                            options = stockMap.values.toList(),
+                            isLoading = false,
+                            onExpanded = {},
+                            onOptionSelected = { selectedName ->
+                                val matchedKey = stockMap.entries.find { it.value == selectedName }?.key
+                                if (matchedKey != null) {
+                                    rawSpectralFilmStock = matchedKey
+                                }
+                            }
+                        )
+
+                        AnimatedVisibility(visible = !SpectralFilmUiInfo.isPositiveFilm(rawSpectralFilmStock)) {
+                            Column(modifier = Modifier.fillMaxWidth()) {
+                                HorizontalDivider(color = Color.White.copy(alpha = 0.05f), modifier = Modifier.padding(vertical = 8.dp))
+
+                                val currentPrintLabel = SpectralFilmUiInfo.getPrintDisplayName(rawSpectralFilmPrint)
+                                val printMap = SpectralFilmUiInfo.availablePrints.associateWith { SpectralFilmUiInfo.getPrintDisplayName(it) }
+                                DropdownSettingItem(
+                                    title = stringResource(R.string.settings_print_paper),
+                                    value = currentPrintLabel,
+                                    options = printMap.values.toList(),
+                                    isLoading = false,
+                                    onExpanded = {},
+                                    onOptionSelected = { selectedName ->
+                                        val matchedKey = printMap.entries.find { it.value == selectedName }?.key
+                                        if (matchedKey != null) {
+                                            rawSpectralFilmPrint = matchedKey
+                                        }
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
+
+                AnimatedVisibility(visible = rawRenderingEngine.isFotufilm) {
+                    rawFotufilmDocument?.let { document ->
+                        FotufilmControls(
+                            document = document,
+                            onDocumentChange = { rawFotufilmDocument = it },
+                            onAdjustmentStart = {},
+                            onAdjustmentEnd = {},
+                        )
+                    }
+                }
+
+                /*HorizontalDivider(color = Color.White.copy(alpha = 0.05f), modifier = Modifier.padding(vertical = 8.dp))
+
+                val droMap = mapOf(
+                    "OFF" to stringResource(R.string.settings_dro_off),
+                    "DR100" to stringResource(R.string.settings_dro_dr100),
+                    "DR200" to stringResource(R.string.settings_dro_dr200),
+                    "DR400" to stringResource(R.string.settings_dro_dr400)
+                )
+                val currentDroLabel = droMap[rawDROMode] ?: stringResource(R.string.settings_dro_off)
+                DropdownSettingItem(
+                    title = stringResource(R.string.settings_dro_mode),
+                    value = currentDroLabel,
+                    options = droMap.values.toList(),
+                    isLoading = false,
+                    onExpanded = {},
+                    onOptionSelected = { selectedName ->
+                        val matchedKey = droMap.entries.find { it.value == selectedName }?.key
+                        if (matchedKey != null) {
+                            rawDROMode = matchedKey
+                        }
+                    }
+                )*/
+
+                HorizontalDivider(
+                    color = Color.White.copy(alpha = 0.05f),
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
+                Text(
+                    text = stringResource(R.string.lut_selector_baseline_tab),
+                    color = Color.White,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+                RawBaselineColorCorrectionSelector(
+                    title = stringResource(R.string.settings_baseline_raw_title),
+                    selectedLutId = rawBaselineLutId,
+                    availableLuts = availableLuts,
+                    thumbnail = null,
+                    onSelectLut = { rawBaselineLutId = it },
+                    onEditRecipe = { editBaselineRecipe(it, LutEditorTarget.BASELINE_RAW) }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun borderStroke(width: androidx.compose.ui.unit.Dp, color: Color) =
+    androidx.compose.foundation.BorderStroke(width, color)

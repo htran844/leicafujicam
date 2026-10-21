@@ -1,0 +1,178 @@
+package vn.hoang.leicafujicam.lut
+
+import android.opengl.GLES30
+import vn.hoang.leicafujicam.utils.PLog
+
+internal data class ColorPassLocations(
+    val programId: Int,
+    val uMVPMatrixLocation: Int,
+    val uSTMatrixLocation: Int,
+    val uCameraTextureLocation: Int,
+    val uEnginePreviewLutLocation: Int,
+    val uLutTextureLocation: Int,
+    val uLutSizeLocation: Int,
+    val uLutIntensityLocation: Int,
+    val uLutEnabledLocation: Int,
+    val uLutMaskTypeLocation: Int,
+    val uLutCurveLocation: Int,
+    val uLutColorSpaceLocation: Int,
+    val uVideoLogEnabledLocation: Int,
+    val uVideoLogCurveLocation: Int,
+    val uVideoColorSpaceLocation: Int,
+    val uInverseAcr3TextureLocation: Int,
+    val uColorRecipeEnabledLocation: Int,
+    val uExposureLocation: Int,
+    val uContrastLocation: Int,
+    val uSaturationLocation: Int,
+    val uTemperatureLocation: Int,
+    val uTintLocation: Int,
+    val uFadeLocation: Int,
+    val uVibranceLocation: Int,
+    val uHighlightsLocation: Int,
+    val uShadowsLocation: Int,
+    val uSharpeningLocation: Int,
+    val uFilmGrainLocation: Int,
+    val uFilmGrainSeedLocation: Int,
+    val uFilmGrainPixelScaleLocation: Int,
+    val uBasicToneLutLocation: Int,
+    val uBasicToneIntensityLocation: Int,
+    val uVignetteLocation: Int,
+    val uFlashLocation: Int,
+    val uBleachBypassLocation: Int,
+    val uChromaticAberrationLocation: Int,
+    val uNoiseLocation: Int,
+    val uNoiseSeedLocation: Int,
+    val uLowResLocation: Int,
+    val uAspectRatioLocation: Int,
+    val uGradingHuesLocation: Int,
+    val uGradingAmountsLocation: Int,
+    val uGradingLuminancesLocation: Int,
+    val uGradingBalanceLocation: Int,
+    val uGradingBlendingLocation: Int,
+    val uLchHueAdjustmentsLocation: Int,
+    val uLchChromaAdjustmentsLocation: Int,
+    val uLchLightnessAdjustmentsLocation: Int,
+    val uPrimaryCalibrationMatrixLocation: Int,
+    val uCropRectLocation: Int,
+    val uTexelSizeLocation: Int,
+    val uCurveTextureLocation: Int,
+    val uCurveEnabledLocation: Int,
+    val aPositionLocation: Int,
+    val aTexCoordLocation: Int,
+)
+
+internal class PreviewColorProgramCache {
+    private val programs = mutableMapOf<PreviewColorShaderVariant, ColorPassLocations>()
+    private val logInput = LogInputGl()
+
+    fun bindLogInput(locations: ColorPassLocations) {
+        logInput.bind(locations.uInverseAcr3TextureLocation, textureUnit = 4)
+    }
+
+    fun get(variant: PreviewColorShaderVariant): ColorPassLocations? {
+        programs[variant]?.let { return it }
+
+        val vertexShader = GlUtils.compileShader(GLES30.GL_VERTEX_SHADER, Shaders.VERTEX_SHADER)
+        val fragmentShader = GlUtils.compileShader(
+            GLES30.GL_FRAGMENT_SHADER,
+            PreviewColorShader.source(variant)
+        )
+        if (vertexShader == 0 || fragmentShader == 0) {
+            PLog.e(TAG, "Failed to compile preview color shader: $variant")
+            if (vertexShader != 0) GLES30.glDeleteShader(vertexShader)
+            if (fragmentShader != 0) GLES30.glDeleteShader(fragmentShader)
+            return null
+        }
+
+        val programId = GlUtils.linkProgram(vertexShader, fragmentShader)
+        GLES30.glDeleteShader(vertexShader)
+        GLES30.glDeleteShader(fragmentShader)
+        if (programId == 0) {
+            PLog.e(TAG, "Failed to link preview color shader: $variant")
+            return null
+        }
+
+        val locations = queryLocations(programId, variant)
+        programs[variant] = locations
+        PLog.d(TAG, "Compiled preview color shader variant: $variant")
+        return locations
+    }
+
+    fun release() {
+        logInput.release()
+        programs.values.forEach { GlUtils.deleteProgram(it.programId) }
+        programs.clear()
+    }
+
+    fun reset() {
+        logInput.reset()
+        programs.clear()
+    }
+
+    private fun queryLocations(program: Int, variant: PreviewColorShaderVariant): ColorPassLocations {
+        return ColorPassLocations(
+            programId = program,
+            uMVPMatrixLocation = GLES30.glGetUniformLocation(program, "uMVPMatrix"),
+            uSTMatrixLocation = GLES30.glGetUniformLocation(program, "uSTMatrix"),
+            uCameraTextureLocation = GLES30.glGetUniformLocation(program, "uCameraTexture"),
+            uEnginePreviewLutLocation = GLES30.glGetUniformLocation(program, "uEnginePreviewLut"),
+            uLutTextureLocation = GLES30.glGetUniformLocation(program, "uLutTexture"),
+            uLutSizeLocation = GLES30.glGetUniformLocation(program, "uLutSize"),
+            uLutIntensityLocation = GLES30.glGetUniformLocation(program, "uLutIntensity"),
+            uLutEnabledLocation = GLES30.glGetUniformLocation(program, "uLutEnabled"),
+            uLutMaskTypeLocation = GLES30.glGetUniformLocation(program, "uLutMaskType"),
+            uLutCurveLocation = GLES30.glGetUniformLocation(program, "uLutCurve"),
+            uLutColorSpaceLocation = GLES30.glGetUniformLocation(program, "uLutColorSpace"),
+            uVideoLogEnabledLocation = GLES30.glGetUniformLocation(program, "uVideoLogEnabled"),
+            uVideoLogCurveLocation = GLES30.glGetUniformLocation(program, "uVideoLogCurve"),
+            uVideoColorSpaceLocation = GLES30.glGetUniformLocation(program, "uVideoColorSpace"),
+            uInverseAcr3TextureLocation = GLES30.glGetUniformLocation(program, "uInverseAcr3Texture"),
+            uColorRecipeEnabledLocation = GLES30.glGetUniformLocation(program, "uColorRecipeEnabled"),
+            uExposureLocation = GLES30.glGetUniformLocation(program, "uExposure"),
+            uContrastLocation = GLES30.glGetUniformLocation(program, "uContrast"),
+            uSaturationLocation = GLES30.glGetUniformLocation(program, "uSaturation"),
+            uTemperatureLocation = GLES30.glGetUniformLocation(program, "uTemperature"),
+            uTintLocation = GLES30.glGetUniformLocation(program, "uTint"),
+            uFadeLocation = GLES30.glGetUniformLocation(program, "uFade"),
+            uVibranceLocation = GLES30.glGetUniformLocation(program, "uVibrance"),
+            uHighlightsLocation = GLES30.glGetUniformLocation(program, "uHighlights"),
+            uShadowsLocation = GLES30.glGetUniformLocation(program, "uShadows"),
+            uSharpeningLocation = GLES30.glGetUniformLocation(program, "uSharpening"),
+            uFilmGrainLocation = GLES30.glGetUniformLocation(program, "uFilmGrain"),
+            uFilmGrainSeedLocation = GLES30.glGetUniformLocation(program, "uFilmGrainSeed"),
+            uFilmGrainPixelScaleLocation = GLES30.glGetUniformLocation(program, "uFilmGrainPixelScale"),
+            uBasicToneLutLocation = GLES30.glGetUniformLocation(program, "uBasicToneLut"),
+            uBasicToneIntensityLocation = GLES30.glGetUniformLocation(program, "uBasicToneIntensity"),
+            uVignetteLocation = GLES30.glGetUniformLocation(program, "uVignette"),
+            uFlashLocation = GLES30.glGetUniformLocation(program, "uFlash"),
+            uBleachBypassLocation = GLES30.glGetUniformLocation(program, "uBleachBypass"),
+            uChromaticAberrationLocation = GLES30.glGetUniformLocation(program, "uChromaticAberration"),
+            uNoiseLocation = GLES30.glGetUniformLocation(program, "uNoise"),
+            uNoiseSeedLocation = GLES30.glGetUniformLocation(program, "uNoiseSeed"),
+            uLowResLocation = GLES30.glGetUniformLocation(program, "uLowRes"),
+            uAspectRatioLocation = GLES30.glGetUniformLocation(program, "uAspectRatio"),
+            uGradingHuesLocation = GLES30.glGetUniformLocation(program, "uGradingHues"),
+            uGradingAmountsLocation = GLES30.glGetUniformLocation(program, "uGradingAmounts"),
+            uGradingLuminancesLocation = GLES30.glGetUniformLocation(
+                program,
+                "uGradingLuminances",
+            ),
+            uGradingBalanceLocation = GLES30.glGetUniformLocation(program, "uGradingBalance"),
+            uGradingBlendingLocation = GLES30.glGetUniformLocation(program, "uGradingBlending"),
+            uLchHueAdjustmentsLocation = GLES30.glGetUniformLocation(program, "uLchHueAdjustments"),
+            uLchChromaAdjustmentsLocation = GLES30.glGetUniformLocation(program, "uLchChromaAdjustments"),
+            uLchLightnessAdjustmentsLocation = GLES30.glGetUniformLocation(program, "uLchLightnessAdjustments"),
+            uPrimaryCalibrationMatrixLocation = GLES30.glGetUniformLocation(program, "uPrimaryCalibrationMatrix"),
+            uCropRectLocation = GLES30.glGetUniformLocation(program, "uCropRect"),
+            uTexelSizeLocation = GLES30.glGetUniformLocation(program, "uTexelSize"),
+            uCurveTextureLocation = GLES30.glGetUniformLocation(program, "uCurveTexture"),
+            uCurveEnabledLocation = GLES30.glGetUniformLocation(program, "uCurveEnabled"),
+            aPositionLocation = GLES30.glGetAttribLocation(program, "aPosition"),
+            aTexCoordLocation = GLES30.glGetAttribLocation(program, "aTexCoord"),
+        )
+    }
+
+    private companion object {
+        const val TAG = "PreviewColorProgram"
+    }
+}

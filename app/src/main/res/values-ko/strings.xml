@@ -1,0 +1,492 @@
+<resources>
+    <string name="app_name">LeicaFujiCam</string>
+    
+    <!-- Camera Controls -->
+    <string name="switch_camera">카메라 전환</string>
+    <string name="settings">설정</string>
+    <string name="flash">플래시</string>
+    <string name="timer">타이머</string>
+    <string name="histogram">히스토그램</string>
+    <string name="back">뒤로</string>
+    
+    <!-- Exposure Controls -->
+    
+    <!-- Focus -->
+    
+    <!-- Aspect Ratio -->
+    <string name="aspect_ratio">화면 비율</string>
+    
+    <!-- Permissions -->
+    <string name="camera_permission_required">카메라 및 마이크 권한이 필요합니다</string>
+    <string name="grant_permission">권한 허용</string>
+    
+    <!-- Zoom -->
+    
+    <!-- Gallery -->
+    <string name="share">공유</string>
+    <string name="delete">삭제</string>
+    <string name="export">내보내기</string>
+    <string name="export_video_select_resolution">내보내기 해상도 선택</string>
+    <string name="export_video_resolution_original">원본 해상도</string>
+    <string name="export_video_resolution_8k">8K</string>
+    <string name="export_video_resolution_4k">4K</string>
+    <string name="export_video_resolution_1080p">1080p</string>
+    <string name="export_video_resolution_720p">720p</string>
+    <string name="export_video_resolution_may_fail">지원 여부를 확인할 수 없어 내보내기에 실패할 수 있음</string>
+    <string name="export_video_resolution_unsupported">이 기기에서 지원되지 않음</string>
+    <string name="export_video_resolution_source_too_small">원본 동영상보다 높은 해상도</string>
+    <string name="export_video_resolution_details">%1$d × %2$d · %3$s</string>
+    <string name="export_success">사진을 성공적으로 내보냈습니다</string>
+    <string name="export_failed">사진 내보내기에 실패했습니다</string>
+    <string name="edit">편집</string>
+    <string name="select_all">전체 선택</string>
+    <string name="cancel">취소</string>
+    <string name="save">저장</string>
+    <string name="crop">자르기</string>
+    <string name="delete_confirm">이 사진을 삭제하시겠습니까?</string>
+    <string name="delete_multiple_confirm">%d개의 사진을 삭제하시겠습니까?</string>
+    <string name="delete_exported_photos_count">내보낸 사진 %d개도 삭제</string>
+    <string name="delete_exported_videos_count">내보낸 동영상 %d개도 삭제</string>
+    <string name="no_photos">사진이 없습니다</string>
+    <string name="photo_info">사진 정보</string>
+    <string name="filter">LUT</string>
+    <string name="export_confirm">LUT가 적용된 사진을 내보내시겠습니까?</string>
+    <string name="items_selected">%d개 선택됨</string>
+    <string name="selected">선택됨</string>
+    <string name="imported">가져옴</string>
+    <string name="photo_info_date">날짜</string>
+    <string name="photo_info_resolution">해상도</string>
+    <string name="photo_info_size">크기</string>
+    <string name="photo_info_focal_length">초점 거리</string>
+    <string name="photo_info_aperture">조리개</string>
+    <string name="photo_info_iso">ISO</string>
+    <string name="photo_info_shutter_speed">셔터 속도</string>
+    
+    <!-- Frame Watermark -->
+    <string name="frame">프레임</string>
+    <string name="none">없음</string>
+    <string name="show_app_branding">앱 브랜딩 표시</string>
+    <string name="import_photo">가져오기</string>
+    <string name="watermark_adjustment">워터마크 조정</string>
+    <string name="logo">로고</string>
+    <string name="text_content">텍스트 내용</string>
+    <string name="device_model">기기 모델</string>
+    <string name="brand_name">브랜드 이름</string>
+    <string name="date_label">날짜 (DATE)</string>
+    <string name="time_label">시간 (TIME)</string>
+    <string name="datetime_label">날짜/시간 (DATETIME)</string>
+    <string name="default_from_photo">사진에서 기본값 가져오기</string>
+    <string name="font_option">글꼴</string>
+    <string name="default_text">기본값</string>
+    <string name="custom_import">가져오기...</string>
+    
+    <!-- Settings -->
+    <string name="settings_title">설정</string>
+    <string name="settings_section_capture">촬영</string>
+    <string name="settings_use_raw">RAW 촬영</string>
+    <string name="settings_use_raw_description">더 높은 품질을 위해 RAW 형식(DNG)으로 사진을 촬영합니다.</string>
+    <string name="settings_level_indicator">수평계</string>
+    <string name="settings_level_description">촬영 중 수평계 표시</string>
+    <string name="settings_grid_lines">격자선</string>
+    <string name="settings_grid_description">구도를 위한 격자선 표시</string>
+    <string name="settings_grid_style">격자 스타일</string>
+    <string name="grid_style_thirds">삼분할</string>
+    <string name="grid_style_diagonals">대각선</string>
+    <string name="grid_style_golden_ratio">황금비</string>
+    <string name="grid_style_golden_triangle">황금삼각형</string>
+    <string name="grid_style_golden_spiral">황금나선</string>
+    <string name="settings_use_live_photo">라이브 포토</string>
+    <string name="settings_use_live_photo_description">역동적인 라이브 포토 효과를 위해 사진과 함께 짧은 비디오 클립을 촬영합니다.</string>
+    <string name="settings_develop_animation_description">촬영 후 사진 애니메이션을 표시합니다.</string>
+    <string name="settings_develop_animation_style">애니메이션 스타일</string>
+    <string name="settings_develop_animation_style_description">선택한 프레임과 함께 필름 현상 또는 사진 인화 효과를 선택합니다.</string>
+    <string name="settings_develop_animation_style_film">필름 현상</string>
+    <string name="settings_develop_animation_style_instant_print">즉석 인화</string>
+    <string name="settings_section_frame">프레임 워터마크</string>
+    <string name="settings_frame_style">프레임 스타일</string>
+    <string name="settings_frame_description">사진에 장식용 프레임과 워터마크 추가</string>
+    <string name="settings_section_software_processing">미세 조정</string>
+    <string name="settings_shutter_sound">셔터 소리</string>
+    <string name="settings_shutter_sound_description">사진 촬영 시 소리 재생</string>
+    <string name="settings_vibration">진동</string>
+    <string name="settings_vibration_description">사진 촬영 시 진동</string>
+    <string name="settings_keep_screen_on">화면 항상 켜기</string>
+    <string name="settings_keep_screen_on_description">카메라 사용 중 화면이 꺼지지 않게 합니다. 동영상 녹화 중에는 항상 화면을 켜 둡니다.</string>
+    <string name="settings_window_screen_brightness">화면 밝기</string>
+    <string name="settings_window_screen_brightness_description">이 앱 창의 화면 밝기를 설정합니다. 끄면 시스템 기본 밝기를 사용합니다.</string>
+    <string name="settings_volume_key_action">볼륨 키 동작</string>
+    <string name="settings_volume_key_action_description">촬영 중 볼륨 키의 동작을 선택합니다</string>
+    <string name="settings_volume_key_action_none">볼륨 조절</string>
+    <string name="settings_volume_key_action_capture">셔터</string>
+    <string name="settings_volume_key_action_exposure">노출 보정</string>
+    <string name="settings_volume_key_action_zoom">초점 전환</string>
+    <string name="settings_auto_save">자동 저장</string>
+    <string name="settings_auto_save_description">촬영 후 자동으로 사진 저장</string>
+    <string name="settings_nr_level">노이즈 감소 레벨</string>
+    <string name="settings_nr_level_description">하드웨어 노이즈 감소 모드를 조정합니다. \"끄기\"는 멀티 프레임 노이즈 감소 알고리즘과 함께 사용하여 더 많은 디테일을 얻을 수 있습니다.</string>
+    <string name="settings_nr_level_off">끄기</string>
+    <string name="settings_nr_level_minimal">최소</string>
+    <string name="settings_nr_level_fast">빠름</string>
+    <string name="settings_nr_level_high_quality">고화질(HQ)</string>
+    <string name="settings_nr_level_zsl">ZSL</string>
+    <string name="settings_edge_level">샤프닝 레벨</string>
+    <string name="settings_edge_level_description">하드웨어 가장자리 향상(서프닝) 모드를 조정합니다.</string>
+    <string name="settings_sharpening">샤프닝</string>
+    <string name="settings_sharpening_description">이미지 선명도 및 가장자리 정의 향상</string>
+    <string name="settings_noise_reduction">노이즈 감소</string>
+    <string name="settings_noise_reduction_description">디테일을 보존하면서 이미지 노이즈 감소</string>
+    <string name="settings_chroma_noise_reduction">크로마 노이즈 감소</string>
+    <string name="settings_chroma_noise_reduction_description">색상 노이즈 및 아티팩트 감소</string>
+    <string name="settings_detail_enhancement_description">샤프닝 및 노이즈 감소 매개변수 미세 조정</string>
+    <string name="settings_photo_quality">사진 품질</string>
+    <string name="settings_photo_quality_description">사진의 JPEG 압축 품질을 선택합니다 (높을수록 품질은 좋아지지만 파일 크기가 커집니다)</string>
+    <string name="settings_background">배경</string>
+    <string name="settings_background_description">앱 배경 이미지 변경</string>
+    <string name="settings_custom_background">사용자 정의...</string>
+    
+    <!-- LUT -->
+    <string name="filter_intensity">LUT 강도</string>
+    <string name="filters_panel">LUT 목록</string>
+    <string name="toggle_display_mode">표시 모드 전환</string>
+    
+    <!-- Billing & Premium -->
+    <string name="billing_vip_tag">VIP</string>
+    <string name="billing_premium_unlock_title">모든 VIP LUT 잠금 해제</string>
+    <string name="billing_premium_unlock_description">모든 프리미엄 LUT 필터 및 향후 프로 기능을 평생 이용할 수 있는 일회성 결제입니다.</string>
+    <string name="billing_feature_all_luts">모든 전문 LUT 이용</string>
+    <string name="billing_feature_support_dev">독립 개발 지원</string>
+    <string name="billing_feature_lifetime">1회 구매로 평생 이용</string>
+    <string name="billing_premium_get_access">프리미엄 액세스 권한 얻기</string>
+    <string name="billing_price_region_notice">가격은 지역에 따라 다를 수 있습니다</string>
+    <string name="settings_premium_title">leicafujicam Pro</string>
+    <string name="settings_premium_description">모든 프리미엄 LUT를 잠금 해제하고 저희를 지원해 주세요.</string>
+    
+    <!-- Custom Import -->
+    <string name="custom_tag">사용자 정의</string>
+    <string name="delete_confirm_title">삭제 확인</string>
+    <string name="name">이름</string>
+    <string name="confirm">확인</string>
+    
+    <!-- Color Recipe -->
+    <string name="color_recipe">색상 레시피</string>
+    
+    <!-- Color Recipe Parameters -->
+    <string name="recipe_param_exposure">노출</string>
+    <string name="recipe_param_contrast">대비</string>
+    <string name="recipe_param_saturation">채도</string>
+    <string name="recipe_param_temperature">색온도</string>
+    <string name="recipe_param_tint">색조</string>
+    <string name="recipe_param_fade">페이드</string>
+    <string name="recipe_param_color">생동감</string>
+    <string name="recipe_param_highlights">밝은 영역</string>
+    <string name="recipe_param_shadows">어두운 영역</string>
+    <string name="recipe_param_film_grain">그레인</string>
+    <string name="recipe_param_vignette">비네팅</string>
+    <string name="recipe_param_flash">플래시</string>
+    <string name="recipe_param_bleach_bypass">블리치 바이패스</string>
+    <string name="recipe_param_clarity">명료도</string>
+    <string name="recipe_param_bloom">블룸</string>
+    <string name="recipe_param_soft_light">소프트 라이트</string>
+    <string name="recipe_param_halation">할레이션</string>
+    <string name="recipe_param_lut_intensity">LUT</string>
+    
+    <!-- Color Recipe Tabs -->
+    <string name="edit_sync_lut_recipe">LUT 동기화</string>
+    <string name="edit_sync_lut_recipe_description">색상, 효과, LUT 강도도 선택한 LUT에 저장합니다.</string>
+    <string name="edit_select_lut_hint">색상과 효과를 조정하기 전에 LUT를 선택하세요.</string>
+    <string name="edit_color_and_effects">색상 및 효과 조정</string>
+    <string name="recipe_tab_color">색상</string>
+    <string name="recipe_color_basic">기본</string>
+    <string name="recipe_color_style">스타일</string>
+    <string name="recipe_color_grading">그레이딩</string>
+    <string name="recipe_grading_midtones">중간톤</string>
+    <string name="recipe_grading_luminance">휘도</string>
+    <string name="recipe_grading_balance">밸런스</string>
+    <string name="recipe_grading_blending">블렌딩</string>
+    <string name="recipe_tab_light">빛</string>
+    <string name="effects_group_light">조명 효과</string>
+    <string name="effects_group_optics">광학</string>
+    <string name="effects_group_texture">질감</string>
+    <string name="recipe_tab_post">후보정</string>
+    
+    <!-- Post-Processing Parameters (Capture/Edit only) -->
+    
+    <!-- Developer Options -->
+    <string name="settings_log_viewer">로그 뷰어</string>
+    <string name="settings_log_viewer_description">진단을 위해 앱 로그를 확인하고 내보냅니다</string>
+    <string name="logs">로그</string>
+    
+    <!-- Filter/Frame Management -->
+    <string name="settings_section_management">콘텐츠 관리</string>
+    <string name="settings_filter_management">LUT 관리</string>
+    <string name="settings_filter_management_description">LUT 관리, 기본값 설정, 순서 변경</string>
+    <string name="settings_frame_management">프레임 관리</string>
+    <string name="settings_frame_management_description">프레임 관리, 기본값 설정, 순서 변경</string>
+    <string name="filter_management_title">LUT 관리</string>
+    <string name="frame_management_title">프레임 관리</string>
+    <string name="category_custom">사용자 정의</string>
+    <string name="current_default">기본값</string>
+    <string name="rename">이름 바꾸기</string>
+    <string name="import_filter">LUT 가져오기</string>
+    <string name="import_frame_json">프레임 설정 가져오기</string>
+    <string name="delete_filter_confirm_message">LUT \"%s\"을(를) 삭제하시겠습니까?</string>
+    <string name="delete_frame_confirm_message">프레임 \"%s\"을(를) 삭제하시겠습니까?</string>
+    <string name="rename_dialog_title">이름 바꾸기</string>
+    <string name="copy">복사</string>
+    <string name="copy_lut_dialog_title">LUT 복사</string>
+    <string name="copy_suffix"> (사본)</string>
+    <string name="edit_category">카테고리 편집</string>
+    <string name="batch_edit_category">카테고리 일괄 편집</string>
+    <string name="drag_to_reorder_categories">핸들을 드래그하여 탭 순서를 변경하세요</string>
+    <string name="selected_count">%d개 선택됨</string>
+    <string name="category">카테고리</string>
+    <string name="category_management_title">카테고리 관리</string>
+    <string name="new_category">새 카테고리</string>
+    <string name="category_name">카테고리 이름</string>
+    <string name="import_to_category">카테고리로 가져오기</string>
+    <string name="import_success">%d개 항목을 가져왔습니다</string>
+    <string name="import_failed">가져오기 실패: %d개 항목</string>
+    <string name="common_categories">일반 카테고리</string>
+    <string name="delete_category_title">카테고리 삭제</string>
+    <string name="delete_category_message">카테고리 \"%s\"을(를) 삭제하시겠습니까? 이 카테고리의 LUT는 분류되지 않음으로 초기화됩니다.</string>
+    <string name="built_in">내장</string>
+    <string name="custom">사용자 정의</string>
+    <string name="input_curve">입력 곡선</string>
+    
+    <!-- Frame Import Help -->
+    
+    <!-- Camera Calibration -->
+    <string name="settings_section_calibration">카메라 보정</string>
+    <string name="settings_camera_orientation">사진 방향</string>
+    <string name="settings_camera_orientation_description">렌즈별로 사진 회전 보정을 개별 설정합니다.</string>
+    <string name="settings_orientation_normal">0°</string>
+    <string name="settings_orientation_90">90°</string>
+    <string name="settings_orientation_180">180°</string>
+    <string name="settings_orientation_270">270°</string>
+    <string name="rear_camera">후면 카메라</string>
+    <string name="front_camera">전면 카메라</string>
+    <string name="camera">카메라</string>
+    <string name="current_camera">현재 카메라</string>
+    
+    <!-- About & Donation -->
+    <string name="settings_donation">후원</string>
+    <string name="settings_donation_description">LeicaFujiCam 개발 지원</string>
+    <string name="settings_default_focal_length">기본 초점 거리</string>
+    <string name="settings_default_focal_length_description">앱 시작 시 자동으로 전환할 초점 거리를 설정합니다.</string>
+    <string name="settings_use_p010">P010 (10비트 YUV)</string>
+    <string name="settings_use_p010_description">더 나은 이미지 데이터 정밀도를 위해 10비트 YUV 출력을 활성화합니다. 지원되는 기기에서 RAW가 꺼져 있을 때 적용됩니다.</string>
+    <string name="refresh">새로고침</string>
+    <string name="refresh_success">미리보기 새로고침됨</string>
+    <string name="refresh_failed">미리보기 새로고침 실패</string>
+    <string name="settings_dro_mode">RAW 동적 범위 최적화 도구 (DRO)</string>
+    <string name="settings_dro_off">꺼짐</string>
+    <string name="settings_dro_dr100">DR100</string>
+    <string name="settings_dro_dr200">DR200</string>
+    <string name="settings_dro_dr400">DR400</string>
+    <string name="settings_raw_color_engine_hncs_description">Hasselblad Natural Colour Solution: 핫셀블라드가 독자적으로 개발한 컬러 매니지먼트 시스템</string>
+    <string name="settings_raw_max_default_sharpening">HDR+ 기본 선명도</string>
+    <string name="settings_raw_max_default_sharpening_description">HDR+ 촬영 결과를 현상할 때 기본으로 적용할 선명도입니다.</string>
+    <string name="preset_import">프리셋 가져오기</string>
+    <string name="preset_export">프리셋 내보내기</string>
+    <string name="preset_import_success">프리셋 %1$d개를 가져왔습니다</string>
+    <string name="preset_import_failed">프리셋 %1$d개를 가져오지 못했습니다</string>
+    <string name="preset_import_partial">%1$d개를 가져왔고 %2$d개는 실패했습니다</string>
+    <string name="preset_export_success">프리셋을 내보냈습니다</string>
+    <string name="preset_export_failed">프리셋을 내보내지 못했습니다</string>
+    <string name="settings_language">언어</string>
+    <string name="settings_language_description">앱에서 사용할 언어를 선택하세요</string>
+    <string name="settings_language_system">시스템 설정 따르기</string>
+    <string name="settings_video_nr_level_description">동영상 미리보기와 녹화의 하드웨어 노이즈 감소를 사진과 별도로 설정합니다.</string>
+    <string name="settings_video_edge_level_description">동영상 미리보기와 녹화의 하드웨어 선명도를 사진과 별도로 설정합니다.</string>
+    <string name="video_log_lut_monitor_only">모니터링만</string>
+    <string name="video_log_lut_bake_in">영상에 적용</string>
+    <string name="video_log_lut_monitor_hint">미리보기에 LUT를 적용하고 영상은 Log로 기록합니다.</string>
+    <string name="video_log_lut_bake_hint">선택한 LUT와 색상 조정을 영상에 적용합니다.</string>
+    <string name="video_log_format">Log 형식</string>
+    <string name="video_log_color_space_auto">Log 형식에 맞는 색 공간이 자동으로 설정됩니다.</string>
+    <string name="settings_raw_camera_color_matching">색상 보정</string>
+    <string name="settings_raw_camera_color_matching_description">켜면 사진을 촬영한 휴대폰 등 기기의 색상 특성에 맞게 보정한 뒤 핫셀블라드 또는 LUMIX 스타일을 적용합니다. 끄면 촬영 기기에 따른 색상 보정 없이 선택한 스타일을 바로 적용합니다.</string>
+    <string name="settings_jpg_multi_frame_denoise_output_scale">멀티 프레임 노이즈 감소 출력 배율</string>
+    <string name="settings_jpg_multi_frame_denoise_output_scale_description">1x는 원본 크기입니다. 너비와 높이를 최대 2x까지 설정할 수 있습니다. 멀티 프레임 노이즈 감소에만 적용됩니다.</string>
+    <string name="settings_jpg_multi_frame_denoise_output_scale_value">%1$.2f×</string>
+    <string name="settings_color_palette">색상 팔레트</string>
+    <string name="settings_color_palette_description">편집 화면에 색상 팔레트를 표시하여 명암과 채도를 함께 조정합니다.</string>
+    <string name="settings_auto_rotate">자동 회전</string>
+    <string name="settings_auto_rotate_description">화면 컨트롤과 미리보기를 기기 방향에 맞춰 회전</string>
+    <string name="recipe_palette_tone">명암</string>
+    <string name="settings_raw_max_quality_tuning">HDR+ 화질 조정</string>
+    <string name="settings_raw_max_quality_tuning_description">센서의 물리적 크기에 맞춰 합성 노이즈 추정과 노이즈 감소를 조정합니다. 끄면 기본 이미지 처리 매개변수를 사용합니다.</string>
+    <string name="settings_shutter_sound_single">단일 촬영음</string>
+    <string name="settings_shutter_sound_burst">연사 촬영음</string>
+    <string name="settings_shutter_sound_custom_description">최대 3초, 48kHz, 모노 또는 스테레오 오디오 클립을 가져옵니다. 연사 오디오는 촬영 중 반복 재생됩니다.</string>
+    <string name="settings_shutter_sound_default">기본값</string>
+    <string name="settings_shutter_sound_choose">오디오 선택</string>
+    <string name="settings_shutter_sound_preview">미리 듣기</string>
+    <string name="settings_shutter_sound_reset">기본값 복원</string>
+    <string name="settings_shutter_sound_importing">오디오 가져오는 중…</string>
+    <string name="settings_shutter_sound_import_failed">이 오디오를 가져올 수 없습니다. 최대 3초, 48kHz, 모노 또는 스테레오이며 재생 가능한 클립을 선택하세요(최대 10MB).</string>
+    <string name="settings_shutter_sound_save_failed">사운드 설정을 저장할 수 없습니다. 다시 시도해 주세요.</string>
+    <string name="settings_shutter_sound_preview_failed">이 사운드를 재생할 수 없습니다. 다시 가져오거나 기본값을 복원해 주세요.</string>
+    <string name="settings_retain_capture_settings">사용자 지정 카메라 설정 유지</string>
+    <string name="settings_retain_capture_settings_description">카메라를 다시 열 때 노출 보정, 셔터 속도, ISO, 초점, 화이트 밸런스와 각 항목의 자동/수동 모드를 복원합니다. 이 옵션을 끄면 저장된 설정이 삭제됩니다.</string>
+    <string name="settings_raw_digital_zoom_resampling">디지털 줌 해상도 복원</string>
+    <string name="settings_raw_digital_zoom_resampling_description">디지털 줌 사진을 현재 물리 렌즈의 해상도로 리샘플링한 후 출력 배율을 적용합니다.</string>
+    <string name="frame_editor_background_type">배경 유형</string>
+    <string name="frame_editor_background_color">단색</string>
+    <string name="frame_editor_background_blur">가우시안 흐림</string>
+    <string name="frame_editor_layout_vertical_padding">세로 안쪽 여백 (px)</string>
+    <string name="frame_editor_layout_border_height">상단 프레임 높이 (px)</string>
+    <string name="frame_editor_design_width">디자인 너비 (px)</string>
+    <string name="frame_editor_design_height">디자인 높이 (px)</string>
+    <string name="frame_editor_dimension_hint">모든 치수는 디자인 캔버스의 픽셀 단위입니다. 프레임, 텍스트 및 로고는 실제 사진 너비 ÷ 디자인 너비에 따라 동일한 비율로 조정되며 사진 영역은 실제 높이에 맞춰집니다.</string>
+    <string name="frame_editor_element_spacing">요소 간격 (px)</string>
+    <string name="frame_editor_background_blur_radius">흐림 강도 (px)</string>
+    <string name="frame_editor_background_blur_hint">사진을 흐리게 처리한 복사본으로 배경을 채웁니다. 오버레이 모드에서는 워터마크 영역만 흐려집니다.</string>
+    <string name="frame_editor_background_glass">리퀴드 글래스</string>
+    <string name="frame_editor_background_glass_hint">사진 하단에 리퀴드 글래스 캡슐을 겹쳐 표시하고 양옆과 아래에 여백을 둡니다.</string>
+    <string name="settings_accent_color">강조 색상</string>
+    <string name="settings_accent_color_description">컨트롤, 촬영 매개변수, 촬영 진행 상황 및 프로 모드에 공통 강조 색상을 설정합니다.</string>
+    <string name="settings_accent_color_reset">기본값 복원</string>
+    <string name="settings_accent_color_hex_hint">#RRGGBB 형식의 6자리 색상 코드를 입력하세요.</string>
+    <string name="settings_accent_color_hex_error">16진수 문자(0–9, A–F) 6자리를 입력하세요.</string>
+    <string name="settings_raw_color_engine_leica_description">Leica M9의 색상과 계조.</string>
+    <string name="settings_raw_color_engine_spectral_film">Spektrafilm</string>
+    <string name="settings_raw_color_engine_spectral_film_description">필름과 인화지 분광 데이터에 기반한 네거티브·인화 색 재현. 시안·마젠타·옐로 농도를 미세 조정할 수 있습니다.</string>
+    <string name="settings_raw_color_engine_fotufilm">Fotufilm</string>
+    <string name="settings_raw_color_engine_fotufilm_description">물리 기반의 완전한 필름 시뮬레이션. 분광 노출, 현상, 입자, 헐레이션, 인화를 재현하며 현상과 인화를 세밀하게 조정할 수 있습니다.</string>
+    <string name="settings_raw_canon_color_matrix">색상 행렬</string>
+    <string name="settings_raw_canon_color_matrix_description">RAW 색상 보정에 촬영 기기 또는 EOS R5의 색상 행렬을 사용합니다.</string>
+    <string name="settings_raw_canon_color_matrix_device">기본값</string>
+    <string name="settings_raw_canon_color_matrix_r5">EOS R5</string>
+    <string name="settings_raw_leica_color_matrix">색상 행렬</string>
+    <string name="settings_raw_leica_color_matrix_description">RAW 색상 보정에 촬영 기기 또는 M9의 색상 행렬을 사용합니다.</string>
+    <string name="settings_raw_leica_color_matrix_device">기본값</string>
+    <string name="settings_raw_leica_color_matrix_m9">M9</string>
+    <string name="camera_focus_point_label">초점</string>
+    <string name="camera_metering_point_label">측광점</string>
+    <!-- Fotufilm controls -->
+    <string name="fotufilm_section_filmStock">필름</string>
+    <string name="fotufilm_section_filmGrain">입자</string>
+    <string name="fotufilm_section_filmHalation">헐레이션</string>
+    <string name="fotufilm_section_filmEmulsion">유제</string>
+    <string name="fotufilm_section_filmLab">현상</string>
+    <string name="fotufilm_section_printPaper">출력</string>
+    <string name="fotufilm_section_printLamp">광원</string>
+    <string name="fotufilm_section_lightExposure">노출</string>
+    <string name="fotufilm_control_stock">필름</string>
+    <string name="fotufilm_control_stock_description">사진 렌더링에 사용할 필름을 선택합니다.</string>
+    <string name="fotufilm_control_gauge">포맷</string>
+    <string name="fotufilm_control_gauge_description">필름 프레임 크기를 설정합니다. 보이는 입자와 헐레이션에 영향을 줍니다.</string>
+    <string name="fotufilm_control_grain">입자</string>
+    <string name="fotufilm_control_grain_description">선택한 필름 대비 입자 강도를 조정합니다.</string>
+    <string name="fotufilm_control_grainMottle">모틀</string>
+    <string name="fotufilm_control_grainMottle_description">입자 패턴에 더 크고 부드러운 뭉침을 더합니다.</string>
+    <string name="fotufilm_control_filmGrainSize">입자 크기</string>
+    <string name="fotufilm_control_filmGrainSize_description">측정된 입상도는 그대로 두고 입자를 더 굵거나 곱게 만듭니다.</string>
+    <string name="fotufilm_control_filmColourGrain">컬러 입자</string>
+    <string name="fotufilm_control_filmColourGrain_description">각 층의 입자를 독립적인 색 반점에서 하나의 공유 입자로 섞습니다.</string>
+    <string name="fotufilm_control_filmRedLayer">적감층</string>
+    <string name="fotufilm_control_filmRedLayer_description">입자 모델이 필름일 때 적감층 입자를 조정합니다.</string>
+    <string name="fotufilm_control_filmGreenLayer">녹감층</string>
+    <string name="fotufilm_control_filmGreenLayer_description">입자 모델이 필름일 때 녹감층 입자를 조정합니다.</string>
+    <string name="fotufilm_control_filmBlueLayer">청감층</string>
+    <string name="fotufilm_control_filmBlueLayer_description">입자 모델이 필름일 때 청감층 입자를 조정합니다.</string>
+    <string name="fotufilm_control_filmScanSoftness">스캔 부드러움</string>
+    <string name="fotufilm_control_filmScanSoftness_description">부드러운 스캔처럼 픽셀마다 더 넓은 필름 영역을 읽어 입자를 매끄럽게 합니다.</string>
+    <string name="fotufilm_control_grainModel">입자 모델</string>
+    <string name="fotufilm_control_grainModel_description">유제 전반에서 입자가 형성되는 방식을 선택합니다.</string>
+    <string name="fotufilm_control_halation">헐레이션</string>
+    <string name="fotufilm_control_halation_description">필름 내부 반사로 밝은 영역 주변에 생기는 빛번짐을 조정합니다.</string>
+    <string name="fotufilm_control_halationColour">헤일로 색</string>
+    <string name="fotufilm_control_halationColour_description">헤일로가 광원의 색을 얼마나 유지할지 조정합니다.</string>
+    <string name="fotufilm_control_couplers">커플러</string>
+    <string name="fotufilm_control_couplers_description">현상이 색 분리와 가장자리 대비에 미치는 영향을 조정합니다.</string>
+    <string name="fotufilm_control_couplerReach">층간 분리</string>
+    <string name="fotufilm_control_couplerReach_description">현상 중 인접한 필름 층이 서로 미치는 영향의 강도를 조정합니다.</string>
+    <string name="fotufilm_control_couplerSelf">가장자리 대비</string>
+    <string name="fotufilm_control_couplerSelf_description">현상 중 가장자리 주변에 생기는 국부 대비를 조정합니다.</string>
+    <string name="fotufilm_control_chromaticFringeAmount">프린지 양</string>
+    <string name="fotufilm_control_chromaticFringeAmount_description">가장자리 주변에 더 넓은 색 효과를 더합니다.</string>
+    <string name="fotufilm_control_chromaticFringeRadius">프린지 반경</string>
+    <string name="fotufilm_control_chromaticFringeRadius_description">색 프린지의 폭을 설정합니다. 프린지 양이 0보다 커야 합니다.</string>
+    <string name="fotufilm_control_push">증감</string>
+    <string name="fotufilm_control_push_description">현상 시간을 늘리거나 줄입니다. 공정의 공개된 증감 응답으로 추정합니다.</string>
+    <string name="fotufilm_control_bleach">블리치 바이패스</string>
+    <string name="fotufilm_control_bleach_description">네거티브에 은을 남겨 대비를 높이고 채도를 낮춥니다.</string>
+    <string name="fotufilm_control_expired">유효기간 경과</string>
+    <string name="fotufilm_control_expired_description">실온에서 보관되어 유효기간이 지난 필름을 연 단위로 재현합니다.</string>
+    <string name="fotufilm_control_shutter">장노출</string>
+    <string name="fotufilm_control_shutter_description">노출 시간을 설정해 필름의 측정된 장노출(상반칙 불궤) 보정을 적용합니다.</string>
+    <string name="fotufilm_control_cameraPreflash">카메라 프리플래시</string>
+    <string name="fotufilm_control_cameraPreflash_description">프레임을 미리 노출해 어두운 부분 대비를 끌어올립니다.</string>
+    <string name="fotufilm_control_paper">출력 매체</string>
+    <string name="fotufilm_control_paper_description">필름을 인화, 스캔 또는 직접 보는 방식을 선택합니다.</string>
+    <string name="fotufilm_control_printLight">관찰 광원</string>
+    <string name="fotufilm_control_printLight_description">인화물을 볼 때 사용할 광원을 선택합니다.</string>
+    <string name="fotufilm_control_printCorrection">채널 대비 정합</string>
+    <string name="fotufilm_control_printCorrection_description">선택적 디지털 채널 대비 보정이며 프린터 광량 조정이 아닙니다.</string>
+    <string name="fotufilm_control_printerRed">레드 광량</string>
+    <string name="fotufilm_control_printerRed_description">프린터 포인트. 빨간빛이 많을수록 인화물에 시안이 더해집니다.</string>
+    <string name="fotufilm_control_printerGreen">그린 광량</string>
+    <string name="fotufilm_control_printerGreen_description">프린터 포인트. 초록빛이 많을수록 인화물에 마젠타가 더해집니다.</string>
+    <string name="fotufilm_control_printerBlue">블루 광량</string>
+    <string name="fotufilm_control_printerBlue_description">프린터 포인트. 파란빛이 많을수록 인화물에 노랑이 더해집니다.</string>
+    <string name="fotufilm_control_digitalReference">화면 변환</string>
+    <string name="fotufilm_control_digitalReference_description">디지털 레퍼런스에서 현상된 필름을 변환하는 방식을 선택합니다.</string>
+    <string name="fotufilm_control_screenCyan">시안 / 레드</string>
+    <string name="fotufilm_control_screenCyan_description">양수는 빨강을 줄여 시안을 더하고, 음수는 빨강을 더합니다.</string>
+    <string name="fotufilm_control_screenMagenta">마젠타 / 그린</string>
+    <string name="fotufilm_control_screenMagenta_description">양수는 초록을 줄여 마젠타를 더하고, 음수는 초록을 더합니다.</string>
+    <string name="fotufilm_control_screenYellow">옐로 / 블루</string>
+    <string name="fotufilm_control_screenYellow_description">양수는 파랑을 줄여 노랑을 더하고, 음수는 파랑을 더합니다.</string>
+    <string name="fotufilm_control_labScanDodging">닷징</string>
+    <string name="fotufilm_control_labScanDodging_description">인화보다 넓은 장면에서 넓은 하이라이트를 누르고 깊은 그림자를 엽니다.</string>
+    <string name="fotufilm_control_labScanLook">스캐너 룩</string>
+    <string name="fotufilm_control_labScanLook_description">중립 스캔부터 미니랩 스캐너의 완성된 색과 톤까지.</string>
+    <string name="fotufilm_control_enlarger">확대기</string>
+    <string name="fotufilm_control_enlarger_description">인화에 사용할 확대기 조명을 선택합니다.</string>
+    <string name="fotufilm_control_printerPreflash">인화지 프리플래시</string>
+    <string name="fotufilm_control_printerPreflash_description">인화지를 미리 노출해 하이라이트 대비를 부드럽게 합니다.</string>
+    <string name="fotufilm_choice_grainMottle_film">필름 고유</string>
+    <string name="fotufilm_choice_grainMottle_none">없음</string>
+    <string name="fotufilm_choice_grainMottle_light" formatted="false">약하게 · 20%</string>
+    <string name="fotufilm_choice_grainMottle_moderate" formatted="false">보통 · 45%</string>
+    <string name="fotufilm_choice_grainMottle_heavy" formatted="false">강하게 · 70%</string>
+    <string name="fotufilm_choice_grainMottle_maximum" formatted="false">최대 · 90%</string>
+    <string name="fotufilm_choice_grainModel_clump">표준</string>
+    <string name="fotufilm_choice_grainModel_film">필름</string>
+    <string name="fotufilm_choice_shutter_off">순간 노출</string>
+    <string name="fotufilm_choice_paper_lab_scan">랩 스캔</string>
+    <string name="fotufilm_choice_paper_telecine">텔레시네</string>
+    <string name="fotufilm_choice_paper_screen">디지털 레퍼런스</string>
+    <string name="fotufilm_choice_paper_negative">네거티브</string>
+    <string name="fotufilm_choice_printLight_Display_White___D65">디스플레이 화이트 · D65</string>
+    <string name="fotufilm_choice_printLight_Reference_Projector___Xenon_5400_K">기준 영사기 · 제논 5400 K</string>
+    <string name="fotufilm_choice_printLight_Light_Table___D65">라이트 테이블 · D65</string>
+    <string name="fotufilm_choice_printLight_Proofing_Booth___D50">검판 부스 · D50</string>
+    <string name="fotufilm_choice_printLight_Reference_Booth___D50">기준 관찰 부스 · D50</string>
+    <string name="fotufilm_choice_printLight_Daylight___D65">주광 · D65</string>
+    <string name="fotufilm_choice_printLight_Tungsten___2856_K">텅스텐 · 2856 K</string>
+    <string name="fotufilm_choice_digitalReference_reference_exposure">기준 노출</string>
+    <string name="fotufilm_choice_digitalReference_graded_print">계조 인화</string>
+    <string name="fotufilm_choice_digitalReference_auto_levels">자동 레벨</string>
+    <string name="fotufilm_choice_enlarger_diffuser">확산식</string>
+    <string name="fotufilm_choice_enlarger_condenser">집광식</string>
+    <string name="fotufilm_choice_gauge_super8">슈퍼 8</string>
+    <string name="fotufilm_choice_gauge_16mm">16mm</string>
+    <string name="fotufilm_choice_gauge_super35">35mm 영화 (슈퍼 35)</string>
+    <string name="fotufilm_choice_gauge_35mm">35mm 스틸</string>
+    <string name="fotufilm_choice_gauge_120">120 중형 (6×6)</string>
+    <string name="fotufilm_choice_gauge_4x5">4×5 대형</string>
+    <string name="fotufilm_choice_gauge_instaxmini">instax mini</string>
+    <string name="fotufilm_choice_gauge_instaxsquare">instax SQUARE</string>
+    <string name="fotufilm_choice_gauge_instaxwide">instax wide</string>
+    <string name="fotufilm_choice_bleach_0">끔</string>
+    <string name="fotufilm_choice_bleach_0_5">절반</string>
+    <string name="fotufilm_choice_bleach_1">완전</string>
+    <string name="fotufilm_value_off">끔</string>
+    <string name="fotufilm_value_seconds">%1$s초</string>
+    <string name="fotufilm_value_minutes">%1$s분</string>
+    <string name="fotufilm_value_years">%1$s년</string>
+    <!-- /Fotufilm controls -->
+</resources>

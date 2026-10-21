@@ -1,0 +1,156 @@
+{
+  "format": "photon_device_configuration",
+  "version": 1,
+  "name": "Complete device configuration demo",
+  "manufacturer": "DEMO",
+  "models": ["DEMO_MODEL_A", "DEMO_MODEL_B"],
+  "overrides": {
+    "preferred_main_camera_id": "2",
+    "hdr_plus_frame_count": 8,
+    "preferred_macro_camera_id": "4",
+    "custom_lens_ids": ["2", "3", "4"],
+    "lens_id_blacklist": ["99"],
+    "enable_logical_multi_camera_discovery": false,
+    "logical_camera_binding_whitelist": ["0/2", "0/3", "0/4"],
+    "default_focal_length": -2,
+    "custom_focal_lengths": [35, 50, 85, -1.5, -2, -4],
+    "hidden_focal_lengths": [15],
+    "camera_orientation_offsets": {
+      "2": 0,
+      "3": 90,
+      "4": 270,
+      "isz:2:2:oplus_agingtest_mode_select_22": 0,
+      "isz:4:2:oplus_agingtest_mode_select_19": 270,
+      "legacy_lens": null
+    },
+    "raw_black_level_modes": {
+      "2": "Custom",
+      "3": "Default",
+      "4": "Custom",
+      "isz:2:2:oplus_agingtest_mode_select_22": "Custom",
+      "isz:4:2:oplus_agingtest_mode_select_19": "Custom"
+    },
+    "raw_custom_black_levels": {
+      "2": 59,
+      "4": 0,
+      "isz:2:2:oplus_agingtest_mode_select_22": 59,
+      "isz:4:2:oplus_agingtest_mode_select_19": 0
+    },
+    "raw_white_level_modes": {
+      "2": "Custom",
+      "3": "Default",
+      "4": "RAW14",
+      "isz:2:2:oplus_agingtest_mode_select_22": "Custom",
+      "isz:4:2:oplus_agingtest_mode_select_19": "RAW14"
+    },
+    "raw_custom_white_levels": {
+      "2": 16383,
+      "isz:2:2:oplus_agingtest_mode_select_22": 16383
+    },
+    "raw_cfa_correction_modes": {
+      "2": "Default",
+      "3": "2x2_RGGB",
+      "4": "4x4_RGGB",
+      "isz:2:2:oplus_agingtest_mode_select_22": "2x2_RGGB",
+      "isz:4:2:oplus_agingtest_mode_select_19": "2x2_RGGB"
+    },
+    "raw_lens_shading_correction_enabled": true,
+    "raw_dcp_id": "builtin_dcp_OPPO Find X8 Ultra back camera 8.67mm f1.8 Adobe Standard",
+    "raw_dcp_ids_by_lens": {
+      "2": "builtin_dcp_OPPO Find X8 Ultra back camera 8.67mm f1.8 Adobe Standard",
+      "3": null,
+      "isz:2:2:oplus_agingtest_mode_select_22": "builtin_dcp_OPPO Find X8 Ultra back camera 8.67mm f1.8 Adobe Standard"
+    },
+    "raw_noise_profile_id": "system_camera2",
+    "raw_noise_profile_ids_by_lens": {
+      "2": "builtin_noise_x9_ultra",
+      "3": "builtin_noise_pixel8_pro",
+      "4": "builtin_noise_x9_ultra_3x",
+      "isz:2:2:oplus_agingtest_mode_select_22": "builtin_noise_x9_ultra",
+      "isz:4:2:oplus_agingtest_mode_select_19": "builtin_noise_x9_ultra_3x",
+      "legacy_lens": null
+    },
+    "raw_color_engine": "AdobeCurve",
+    "use_p010": false,
+    "use_p3_color_space": false,
+    "oppo_super_stabilization_enabled": false,
+    "video_audio_input_id": "auto",
+    "nr_level": 2,
+    "edge_level": 1,
+    "video_nr_level": 1,
+    "video_edge_level": 1,
+    "isz_lens_configs": [
+      {
+        "base_camera_id": "2",
+        "isz_zoom_ratio": 2,
+        "is_macro": false,
+        "vendor_capture_profile_id": "oplus_agingtest_mode_select_22",
+        "raw_black_border_crop_left_px": 508,
+        "raw_black_border_crop_top_px": 0,
+        "raw_black_border_crop_right_px": 0,
+        "raw_black_border_crop_bottom_px": 0
+      },
+      {
+        "base_camera_id": "4",
+        "isz_zoom_ratio": 2,
+        "is_macro": true,
+        "vendor_capture_profile_id": "oplus_agingtest_mode_select_19",
+        "raw_black_border_crop_sensor_left_px": 0,
+        "raw_black_border_crop_sensor_top_px": 0,
+        "raw_black_border_crop_sensor_right_px": 0,
+        "raw_black_border_crop_sensor_bottom_px": 508
+      }
+    ],
+    "vendor_capture_settings": {
+      "2": {
+        "insensor_zoom": 1,
+        "qcom_sensor_current_mode": 0
+      },
+      "3": {
+        "vivo_force_sensor_mode": 1,
+        "mtk_raw_bpp": 14
+      },
+      "isz:2:2:oplus_agingtest_mode_select_22": {
+        "oplus_agingtest_mode_select": 22
+      },
+      "isz:4:2:oplus_agingtest_mode_select_19": {
+        "oplus_agingtest_mode_select": 19
+      },
+      "legacy_lens": null
+    },
+    "custom_vendor_key_settings": [
+      {
+        "id": "demo-global-capture-int32",
+        "key_name": "com.example.camera.capture.strength",
+        "target": "CAPTURE_REQUEST",
+        "value_type": "INT32",
+        "value": 1,
+        "lens_id": null
+      },
+      {
+        "id": "demo-main-capture-int32",
+        "key_name": "com.example.camera.capture.strength",
+        "target": "CAPTURE_REQUEST",
+        "value_type": "INT32",
+        "value": 2,
+        "lens_id": "2"
+      },
+      {
+        "id": "demo-tele-session-u8",
+        "key_name": "com.example.camera.session.mode",
+        "target": "SESSION_PARAMETER",
+        "value_type": "U8",
+        "value": 1,
+        "lens_id": "4"
+      },
+      {
+        "id": "demo-isz-session-int32",
+        "key_name": "com.example.camera.session.sensorMode",
+        "target": "SESSION_PARAMETER",
+        "value_type": "INT32",
+        "value": 0,
+        "lens_id": "isz:2:2:oplus_agingtest_mode_select_22"
+      }
+    ]
+  }
+}

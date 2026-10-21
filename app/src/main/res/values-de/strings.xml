@@ -1,0 +1,491 @@
+<resources>
+    <string name="app_name">LeicaFujiCam</string>
+    
+    <!-- Camera Controls -->
+    <string name="switch_camera">Kamera wechseln</string>
+    <string name="settings">Einstellungen</string>
+    <string name="flash">Blitz</string>
+    <string name="timer">Timer</string>
+    <string name="histogram">Histogramm</string>
+    <string name="back">Zurück</string>
+    
+    <!-- Exposure Controls -->
+    
+    <!-- Focus -->
+    
+    <!-- Aspect Ratio -->
+    <string name="aspect_ratio">Seitenverhältnis</string>
+    
+    <!-- Permissions -->
+    <string name="camera_permission_required">Kamera- und Mikrofonberechtigungen sind erforderlich</string>
+    <string name="grant_permission">Berechtigung erteilen</string>
+    
+    <!-- Zoom -->
+    
+    <!-- Gallery -->
+    <string name="share">Teilen</string>
+    <string name="delete">Löschen</string>
+    <string name="export">Exportieren</string>
+    <string name="export_video_select_resolution">Exportauflösung auswählen</string>
+    <string name="export_video_resolution_original">Originalauflösung</string>
+    <string name="export_video_resolution_8k">8K</string>
+    <string name="export_video_resolution_4k">4K</string>
+    <string name="export_video_resolution_1080p">1080p</string>
+    <string name="export_video_resolution_720p">720p</string>
+    <string name="export_video_resolution_may_fail">Unterstützung nicht bestätigt; Export kann fehlschlagen</string>
+    <string name="export_video_resolution_unsupported">Von diesem Gerät nicht unterstützt</string>
+    <string name="export_video_resolution_source_too_small">Höher als die Quellauflösung</string>
+    <string name="export_video_resolution_details">%1$d × %2$d · %3$s</string>
+    <string name="export_success">Foto erfolgreich exportiert</string>
+    <string name="export_failed">Export fehlgeschlagen</string>
+    <string name="edit">Bearbeiten</string>
+    <string name="select_all">Alle auswählen</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="save">Speichern</string>
+    <string name="crop">Zuschneiden</string>
+    <string name="delete_confirm">Dieses Foto löschen?</string>
+    <string name="delete_multiple_confirm">%d Fotos löschen?</string>
+    <string name="delete_exported_videos_count">Auch %d exportierte Videos löschen</string>
+    <string name="no_photos">Noch keine Fotos</string>
+    <string name="photo_info">Foto-Info</string>
+    <string name="filter">LUT</string>
+    <string name="export_confirm">Foto mit angewendeter LUT exportieren?</string>
+    <string name="items_selected">%d ausgewählt</string>
+    <string name="selected">Ausgewählt</string>
+    <string name="imported">Importiert</string>
+    <string name="photo_info_date">Datum</string>
+    <string name="photo_info_resolution">Auflösung</string>
+    <string name="photo_info_size">Größe</string>
+    <string name="photo_info_focal_length">Brennweite</string>
+    <string name="photo_info_aperture">Blende</string>
+    <string name="photo_info_iso">ISO</string>
+    <string name="photo_info_shutter_speed">Verschlusszeit</string>
+    
+    <!-- Frame Watermark -->
+    <string name="frame">Rahmen</string>
+    <string name="none">Keine</string>
+    <string name="show_app_branding">App-Branding anzeigen</string>
+    <string name="import_photo">Importieren</string>
+    <string name="watermark_adjustment">Wasserzeichen-Anpassung</string>
+    <string name="logo">LOGO</string>
+    <string name="text_content">Textinhalt</string>
+    <string name="device_model">Gerätemodell</string>
+    <string name="brand_name">Markenname</string>
+    <string name="date_label">Datum (DATE)</string>
+    <string name="time_label">Zeit (TIME)</string>
+    <string name="datetime_label">Datum/Zeit (DATETIME)</string>
+    <string name="default_from_photo">Standard vom Foto</string>
+    <string name="font_option">Schriftart</string>
+    <string name="default_text">Standard</string>
+    <string name="custom_import">Importieren...</string>
+    
+    <!-- Settings -->
+    <string name="settings_title">Einstellungen</string>
+    <string name="settings_section_capture">Aufnahme</string>
+    <string name="settings_use_raw">RAW-Aufnahme</string>
+    <string name="settings_use_raw_description">Fotos im RAW-Format (DNG) für höhere Qualität aufnehmen.</string>
+    <string name="settings_level_indicator">Wasserwaage</string>
+    <string name="settings_level_description">Horizontale Wasserwaage beim Fotografieren anzeigen</string>
+    <string name="settings_grid_lines">Gitternetzlinien</string>
+    <string name="settings_grid_description">Gitternetzlinien für die Bildkomposition anzeigen</string>
+    <string name="settings_grid_style">Gitterstil</string>
+    <string name="grid_style_thirds">Drittelregel</string>
+    <string name="grid_style_diagonals">Diagonalen</string>
+    <string name="grid_style_golden_ratio">Goldener Schnitt</string>
+    <string name="grid_style_golden_triangle">Goldenes Dreieck</string>
+    <string name="grid_style_golden_spiral">Goldene Spirale</string>
+    <string name="settings_use_live_photo">Live Photo</string>
+    <string name="settings_use_live_photo_description">Nehmen Sie einen kurzen Videoclip zusammen mit Ihrem Foto auf, um einen dynamischen Live-Foto-Effekt zu erzielen.</string>
+    <string name="settings_develop_animation_description">Nach der Aufnahme eine Fotoanimation anzeigen.</string>
+    <string name="settings_develop_animation_style">Animationsstil</string>
+    <string name="settings_develop_animation_style_description">Wählen Sie Filmentwicklung oder einen Sofortdruckeffekt mit dem ausgewählten Rahmen.</string>
+    <string name="settings_develop_animation_style_film">Filmentwicklung</string>
+    <string name="settings_develop_animation_style_instant_print">Sofortdruck</string>
+    <string name="settings_section_frame">Rahmen-Wasserzeichen</string>
+    <string name="settings_frame_style">Rahmenstil</string>
+    <string name="settings_frame_description">Dekorativen Rahmen und Wasserzeichen zu Fotos hinzufügen</string>
+    <string name="settings_section_software_processing">Feinakstimmung</string>
+    <string name="settings_shutter_sound">Verschlussgeräusch</string>
+    <string name="settings_shutter_sound_description">Ton beim Fotografieren abspielen</string>
+    <string name="settings_vibration">Vibration</string>
+    <string name="settings_vibration_description">Vibration beim Fotografieren</string>
+    <string name="settings_keep_screen_on">Bildschirm eingeschaltet lassen</string>
+    <string name="settings_keep_screen_on_description">Hält den Bildschirm beim Verwenden der Kamera wach. Videoaufnahmen halten ihn immer wach.</string>
+    <string name="settings_window_screen_brightness">Bildschirmhelligkeit</string>
+    <string name="settings_window_screen_brightness_description">Legt die Bildschirmhelligkeit für dieses App-Fenster fest. Deaktivieren, um die Systemvorgabe zu verwenden.</string>
+    <string name="settings_volume_key_action">Lautstärketasten-Aktion</string>
+    <string name="settings_volume_key_action_description">Wählen Sie, was die Lautstärketasten bei der Aufnahme bewirken</string>
+    <string name="settings_volume_key_action_none">Lautstärkeregelung</string>
+    <string name="settings_volume_key_action_capture">Verschluss</string>
+    <string name="settings_volume_key_action_exposure">Belichtungskorr.</string>
+    <string name="settings_volume_key_action_zoom">Fokuswechsel</string>
+    <string name="settings_auto_save">Auto-Speichern</string>
+    <string name="settings_auto_save_description">Fotos nach der Aufnahme automatisch speichern</string>
+    <string name="settings_nr_level">Rauschunterdrückungs-Level</string>
+    <string name="settings_nr_level_description">Hardware-Rauschunterdrückungsmodus anpassen. \"Aus\" kann zusammen mit Algorithmen zur Mehrbild-Rauschunterdrückung verwendet werden, um mehr Details zu erhalten.</string>
+    <string name="settings_nr_level_off">Aus</string>
+    <string name="settings_nr_level_minimal">Minimal</string>
+    <string name="settings_nr_level_fast">Schnell</string>
+    <string name="settings_nr_level_high_quality">HQ</string>
+    <string name="settings_nr_level_zsl">ZSL</string>
+    <string name="settings_edge_level">Schärfe-Level</string>
+    <string name="settings_edge_level_description">Hardware-Kantenanhebung (Schärfung) anpassen.</string>
+    <string name="settings_sharpening">Schärfung</string>
+    <string name="settings_sharpening_description">Bildschärfe und Kantendefinition verbessern</string>
+    <string name="settings_noise_reduction">Rauschunterdrückung</string>
+    <string name="settings_noise_reduction_description">Bildrauschen reduzieren und Details erhalten</string>
+    <string name="settings_chroma_noise_reduction">Farbbrauschen reduzieren</string>
+    <string name="settings_chroma_noise_reduction_description">Farbrauschen und Artefakte reduzieren</string>
+    <string name="settings_detail_enhancement_description">Parameter für Schärfung und Rauschunterdrückung feinabstimmen</string>
+    <string name="settings_photo_quality">Foto-Qualität</string>
+    <string name="settings_photo_quality_description">JPEG-Kompressionsqualität auswählen (höher = bessere Qualität, größere Datei)</string>
+    <string name="settings_background">Hintergrund</string>
+    <string name="settings_background_description">Hintergrundbild der App ändern</string>
+    <string name="settings_custom_background">Benutzerdefiniert...</string>
+    
+    <!-- LUT -->
+    <string name="filter_intensity">LUT-Intensität</string>
+    <string name="filters_panel">LUTs</string>
+    <string name="toggle_display_mode">Anzeigemodus umschalten</string>
+    
+    <!-- Billing & Premium -->
+    <string name="billing_vip_tag">VIP</string>
+    <string name="billing_premium_unlock_title">Alle VIP LUTs freischalten</string>
+    <string name="billing_premium_unlock_description">Einmalige Zahlung für lebenslangen Zugriff auf alle Premium-LUT-Filter und zukünftige Pro-Funktionen.</string>
+    <string name="billing_feature_all_luts">Zugriff auf alle spezialisierten LUTs</string>
+    <string name="billing_feature_support_dev">Unabhängige Entwicklung unterstützen</string>
+    <string name="billing_feature_lifetime">Einmaliger Kauf, lebenslange Nutzung</string>
+    <string name="billing_premium_get_access">Premium-Zugriff erhalten</string>
+    <string name="billing_price_region_notice">Preis variiert nach Region</string>
+    <string name="settings_premium_title">leicafujicam Pro</string>
+    <string name="settings_premium_description">Alle Premium-LUTs freischalten und uns unterstützen.</string>
+    
+    <!-- Custom Import -->
+    <string name="custom_tag">INDIVIDUELL</string>
+    <string name="delete_confirm_title">Löschen bestätigen</string>
+    <string name="name">Name</string>
+    <string name="confirm">Bestätigen</string>
+    
+    <!-- Color Recipe -->
+    <string name="color_recipe">Farb-Rezept</string>
+    
+    <!-- Color Recipe Parameters -->
+    <string name="recipe_param_exposure">Belichtung</string>
+    <string name="recipe_param_contrast">Kontrast</string>
+    <string name="recipe_param_saturation">Sättigung</string>
+    <string name="recipe_param_temperature">Temp</string>
+    <string name="recipe_param_tint">Farbton</string>
+    <string name="recipe_param_fade">Verblassen</string>
+    <string name="recipe_param_color">Lebendigkeit</string>
+    <string name="recipe_param_highlights">Lichter</string>
+    <string name="recipe_param_shadows">Schatten</string>
+    <string name="recipe_param_film_grain">Körnung</string>
+    <string name="recipe_param_vignette">Vignettierung</string>
+    <string name="recipe_param_flash">Blitz</string>
+    <string name="recipe_param_bleach_bypass">Bleach Bypass</string>
+    <string name="recipe_param_clarity">Klarheit</string>
+    <string name="recipe_param_bloom">Bloom</string>
+    <string name="recipe_param_soft_light">Weiches Licht</string>
+    <string name="recipe_param_halation">Halation</string>
+    <string name="recipe_param_lut_intensity">LUT</string>
+    
+    <!-- Color Recipe Tabs -->
+    <string name="edit_sync_lut_recipe">LUT synchronisieren</string>
+    <string name="edit_sync_lut_recipe_description">Farbe, Effekte und LUT-Intensität werden auch in der ausgewählten LUT gespeichert.</string>
+    <string name="edit_select_lut_hint">Wähle zuerst eine LUT aus, um Farbe und Effekte anzupassen.</string>
+    <string name="edit_color_and_effects">Farbe und Effekte anpassen</string>
+    <string name="recipe_tab_color">Farbe</string>
+    <string name="recipe_color_basic">Grundlagen</string>
+    <string name="recipe_color_style">Stil</string>
+    <string name="recipe_color_grading">Grading</string>
+    <string name="recipe_grading_midtones">Mitteltöne</string>
+    <string name="recipe_grading_luminance">Luminanz</string>
+    <string name="recipe_grading_balance">Balance</string>
+    <string name="recipe_grading_blending">Übergang</string>
+    <string name="recipe_tab_light">Licht</string>
+    <string name="effects_group_light">Lichteffekte</string>
+    <string name="effects_group_optics">Optik</string>
+    <string name="effects_group_texture">Textur</string>
+    <string name="recipe_tab_post">Entwicklung</string>
+    
+    <!-- Post-Processing Parameters (Capture/Edit only) -->
+    
+    <!-- Developer Options -->
+    <string name="settings_log_viewer">Log-Anzeige</string>
+    <string name="settings_log_viewer_description">App-Logs für Diagnosen anzeigen und exportieren</string>
+    <string name="logs">Logs</string>
+    
+    <!-- Filter/Frame Management -->
+    <string name="settings_section_management">Inhaltsverwaltung</string>
+    <string name="settings_filter_management">LUT-Verwaltung</string>
+    <string name="settings_filter_management_description">LUTs verwalten, Standard festlegen, reihnenfolgen</string>
+    <string name="settings_frame_management">Rahmenverwaltung</string>
+    <string name="settings_frame_management_description">Rahmen verwalten, Standard festlegen, reihnenfolgen</string>
+    <string name="filter_management_title">LUT-Verwaltung</string>
+    <string name="frame_management_title">Rahmenverwaltung</string>
+    <string name="category_custom">Eigene</string>
+    <string name="current_default">Standard</string>
+    <string name="rename">Umbenennen</string>
+    <string name="import_filter">LUT importieren</string>
+    <string name="import_frame_json">Rahmen-Konfig importieren</string>
+    <string name="delete_filter_confirm_message">LUT \"%s\" löschen?</string>
+    <string name="delete_frame_confirm_message">Rahmen \"%s\" löschen?</string>
+    <string name="rename_dialog_title">Umbenennen</string>
+    <string name="copy">Kopieren</string>
+    <string name="copy_lut_dialog_title">LUT kopieren</string>
+    <string name="copy_suffix"> (Kopie)</string>
+    <string name="edit_category">Kategorie bearbeiten</string>
+    <string name="batch_edit_category">Kategorie im Batch bearbeiten</string>
+    <string name="drag_to_reorder_categories">Griffe ziehen, um Tabs neu zu ordnen</string>
+    <string name="selected_count">%d ausgewählt</string>
+    <string name="category">Kategorie</string>
+    <string name="category_management_title">Kategorieverwaltung</string>
+    <string name="new_category">Neue Kategorie</string>
+    <string name="category_name">Kategoriename</string>
+    <string name="import_to_category">In Kategorie importieren</string>
+    <string name="import_success">%d Elemente importiert</string>
+    <string name="import_failed">Import fehlgeschlagen: %d Elemente</string>
+    <string name="common_categories">Häufige Kategorien</string>
+    <string name="delete_category_title">Kategorie löschen</string>
+    <string name="delete_category_message">Sind Sie sicher, dass Sie die Kategorie \"%s\" löschen möchten? LUTs in dieser Kategorie werden auf unkategorisiert zurückgesetzt.</string>
+    <string name="built_in">Integriert</string>
+    <string name="custom">Eigene</string>
+    <string name="input_curve">Eingangskurve</string>
+    
+    <!-- Frame Import Help -->
+    
+    <!-- Camera Calibration -->
+    <string name="settings_section_calibration">Kamerakalibrierung</string>
+    <string name="settings_camera_orientation">Foto-Ausrichtung</string>
+    <string name="settings_camera_orientation_description">Die Rotationskorrektur kann für jedes Objektiv separat eingestellt werden.</string>
+    <string name="settings_orientation_normal">0°</string>
+    <string name="settings_orientation_90">90°</string>
+    <string name="settings_orientation_180">180°</string>
+    <string name="settings_orientation_270">270°</string>
+    <string name="rear_camera">Rückkamera</string>
+    <string name="front_camera">Frontkamera</string>
+    <string name="camera">Kamera</string>
+    <string name="current_camera">Aktuelle Kamera</string>
+    
+    <!-- About & Donation -->
+    <string name="settings_donation">Spende</string>
+    <string name="settings_donation_description">Unterstützen Sie die Entwicklung von LeicaFujiCam</string>
+    <string name="settings_default_focal_length">Standard-Brennweite</string>
+    <string name="settings_default_focal_length_description">Brennweite festlegen, auf die beim App-Start automatisch gewechselt werden soll.</string>
+    <string name="refresh">Aktualisieren</string>
+    <string name="refresh_success">Vorschau aktualisiert</string>
+    <string name="refresh_failed">Vorschau konnte nicht aktualisiert werden</string>
+    <string name="settings_dro_mode">RAW Dynamic Range Optimizer (DRO)</string>
+    <string name="settings_dro_off">Aus</string>
+    <string name="settings_dro_dr100">DR100</string>
+    <string name="settings_dro_dr200">DR200</string>
+    <string name="settings_dro_dr400">DR400</string>
+    <string name="settings_use_p010">P010 (10-Bit YUV)</string>
+    <string name="settings_use_p010_description">Aktiviert die 10-Bit YUV-Ausgabe für eine bessere Bildpräzision. Wirksam auf unterstützten Geräten, wenn RAW deaktiviert ist.</string>
+    <string name="settings_raw_color_engine_hncs_description">Hasselblad Natural Colour Solution: ein von Hasselblad unabhängig entwickeltes Farbmanagementsystem</string>
+    <string name="settings_raw_max_default_sharpening">HDR+-Standardschärfung</string>
+    <string name="settings_raw_max_default_sharpening_description">Schärfung, die standardmäßig beim Entwickeln von HDR+-Aufnahmen angewendet wird.</string>
+    <string name="preset_import">Voreinstellung importieren</string>
+    <string name="preset_export">Voreinstellung exportieren</string>
+    <string name="preset_import_success">%1$d Voreinstellungen importiert</string>
+    <string name="preset_import_failed">Import von %1$d Voreinstellungen fehlgeschlagen</string>
+    <string name="preset_import_partial">%1$d Voreinstellungen importiert; %2$d fehlgeschlagen</string>
+    <string name="preset_export_success">Voreinstellung erfolgreich exportiert</string>
+    <string name="preset_export_failed">Export der Voreinstellung fehlgeschlagen</string>
+    <string name="settings_language">Sprache</string>
+    <string name="settings_language_description">Sprache der App auswählen</string>
+    <string name="settings_language_system">Systemsprache verwenden</string>
+    <string name="settings_video_nr_level_description">Hardware-Rauschunterdrückung für Videovorschau und Aufnahme unabhängig von Fotos einstellen.</string>
+    <string name="settings_video_edge_level_description">Hardware-Schärfung für Videovorschau und Aufnahme unabhängig von Fotos einstellen.</string>
+    <string name="video_log_lut_monitor_only">Nur Vorschau</string>
+    <string name="video_log_lut_bake_in">Im Video anwenden</string>
+    <string name="video_log_lut_monitor_hint">Die Vorschau nutzt die LUT; die Aufnahme bleibt in Log.</string>
+    <string name="video_log_lut_bake_hint">Die gewählte LUT und Farbanpassungen werden im Video angewendet.</string>
+    <string name="video_log_format">Log-Format</string>
+    <string name="video_log_color_space_auto">Der Farbraum wird automatisch an das Log-Format angepasst.</string>
+    <string name="settings_raw_camera_color_matching">Farbkorrektur</string>
+    <string name="settings_raw_camera_color_matching_description">Korrigiert bei Aktivierung die Farben anhand der Farbeigenschaften des Aufnahmegeräts, etwa des Smartphones, bevor der Hasselblad- oder LUMIX-Stil angewendet wird. Wenn deaktiviert, wird der gewählte Stil direkt angewendet, ohne Farbkorrektur für das Aufnahmegerät.</string>
+    <string name="settings_jpg_multi_frame_denoise_output_scale">Ausgabeskalierung der Mehrbild-Rauschreduzierung</string>
+    <string name="settings_jpg_multi_frame_denoise_output_scale_description">1x entspricht der Originalgröße. Breite und Höhe bis zu 2x. Gilt nur für die Mehrbild-Rauschreduzierung.</string>
+    <string name="settings_jpg_multi_frame_denoise_output_scale_value">%1$.2f×</string>
+    <string name="settings_color_palette">Farbpalette</string>
+    <string name="settings_color_palette_description">Farbpalette im Editor anzeigen, um Tonwerte und Sättigung gleichzeitig anzupassen.</string>
+    <string name="settings_auto_rotate">Automatisch drehen</string>
+    <string name="settings_auto_rotate_description">Bedienelemente und Vorschauen folgen der Ausrichtung des Geräts.</string>
+    <string name="recipe_palette_tone">Tonwerte</string>
+    <string name="settings_raw_max_quality_tuning">HDR+ Bildqualitätsoptimierung</string>
+    <string name="settings_raw_max_quality_tuning_description">Rauschschätzung bei der Fusion und Rauschminderung an die physische Sensorgröße anpassen. Wenn deaktiviert, werden die Standardparameter verwendet.</string>
+    <string name="settings_shutter_sound_single">Einzelaufnahmeton</string>
+    <string name="settings_shutter_sound_burst">Serienaufnahmeton</string>
+    <string name="settings_shutter_sound_custom_description">Audioclip mit bis zu 3 Sekunden, 48 kHz, mono oder stereo importieren. Der Serienaufnahmeton wird während der Aufnahme wiederholt.</string>
+    <string name="settings_shutter_sound_default">Standard</string>
+    <string name="settings_shutter_sound_choose">Audio auswählen</string>
+    <string name="settings_shutter_sound_preview">Vorschau</string>
+    <string name="settings_shutter_sound_reset">Standard wiederherstellen</string>
+    <string name="settings_shutter_sound_importing">Audio wird importiert…</string>
+    <string name="settings_shutter_sound_import_failed">Audio kann nicht importiert werden. Wählen Sie einen abspielbaren Clip mit bis zu 3 Sekunden, 48 kHz, mono oder stereo (maximal 10 MB).</string>
+    <string name="settings_shutter_sound_save_failed">Toneinstellungen können nicht gespeichert werden. Bitte versuchen Sie es erneut.</string>
+    <string name="settings_shutter_sound_preview_failed">Ton kann nicht wiedergegeben werden. Bitte importieren Sie ihn erneut oder stellen Sie den Standard wieder her.</string>
+    <string name="settings_retain_capture_settings">Benutzerdefinierte Kameraeinstellungen beibehalten</string>
+    <string name="settings_retain_capture_settings_description">Belichtungskorrektur, Verschlusszeit, ISO, Fokus und Weißabgleich einschließlich der jeweiligen Automatik-/Manuell-Modi beim erneuten Öffnen der Kamera wiederherstellen. Beim Ausschalten werden gespeicherte Einstellungen gelöscht.</string>
+    <string name="settings_raw_digital_zoom_resampling">Digitalzoom-Auflösung wiederherstellen</string>
+    <string name="settings_raw_digital_zoom_resampling_description">Skaliert Digitalzoom-Fotos auf die Auflösung des aktuellen physischen Objektivs und wendet anschließend den Ausgabefaktor an.</string>
+    <string name="frame_editor_background_type">Hintergrund</string>
+    <string name="frame_editor_background_color">Einfarbig</string>
+    <string name="frame_editor_background_blur">Gaußsche Unschärfe</string>
+    <string name="frame_editor_layout_vertical_padding">Vertikaler Innenabstand (px)</string>
+    <string name="frame_editor_layout_border_height">Obere Rahmenhöhe (px)</string>
+    <string name="frame_editor_design_width">Designbreite (px)</string>
+    <string name="frame_editor_design_height">Designhöhe (px)</string>
+    <string name="frame_editor_dimension_hint">Alle Maße sind Pixel auf der Designfläche. Rahmen, Text und Logos werden gleichmäßig mit tatsächlicher Fotobreite ÷ Designbreite skaliert; der Fotobereich passt sich der tatsächlichen Höhe an.</string>
+    <string name="frame_editor_element_spacing">Elementabstand (px)</string>
+    <string name="frame_editor_background_blur_radius">Unschärfegrad (px)</string>
+    <string name="frame_editor_background_blur_hint">Füllt den Hintergrund mit einer unscharfen Kopie des Fotos. Im Überlagerungsmodus wird nur der Wasserzeichenbereich unscharf dargestellt.</string>
+    <string name="frame_editor_background_glass">Flüssiges Glas</string>
+    <string name="frame_editor_background_glass_hint">Legt eine Liquid-Glass-Kapsel unten über das Foto, mit Abstand zu beiden Seiten und zum unteren Rand.</string>
+    <string name="settings_accent_color">Akzentfarbe</string>
+    <string name="settings_accent_color_description">Eine gemeinsame Akzentfarbe für Steuerelemente, Aufnahmeparameter, Aufnahmefortschritt und Profi-Modus festlegen.</string>
+    <string name="settings_accent_color_reset">Standard wiederherstellen</string>
+    <string name="settings_accent_color_hex_hint">Einen sechsstelligen Farbcode im Format #RRGGBB eingeben.</string>
+    <string name="settings_accent_color_hex_error">Sechs hexadezimale Zeichen (0–9, A–F) eingeben.</string>
+    <string name="settings_raw_color_engine_leica_description">Farben und Tonwerte der Leica M9.</string>
+    <string name="settings_raw_color_engine_spectral_film">Spektrafilm</string>
+    <string name="settings_raw_color_engine_spectral_film_description">Spektrale Farbwiedergabe von Negativ und Abzug aus Film- und Papierdaten, mit Feinabstimmung der Cyan-, Magenta- und Gelbdichte.</string>
+    <string name="settings_raw_color_engine_fotufilm">Fotufilm</string>
+    <string name="settings_raw_color_engine_fotufilm_description">Vollständige physikalisch basierte Filmsimulation: spektrale Belichtung, Entwicklung, Korn, Lichthof und Abzug, mit umfassender Labor- und Abzugssteuerung.</string>
+    <string name="settings_raw_canon_color_matrix">Farbmatrix</string>
+    <string name="settings_raw_canon_color_matrix_description">Wählen Sie zur RAW-Farbkalibrierung die Farbmatrix des Aufnahmegeräts oder der EOS R5.</string>
+    <string name="settings_raw_canon_color_matrix_device">Standard</string>
+    <string name="settings_raw_canon_color_matrix_r5">EOS R5</string>
+    <string name="settings_raw_leica_color_matrix">Farbmatrix</string>
+    <string name="settings_raw_leica_color_matrix_description">Wählen Sie zur RAW-Farbkalibrierung die Farbmatrix des Aufnahmegeräts oder der M9.</string>
+    <string name="settings_raw_leica_color_matrix_device">Standard</string>
+    <string name="settings_raw_leica_color_matrix_m9">M9</string>
+    <string name="camera_focus_point_label">Fokus</string>
+    <string name="camera_metering_point_label">Messpunkt</string>
+    <!-- Fotufilm controls -->
+    <string name="fotufilm_section_filmStock">Film</string>
+    <string name="fotufilm_section_filmGrain">Korn</string>
+    <string name="fotufilm_section_filmHalation">Lichthof</string>
+    <string name="fotufilm_section_filmEmulsion">Emulsion</string>
+    <string name="fotufilm_section_filmLab">Labor</string>
+    <string name="fotufilm_section_printPaper">Ausgabe</string>
+    <string name="fotufilm_section_printLamp">Lampe</string>
+    <string name="fotufilm_section_lightExposure">Belichtung</string>
+    <string name="fotufilm_control_stock">Film</string>
+    <string name="fotufilm_control_stock_description">Wählen Sie den Film, mit dem das Foto entwickelt wird.</string>
+    <string name="fotufilm_control_gauge">Format</string>
+    <string name="fotufilm_control_gauge_description">Legt die Bildgröße auf dem Film fest; sie beeinflusst sichtbares Korn und Lichthöfe.</string>
+    <string name="fotufilm_control_grain">Korn</string>
+    <string name="fotufilm_control_grain_description">Passt die Kornstärke relativ zum gewählten Film an.</string>
+    <string name="fotufilm_control_grainMottle">Mottle</string>
+    <string name="fotufilm_control_grainMottle_description">Fügt dem Kornmuster größere, weichere Cluster hinzu.</string>
+    <string name="fotufilm_control_filmGrainSize">Korngröße</string>
+    <string name="fotufilm_control_filmGrainSize_description">Macht das Korn bei gleicher gemessener Körnigkeit gröber oder feiner.</string>
+    <string name="fotufilm_control_filmColourGrain">Farbkorn</string>
+    <string name="fotufilm_control_filmColourGrain_description">Mischt das Korn jeder Schicht von unabhängigem Farbrauschen zu einem gemeinsamen Korn.</string>
+    <string name="fotufilm_control_filmRedLayer">Rotschicht</string>
+    <string name="fotufilm_control_filmRedLayer_description">Skaliert das Korn der rotempfindlichen Schicht im Kornmodell Film.</string>
+    <string name="fotufilm_control_filmGreenLayer">Grünschicht</string>
+    <string name="fotufilm_control_filmGreenLayer_description">Skaliert das Korn der grünempfindlichen Schicht im Kornmodell Film.</string>
+    <string name="fotufilm_control_filmBlueLayer">Blauschicht</string>
+    <string name="fotufilm_control_filmBlueLayer_description">Skaliert das Korn der blauempfindlichen Schicht im Kornmodell Film.</string>
+    <string name="fotufilm_control_filmScanSoftness">Scan-Weichheit</string>
+    <string name="fotufilm_control_filmScanSoftness_description">Liest wie ein weicherer Scan pro Pixel eine größere Filmfläche und glättet das Korn.</string>
+    <string name="fotufilm_control_grainModel">Kornmodell</string>
+    <string name="fotufilm_control_grainModel_description">Wählt, wie das Filmkorn in der Emulsion entsteht.</string>
+    <string name="fotufilm_control_halation">Lichthof</string>
+    <string name="fotufilm_control_halation_description">Passt das Leuchten um helle Bereiche an, das durch Reflexion im Film entsteht.</string>
+    <string name="fotufilm_control_halationColour">Lichthof-Farbe</string>
+    <string name="fotufilm_control_halationColour_description">Steuert, wie stark der Lichthof die Farbe der Lichtquelle behält.</string>
+    <string name="fotufilm_control_couplers">Kuppler</string>
+    <string name="fotufilm_control_couplers_description">Passt an, wie die Entwicklung Farbtrennung und Kantenkontrast beeinflusst.</string>
+    <string name="fotufilm_control_couplerReach">Trennung</string>
+    <string name="fotufilm_control_couplerReach_description">Legt fest, wie stark sich benachbarte Filmschichten bei der Entwicklung beeinflussen.</string>
+    <string name="fotufilm_control_couplerSelf">Kantenkontrast</string>
+    <string name="fotufilm_control_couplerSelf_description">Passt den lokalen Kontrast an Kanten an, der bei der Entwicklung entsteht.</string>
+    <string name="fotufilm_control_chromaticFringeAmount">Farbsaum-Stärke</string>
+    <string name="fotufilm_control_chromaticFringeAmount_description">Fügt um Kanten einen breiteren Farbeffekt hinzu.</string>
+    <string name="fotufilm_control_chromaticFringeRadius">Farbsaum-Radius</string>
+    <string name="fotufilm_control_chromaticFringeRadius_description">Legt die Breite des Farbsaums fest. Erfordert eine Farbsaum-Stärke über null.</string>
+    <string name="fotufilm_control_push">Push/Pull</string>
+    <string name="fotufilm_control_push_description">Länger oder kürzer entwickeln, geschätzt aus der veröffentlichten Push-Kennlinie des Prozesses.</string>
+    <string name="fotufilm_control_bleach">Bleach Bypass</string>
+    <string name="fotufilm_control_bleach_description">Lässt Silber im Negativ, erhöht den Kontrast und senkt die Sättigung.</string>
+    <string name="fotufilm_control_expired">Abgelaufen</string>
+    <string name="fotufilm_control_expired_description">Simuliert Film, der bei Raumtemperatur über das Verfallsdatum hinaus gelagert wurde, in Jahren.</string>
+    <string name="fotufilm_control_shutter">Langzeitbelichtung</string>
+    <string name="fotufilm_control_shutter_description">Legt die Belichtungszeit fest, um die gemessene Langzeitkorrektur des Films anzuwenden.</string>
+    <string name="fotufilm_control_cameraPreflash">Kamera-Vorbelichtung</string>
+    <string name="fotufilm_control_cameraPreflash_description">Belichtet das Bild vor, um den Schattenkontrast anzuheben.</string>
+    <string name="fotufilm_control_paper">Ausgabemedium</string>
+    <string name="fotufilm_control_paper_description">Wählt, wie der Film vergrößert, gescannt oder betrachtet wird.</string>
+    <string name="fotufilm_control_printLight">Betrachtungslicht</string>
+    <string name="fotufilm_control_printLight_description">Wählt das Licht, unter dem der Abzug betrachtet wird.</string>
+    <string name="fotufilm_control_printCorrection">Kanalkontrast-Abgleich</string>
+    <string name="fotufilm_control_printCorrection_description">Optionale digitale Kanalkontrast-Korrektur, keine Lichtbestimmung.</string>
+    <string name="fotufilm_control_printerRed">Rotlicht</string>
+    <string name="fotufilm_control_printerRed_description">Printerpunkte; mehr Rotlicht fügt dem Abzug Cyan hinzu.</string>
+    <string name="fotufilm_control_printerGreen">Grünlicht</string>
+    <string name="fotufilm_control_printerGreen_description">Printerpunkte; mehr Grünlicht fügt dem Abzug Magenta hinzu.</string>
+    <string name="fotufilm_control_printerBlue">Blaulicht</string>
+    <string name="fotufilm_control_printerBlue_description">Printerpunkte; mehr Blaulicht fügt dem Abzug Gelb hinzu.</string>
+    <string name="fotufilm_control_digitalReference">Bildschirmkonvertierung</string>
+    <string name="fotufilm_control_digitalReference_description">Wählt, wie entwickelter Film bei Digitaler Referenz umgewandelt wird.</string>
+    <string name="fotufilm_control_screenCyan">Cyan / Rot</string>
+    <string name="fotufilm_control_screenCyan_description">Positiv fügt durch weniger Rot Cyan hinzu, negativ fügt Rot hinzu.</string>
+    <string name="fotufilm_control_screenMagenta">Magenta / Grün</string>
+    <string name="fotufilm_control_screenMagenta_description">Positiv fügt durch weniger Grün Magenta hinzu, negativ fügt Grün hinzu.</string>
+    <string name="fotufilm_control_screenYellow">Gelb / Blau</string>
+    <string name="fotufilm_control_screenYellow_description">Positiv fügt durch weniger Blau Gelb hinzu, negativ fügt Blau hinzu.</string>
+    <string name="fotufilm_control_labScanDodging">Abwedeln</string>
+    <string name="fotufilm_control_labScanDodging_description">Hält große Lichter zurück und öffnet tiefe Schatten bei Bildern, die weiter als ein Abzug reichen.</string>
+    <string name="fotufilm_control_labScanLook">Scanner-Look</string>
+    <string name="fotufilm_control_labScanLook_description">Vom neutralen Scan bis zu Farbe und Ton des fertigen Minilab-Scans.</string>
+    <string name="fotufilm_control_enlarger">Vergrößerer</string>
+    <string name="fotufilm_control_enlarger_description">Wählt die Beleuchtung des Vergrößerers für den Abzug.</string>
+    <string name="fotufilm_control_printerPreflash">Papier-Vorbelichtung</string>
+    <string name="fotufilm_control_printerPreflash_description">Belichtet das Papier vor, um den Lichterkontrast abzumildern.</string>
+    <string name="fotufilm_choice_grainMottle_film">Wie der Film</string>
+    <string name="fotufilm_choice_grainMottle_none">Keine</string>
+    <string name="fotufilm_choice_grainMottle_light" formatted="false">Leicht · 20 %</string>
+    <string name="fotufilm_choice_grainMottle_moderate" formatted="false">Mittel · 45 %</string>
+    <string name="fotufilm_choice_grainMottle_heavy" formatted="false">Stark · 70 %</string>
+    <string name="fotufilm_choice_grainMottle_maximum" formatted="false">Maximum · 90 %</string>
+    <string name="fotufilm_choice_grainModel_clump">Standard</string>
+    <string name="fotufilm_choice_grainModel_film">Film</string>
+    <string name="fotufilm_choice_shutter_off">Momentbelichtung</string>
+    <string name="fotufilm_choice_paper_lab_scan">Laborscan</string>
+    <string name="fotufilm_choice_paper_telecine">Telecine</string>
+    <string name="fotufilm_choice_paper_screen">Digitale Referenz</string>
+    <string name="fotufilm_choice_paper_negative">Negativ</string>
+    <string name="fotufilm_choice_printLight_Display_White___D65">Bildschirmweiß · D65</string>
+    <string name="fotufilm_choice_printLight_Reference_Projector___Xenon_5400_K">Referenzprojektor · Xenon 5400 K</string>
+    <string name="fotufilm_choice_printLight_Light_Table___D65">Leuchttisch · D65</string>
+    <string name="fotufilm_choice_printLight_Proofing_Booth___D50">Normlichtkabine · D50</string>
+    <string name="fotufilm_choice_printLight_Reference_Booth___D50">Referenz-Lichtkabine · D50</string>
+    <string name="fotufilm_choice_printLight_Daylight___D65">Tageslicht · D65</string>
+    <string name="fotufilm_choice_printLight_Tungsten___2856_K">Glühlampe · 2856 K</string>
+    <string name="fotufilm_choice_digitalReference_reference_exposure">Referenzbelichtung</string>
+    <string name="fotufilm_choice_digitalReference_graded_print">Gradierter Abzug</string>
+    <string name="fotufilm_choice_digitalReference_auto_levels">Auto-Tonwert</string>
+    <string name="fotufilm_choice_enlarger_diffuser">Diffusor</string>
+    <string name="fotufilm_choice_enlarger_condenser">Kondensor</string>
+    <string name="fotufilm_choice_gauge_super8">Super 8</string>
+    <string name="fotufilm_choice_gauge_16mm">16 mm</string>
+    <string name="fotufilm_choice_gauge_super35">35 mm Kino (Super 35)</string>
+    <string name="fotufilm_choice_gauge_35mm">35 mm Kleinbild</string>
+    <string name="fotufilm_choice_gauge_120">120 Mittelformat (6×6)</string>
+    <string name="fotufilm_choice_gauge_4x5">4×5 Großformat</string>
+    <string name="fotufilm_choice_gauge_instaxmini">instax mini</string>
+    <string name="fotufilm_choice_gauge_instaxsquare">instax SQUARE</string>
+    <string name="fotufilm_choice_gauge_instaxwide">instax wide</string>
+    <string name="fotufilm_choice_bleach_0">Aus</string>
+    <string name="fotufilm_choice_bleach_0_5">Halb</string>
+    <string name="fotufilm_choice_bleach_1">Voll</string>
+    <string name="fotufilm_value_off">Aus</string>
+    <string name="fotufilm_value_seconds">%1$s s</string>
+    <string name="fotufilm_value_minutes">%1$s min</string>
+    <string name="fotufilm_value_years">%1$s J.</string>
+    <!-- /Fotufilm controls -->
+</resources>
