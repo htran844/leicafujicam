@@ -257,7 +257,7 @@ fun LutSelector(
         else -> LutCategoryTab.Uncategorized
     }
 
-    var selectedCategory by remember { mutableStateOf<LutCategoryTab>(LutCategoryTab.BuiltIn) }
+    var selectedCategory by remember { mutableStateOf<LutCategoryTab>(LutCategoryTab.Favorite) }
     val activeLutId = currentLutId
     val supportsFrames = onFrameSelected != null
     val supportsPresets = presetModeEnabled
@@ -267,15 +267,27 @@ fun LutSelector(
         LutSelectorMode.Presets -> if (supportsPresets) LutSelectorMode.Presets else LutSelectorMode.Style
     }
 
+    var previousActiveLutId by remember { mutableStateOf<String?>(null) }
+    var hasSeenInitialLut by remember { mutableStateOf(false) }
     LaunchedEffect(activeLutId, availableLuts, categoryTabs) {
         val selectedLut = availableLuts.find { it.id == activeLutId }
+        // On open the selector stays on the default Favorite tab; the smart
+        // tab-follow below only kicks in when the active LUT actually changes
+        // while the selector is already showing.
+        val activeLutChanged = hasSeenInitialLut && previousActiveLutId != null &&
+            activeLutId != previousActiveLutId
         selectedCategory = when {
+            selectedCategory !in categoryTabs -> LutCategoryTab.Favorite
+            !activeLutChanged && selectedCategory == LutCategoryTab.Favorite &&
+                availableLuts.none { it.isFavorite } -> LutCategoryTab.BuiltIn
+            !activeLutChanged -> selectedCategory
             selectedLut != null && selectedCategory.contains(selectedLut) -> selectedCategory
             selectedLut?.isFavorite == true -> LutCategoryTab.Favorite
             selectedLut != null -> preferredCategoryFor(selectedLut)
-            selectedCategory in categoryTabs -> selectedCategory
-            else -> LutCategoryTab.BuiltIn
+            else -> selectedCategory
         }
+        previousActiveLutId = activeLutId
+        hasSeenInitialLut = true
     }
 
     val filteredLuts = remember(selectedCategory, availableLuts) {

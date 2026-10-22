@@ -37,3 +37,8 @@ không phải đường dẫn class.
   "CC"/"NC" có sẵn được đổi tên đầy đủ: Fujifilm Classic Chrome / Fujifilm Classic Negative.
 - Favorites mặc định (config.json, theo thứ tự): Leica, Fujifilm Classic Chrome, Hasselblad,
   Miyazaki Anime, Kodak Portra 400, Kodak Gold 200, Fujifilm Classic Negative, Teal & Orange.
+
+## Bản 1.0.3 — tab mặc định khi mở bộ chọn LUT
+Bộ chọn bộ lọc (LutSelector) mở lên ở tab "Yêu thích" thay vì "Tích hợp sẵn".
+Effect bám tab chỉ còn nhảy khi LUT đang dùng thay đổi thật trong lúc bộ chọn đang mở;
+nếu danh sách yêu thích trống thì mặc định quay về tab Tích hợp sẵn.
