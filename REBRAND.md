@@ -26,3 +26,14 @@ pipeline xử lý ảnh native không tìm thấy class/symbol → app sập, kh
 `app/src/main/cpp` và `app/src/test/cpp`. Giữ nguyên định danh định dạng preset
 `com.hinnka.photon.preset` (PresetPackageManager) vì đó là marker tương thích file preset,
 không phải đường dẫn class.
+
+## Bản 1.0.2 — tiếng Việt + bộ lọc mới
+- Thêm locale Tiếng Việt: `res/values-vi/strings.xml` (dịch toàn bộ 1.433 chuỗi giao diện),
+  đăng ký `vi` trong `locales_config.xml` và thêm lựa chọn "Tiếng Việt" trong Cài đặt ngôn ngữ
+  (SettingsScreen). Tên bộ lọc có bản địa hóa `vi` trong `assets/luts/config.json`;
+  `LutConfig.getName()` tra theo mã ngôn ngữ thực tế (trước đây cứng en/zh).
+- Bộ lọc mới (LUT .plut tự tạo theo đặc tính màu, script `tools/make_custom_luts.py`):
+  Kodak Portra 400, Kodak Gold 200, Teal & Orange, Miyazaki Anime.
+  "CC"/"NC" có sẵn được đổi tên đầy đủ: Fujifilm Classic Chrome / Fujifilm Classic Negative.
+- Favorites mặc định (config.json, theo thứ tự): Leica, Fujifilm Classic Chrome, Hasselblad,
+  Miyazaki Anime, Kodak Portra 400, Kodak Gold 200, Fujifilm Classic Negative, Teal & Orange.

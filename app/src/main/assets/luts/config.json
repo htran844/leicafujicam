@@ -4,7 +4,8 @@
       "id": "none",
       "name": {
         "en": "None",
-        "zh": "无"
+        "zh": "无",
+        "vi": "Không"
       },
       "path": "",
       "isDefault": false,
@@ -14,17 +15,111 @@
       "id": "standard",
       "name": {
         "en": "Standard",
-        "zh": "标准"
+        "zh": "标准",
+        "vi": "Chuẩn"
       },
       "path": "standard.plut",
       "isDefault": true,
       "isVip": false
     },
     {
+      "id": "leica",
+      "name": {
+        "en": "Leica",
+        "zh": "徕卡ETN",
+        "vi": "Leica"
+      },
+      "path": "leica.plut",
+      "isVip": false,
+      "isFavorite": true
+    },
+    {
+      "id": "cc",
+      "name": {
+        "en": "Fujifilm Classic Chrome",
+        "zh": "富士CC",
+        "vi": "Fujifilm Classic Chrome"
+      },
+      "path": "cc.plut",
+      "isVip": false,
+      "isFavorite": true
+    },
+    {
+      "id": "Hasselblad",
+      "name": {
+        "en": "Hasselblad",
+        "zh": "哈苏自然",
+        "vi": "Hasselblad"
+      },
+      "path": "Hasselblad.plut",
+      "isVip": false,
+      "isFavorite": true
+    },
+    {
+      "id": "miyazaki_anime",
+      "name": {
+        "en": "Miyazaki Anime",
+        "zh": "Miyazaki Anime",
+        "vi": "Miyazaki Anime"
+      },
+      "path": "miyazaki_anime.plut",
+      "category": "Creative",
+      "isVip": false,
+      "isFavorite": true
+    },
+    {
+      "id": "kodak_portra_400",
+      "name": {
+        "en": "Kodak Portra 400",
+        "zh": "Kodak Portra 400",
+        "vi": "Kodak Portra 400"
+      },
+      "path": "kodak_portra_400.plut",
+      "category": "Film",
+      "isVip": false,
+      "isFavorite": true
+    },
+    {
+      "id": "kodak_gold_200",
+      "name": {
+        "en": "Kodak Gold 200",
+        "zh": "Kodak Gold 200",
+        "vi": "Kodak Gold 200"
+      },
+      "path": "kodak_gold_200.plut",
+      "category": "Film",
+      "isVip": false,
+      "isFavorite": true
+    },
+    {
+      "id": "nc",
+      "name": {
+        "en": "Fujifilm Classic Negative",
+        "zh": "富士NC",
+        "vi": "Fujifilm Classic Negative"
+      },
+      "path": "nc.plut",
+      "isVip": false,
+      "isFavorite": true
+    },
+    {
+      "id": "teal_orange",
+      "name": {
+        "en": "Teal & Orange",
+        "zh": "Teal & Orange",
+        "vi": "Teal & Orange"
+      },
+      "path": "teal_orange.plut",
+      "category": "Creative",
+      "isVip": false,
+      "isFavorite": true
+    },
+    {
       "id": "log_restore_apple_log2",
       "name": {
         "en": "Apple Log 2 Restore",
-        "zh": "Apple Log 2 还原"
+        "zh": "Apple Log 2 还原",
+        "vi": "Khôi phục Apple Log 2"
       },
       "path": "log/log_restore_apple_log2.plut",
       "category": "Log",
@@ -34,7 +129,8 @@
       "id": "log_restore_flog2",
       "name": {
         "en": "F-Log2 PROVIA Restore",
-        "zh": "F-Log2 PROVIA 还原"
+        "zh": "F-Log2 PROVIA 还原",
+        "vi": "Khôi phục F-Log2 PROVIA"
       },
       "path": "log/log_restore_flog2.plut",
       "category": "Log",
@@ -44,7 +140,8 @@
       "id": "log_restore_vlog",
       "name": {
         "en": "V-Log V-709 Restore",
-        "zh": "V-Log V-709 还原"
+        "zh": "V-Log V-709 还原",
+        "vi": "Khôi phục V-Log V-709"
       },
       "path": "log/log_restore_vlog.plut",
       "category": "Log",
@@ -54,7 +151,8 @@
       "id": "log_restore_logc4",
       "name": {
         "en": "LogC4 Restore",
-        "zh": "LogC4 还原"
+        "zh": "LogC4 还原",
+        "vi": "Khôi phục LogC4"
       },
       "path": "log/log_restore_logc4.plut",
       "category": "Log",
@@ -64,7 +162,8 @@
       "id": "log_restore_log3g10",
       "name": {
         "en": "Log3G10 Restore",
-        "zh": "Log3G10 还原"
+        "zh": "Log3G10 还原",
+        "vi": "Khôi phục Log3G10"
       },
       "path": "log/log_restore_log3g10.plut",
       "category": "Log",
@@ -74,7 +173,8 @@
       "id": "log_restore_llog",
       "name": {
         "en": "L-Log Restore",
-        "zh": "L-Log 还原"
+        "zh": "L-Log 还原",
+        "vi": "Khôi phục L-Log"
       },
       "path": "log/log_restore_llog.plut",
       "category": "Log",
@@ -84,43 +184,28 @@
       "id": "leica_m9",
       "name": {
         "en": "M9 CCD",
-        "zh": "徕卡M9"
+        "zh": "徕卡M9",
+        "vi": "M9 CCD"
       },
       "path": "Leica_M9_STD.plut",
-      "isVip": false
-    },
-    {
-      "id": "leica",
-      "name": {
-        "en": "Leica",
-        "zh": "徕卡ETN"
-      },
-      "path": "leica.plut",
       "isVip": false
     },
     {
       "id": "monochrome",
       "name": {
         "en": "Monochrome",
-        "zh": "徕卡黑白"
+        "zh": "徕卡黑白",
+        "vi": "Đơn sắc"
       },
       "path": "monochrome.plut",
-      "isVip": false
-    },
-    {
-      "id": "Hasselblad",
-      "name": {
-        "en": "Hasselblad",
-        "zh": "哈苏自然"
-      },
-      "path": "Hasselblad.plut",
       "isVip": false
     },
     {
       "id": "Hasselblad_portrait",
       "name": {
         "en": "Hasselblad Portrait",
-        "zh": "哈苏人像"
+        "zh": "哈苏人像",
+        "vi": "Hasselblad Chân dung"
       },
       "path": "Hasselblad_portrait.plut",
       "isVip": false
@@ -129,34 +214,18 @@
       "id": "fl3",
       "name": {
         "en": "FL3",
-        "zh": "FL3"
+        "zh": "FL3",
+        "vi": "FL3"
       },
       "path": "fl3.plut",
-      "isVip": false
-    },
-    {
-      "id": "nc",
-      "name": {
-        "en": "NC",
-        "zh": "富士NC"
-      },
-      "path": "nc.plut",
-      "isVip": false
-    },
-    {
-      "id": "cc",
-      "name": {
-        "en": "CC",
-        "zh": "富士CC"
-      },
-      "path": "cc.plut",
       "isVip": false
     },
     {
       "id": "astia",
       "name": {
         "en": "Astia",
-        "zh": "富士Astia"
+        "zh": "富士Astia",
+        "vi": "Astia"
       },
       "path": "astia.plut",
       "isVip": false
@@ -165,7 +234,8 @@
       "id": "ricoh_negative",
       "name": {
         "en": "Negative",
-        "zh": "理光负片"
+        "zh": "理光负片",
+        "vi": "Âm bản"
       },
       "path": "ricoh_negative.plut",
       "isDefault": false,
@@ -176,7 +246,8 @@
       "id": "ricoh_positive",
       "name": {
         "en": "Positive",
-        "zh": "理光正片"
+        "zh": "理光正片",
+        "vi": "Dương bản"
       },
       "path": "ricoh_positive.plut",
       "category": "Ricoh",
@@ -186,7 +257,8 @@
       "id": "ricoh_gr2_positive",
       "name": {
         "en": "Positive GR2",
-        "zh": "理光正片GR2"
+        "zh": "理光正片GR2",
+        "vi": "Dương bản GR2"
       },
       "path": "Ricoh_GR2_POSI.plut",
       "category": "Ricoh",
@@ -196,7 +268,8 @@
       "id": "ricoh_green",
       "name": {
         "en": "Green",
-        "zh": "电影绿"
+        "zh": "电影绿",
+        "vi": "Xanh điện ảnh"
       },
       "path": "ricoh_green.plut",
       "category": "Ricoh",
@@ -206,7 +279,8 @@
       "id": "ricoh_yellow",
       "name": {
         "en": "Yellow",
-        "zh": "电影黄"
+        "zh": "电影黄",
+        "vi": "Vàng điện ảnh"
       },
       "path": "ricoh_yellow.plut",
       "category": "Ricoh",
@@ -216,7 +290,8 @@
       "id": "pentax",
       "name": {
         "en": "Pentax",
-        "zh": "宾得明亮"
+        "zh": "宾得明亮",
+        "vi": "Pentax"
       },
       "path": "pentax.plut",
       "category": "Pentax",
@@ -226,7 +301,8 @@
       "id": "pentax_harubeni",
       "name": {
         "en": "Harubeni",
-        "zh": "宾得春红"
+        "zh": "宾得春红",
+        "vi": "Harubeni"
       },
       "path": "Pentax_Harubeni.plut",
       "category": "Pentax",
@@ -236,7 +312,8 @@
       "id": "pentax_katen",
       "name": {
         "en": "Katen",
-        "zh": "宾得夏天"
+        "zh": "宾得夏天",
+        "vi": "Katen"
       },
       "path": "Pentax_Katen.plut",
       "category": "Pentax",
@@ -246,7 +323,8 @@
       "id": "pentax_kyushu",
       "name": {
         "en": "Kyushu",
-        "zh": "宾得九秋"
+        "zh": "宾得九秋",
+        "vi": "Kyushu"
       },
       "path": "Pentax_Kyushu.plut",
       "category": "Pentax",
@@ -256,7 +334,8 @@
       "id": "pentax_fuyuno",
       "name": {
         "en": "Fuyuno",
-        "zh": "宾得冬野"
+        "zh": "宾得冬野",
+        "vi": "Fuyuno"
       },
       "path": "Pentax_Fuyuno.plut",
       "category": "Pentax",
@@ -266,7 +345,8 @@
       "id": "film_kodak_ultramax_400",
       "name": {
         "en": "Ultramax 400",
-        "zh": "Ultramax 400"
+        "zh": "Ultramax 400",
+        "vi": "Ultramax 400"
       },
       "path": "ultramax400.plut",
       "category": "Film",
@@ -276,7 +356,8 @@
       "id": "e100",
       "name": {
         "en": "E100",
-        "zh": "E100"
+        "zh": "E100",
+        "vi": "E100"
       },
       "path": "e100.plut",
       "category": "Film",
@@ -286,7 +367,8 @@
       "id": "film_rollei_cn200",
       "name": {
         "en": "CN200",
-        "zh": "CN200"
+        "zh": "CN200",
+        "vi": "CN200"
       },
       "path": "cn200.plut",
       "category": "Film",
@@ -296,7 +378,8 @@
       "id": "film_natura_1600",
       "name": {
         "en": "Natura 1600",
-        "zh": "Natura 1600"
+        "zh": "Natura 1600",
+        "vi": "Natura 1600"
       },
       "path": "nature1600.plut",
       "category": "Film",
@@ -306,7 +389,8 @@
       "id": "film_superia_1600",
       "name": {
         "en": "Superia 1600",
-        "zh": "Superia 1600"
+        "zh": "Superia 1600",
+        "vi": "Superia 1600"
       },
       "path": "superia1600.plut",
       "category": "Film",
@@ -316,7 +400,8 @@
       "id": "film_cinestill_800t",
       "name": {
         "en": "Cinestill 800T",
-        "zh": "Cinestill 800T"
+        "zh": "Cinestill 800T",
+        "vi": "Cinestill 800T"
       },
       "path": "cinestill800t.33.plut",
       "category": "Film",

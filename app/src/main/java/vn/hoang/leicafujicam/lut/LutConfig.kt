@@ -116,7 +116,7 @@ data class LutInfo(
      * 获取显示名称（优先当前系统语言）
      */
     fun getName(locale: java.util.Locale = java.util.Locale.getDefault()): String {
-        val language = if (locale.language == "zh") "zh" else "en"
+        val language = locale.language
         return nameMap[language] ?: nameMap["en"] ?: id
     }
 }

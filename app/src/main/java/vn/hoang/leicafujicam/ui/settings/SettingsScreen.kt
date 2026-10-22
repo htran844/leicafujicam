@@ -215,6 +215,7 @@ private val APP_LANGUAGE_OPTIONS = listOf(
     AppLanguageOption("ko", R.string.settings_language_korean),
     AppLanguageOption("pt-BR", R.string.settings_language_portuguese_brazil),
     AppLanguageOption("th", R.string.settings_language_thai),
+    AppLanguageOption("vi", R.string.settings_language_vietnamese),
     AppLanguageOption("zh-CN", R.string.settings_language_chinese_simplified),
     AppLanguageOption("zh-HK", R.string.settings_language_chinese_hong_kong),
     AppLanguageOption("zh-TW", R.string.settings_language_chinese_traditional),
