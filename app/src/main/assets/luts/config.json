@@ -56,13 +56,13 @@
       "isFavorite": true
     },
     {
-      "id": "miyazaki_anime",
+      "id": "tomosaki",
       "name": {
-        "en": "Miyazaki Anime",
-        "zh": "Miyazaki Anime",
-        "vi": "Miyazaki Anime"
+        "en": "Tomosaki",
+        "zh": "Tomosaki",
+        "vi": "Tomosaki"
       },
-      "path": "miyazaki_anime.plut",
+      "path": "tomosaki.plut",
       "category": "Creative",
       "isVip": false,
       "isFavorite": true

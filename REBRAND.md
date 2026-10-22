@@ -61,3 +61,11 @@ Kèm: kiểm chứng bằng ảnh chụp độc lập thứ hai, xóa hiệu chu
 layout `assets/luts/devices/` để bake vào bản phát hành cho mọi người dùng cùng model.
 Module: `lut/calibration/` (ChartCalibration, PlutIO, CalibrationPackStore) +
 `ui/settings/DeviceCalibrationScreen.kt`. Chuỗi giao diện có đủ en/vi.
+
+## Bản 1.0.6 — đổi tên Miyazaki Anime → Tomosaki, tạo lại LUT theo ảnh thật
+Đổi tên toàn diện (id, file .plut, tên hiển thị cả 3 ngôn ngữ) từ `miyazaki_anime`
+sang `tomosaki`, giữ nguyên vị trí thứ 4 trong favorites. LUT được thiết kế lại
+theo phân tích ảnh đã xuất bản của nhiếp ảnh gia tomosaki (@photono_gen): trời
+xanh cobalt đậm (hue đo ~206, bão hòa .64), xanh lá ngọc lục bảo (~110, .55),
+da ấm tự nhiên (~24, .41), vùng sáng trung tính hơi lạnh, tương phản mạnh với
+đen thật. Thông số trong `tools/make_custom_luts.py` (khóa `tomosaki`).

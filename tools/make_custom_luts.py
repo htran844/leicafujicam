@@ -162,18 +162,23 @@ SPECS = {
         ],
         "split": ((-0.020, 0.026, 0.040), (0.026, 0.010, -0.020), 1.0),
     },
-    # Miyazaki Anime: bright, clean, lush emerald greens, deep sky blues, no fade.
-    "miyazaki_anime": {
-        "wb": (1.01, 1.0, 1.03),
-        "curves": [(0, 0.0), (0.25, 0.265), (0.5, 0.535), (0.75, 0.775), (1, 0.992)],
-        "sat": 1.20,
+    # Tomosaki (photono_gen): vivid Japanese summer "seishun" look — deep cobalt
+    # sky blue, lush saturated greens, clean neutral-cool whites, warm natural
+    # skin, punchy contrast with true blacks. Tuned from measured stats of the
+    # photographer's published photos (blue hue ~206 sat .64, green hue ~110
+    # sat .55, skin hue ~24 sat .41, highlights near-neutral with a cool lean).
+    "tomosaki": {
+        "wb": (0.99, 1.0, 1.03),
+        "curves": [(0, 0.0), (0.25, 0.222), (0.5, 0.52), (0.75, 0.802), (1, 0.996)],
+        "sat": 1.22,
         "hue_rules": [
-            (130, 65, -10, 1.28),  # greens -> vivid emerald
-            (215, 60, -6, 1.30),   # sky blue deep & rich
-            (0, 40, 0, 1.15),      # reds (flowers/roofs) pop
-            (50, 40, 0, 1.12),     # warm yellows sunny
+            (212, 58, -5, 1.38),   # sky blue -> deep cobalt azure
+            (120, 65, -7, 1.32),   # greens -> lush emerald (~110 measured)
+            (185, 40, -4, 1.15),   # cyan/teal accents rich
+            (25, 38, 2, 1.06),     # skin/warm tones stay natural & warm
+            (0, 35, 0, 1.12),      # reds pop gently
         ],
-        "split": ((-0.006, 0.004, 0.010), (0.004, 0.002, -0.002), 0.6),
+        "split": ((-0.004, 0.006, 0.016), (0.002, 0.004, 0.008), 0.7),
     },
 }
 

@@ -33,7 +33,7 @@ PLUT_MAGIC = 0x54554C50  # 'PLUT' little-endian
 LUT_SIZE = 33
 PLUT_BYTES_UINT16_33 = 16 + LUT_SIZE ** 3 * 3 * 2  # 215,638
 
-DEFAULT_STYLES = ("leica,cc,Hasselblad,miyazaki_anime,kodak_portra_400,"
+DEFAULT_STYLES = ("leica,cc,Hasselblad,tomosaki,kodak_portra_400,"
                   "kodak_gold_200,nc,teal_orange")
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_ASSETS = os.path.normpath(

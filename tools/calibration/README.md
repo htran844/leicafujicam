@@ -85,7 +85,7 @@ python3 calibrate.py --chart chart.jpg \
 Options:
 
 - `--styles leica,cc,...` — which generic LUT ids to compose
-  (default: `leica,cc,Hasselblad,miyazaki_anime,kodak_portra_400,kodak_gold_200,nc,teal_orange`).
+  (default: `leica,cc,Hasselblad,tomosaki,kodak_portra_400,kodak_gold_200,nc,teal_orange`).
 - `--assets-luts <path>` — defaults to `../../app/src/main/assets/luts`
   relative to this script.
 

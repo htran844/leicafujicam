@@ -90,7 +90,7 @@ import kotlin.math.max
 
 /** Built-in looks calibrated by default, in favorites order. */
 private val DEFAULT_STYLE_IDS = listOf(
-    "leica", "cc", "Hasselblad", "miyazaki_anime",
+    "leica", "cc", "Hasselblad", "tomosaki",
     "kodak_portra_400", "kodak_gold_200", "nc", "teal_orange"
 )
 private const val CALIBRATION_CATEGORY = "Device Calibration"
