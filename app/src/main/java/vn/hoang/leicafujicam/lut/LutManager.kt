@@ -194,7 +194,10 @@ class LutManager(private val context: Context) {
      * 初始化，扫描可用的 LUT 文件（包括内置和自定义）
      */
     fun initialize() {
-        val configuredBuiltInLuts = LutParser.listAvailableLuts(context, BUILT_IN_LUT_FOLDER)
+        val genericBuiltInLuts = LutParser.listAvailableLuts(context, BUILT_IN_LUT_FOLDER)
+        val deviceBuiltInLuts = DeviceLutPack.loadForCurrentDevice(context)
+        val configuredBuiltInLuts =
+            (deviceBuiltInLuts + genericBuiltInLuts).distinctBy { it.id }
         customImportManager.initializeBuiltInLutCategoriesIfNeeded(configuredBuiltInLuts)
         val builtInLuts = configuredBuiltInLuts.map { it.copy(category = "") }
         val customLuts = customImportManager.getCustomLuts()

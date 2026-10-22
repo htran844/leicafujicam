@@ -42,3 +42,11 @@ không phải đường dẫn class.
 Bộ chọn bộ lọc (LutSelector) mở lên ở tab "Yêu thích" thay vì "Tích hợp sẵn".
 Effect bám tab chỉ còn nhảy khi LUT đang dùng thay đổi thật trong lúc bộ chọn đang mở;
 nếu danh sách yêu thích trống thì mặc định quay về tab Tích hợp sẵn.
+
+## Bản 1.0.4 — nền tảng gói LUT theo máy (offline)
+Thêm cơ chế gói LUT riêng theo model máy, đóng kèm trong APK (không cần mạng):
+`DeviceLutPack` đọc `assets/luts/devices/index.json`, khớp manufacturer + Build.MODEL;
+LUT trong gói đè LUT chung cùng id khi LutManager khởi tạo. Quy trình hiệu chuẩn bằng
+bảng ColorChecker và công cụ PC nằm ở `docs/device-lut-calibration.md` +
+`tools/calibration/`. Danh sách gói hiện để trống — gói thật đầu tiên sẽ được tạo khi
+có ảnh chụp bảng màu từ máy thật.
