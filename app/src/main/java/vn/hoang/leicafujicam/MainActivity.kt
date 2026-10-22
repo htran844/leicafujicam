@@ -83,6 +83,7 @@ import vn.hoang.leicafujicam.ui.gallery.BurstDetailScreen
 import vn.hoang.leicafujicam.ui.gallery.GalleryDetailScreen
 import vn.hoang.leicafujicam.ui.gallery.GalleryScreen
 import vn.hoang.leicafujicam.ui.gallery.GalleryEditScreen
+import vn.hoang.leicafujicam.ui.settings.DeviceCalibrationScreen
 import vn.hoang.leicafujicam.ui.settings.FilterManagementScreen
 import vn.hoang.leicafujicam.ui.settings.FrameEditorScreen
 import vn.hoang.leicafujicam.ui.settings.FrameManagementScreen
@@ -118,6 +119,7 @@ object Routes {
     const val FRAME_EDITOR = "frame_editor?frameId={frameId}&imageFrame={imageFrame}"
     const val LUT_CREATOR = "lut_creator"
     const val LUT_SYNTHESIS = "lut_synthesis"
+    const val DEVICE_CALIBRATION = "device_calibration"
     const val TOOLBOX = "toolbox"
     const val PUZZLE = "puzzle"
     const val PRESET_EDITOR = "preset_editor?presetId={presetId}"
@@ -993,11 +995,19 @@ fun NavigationHost(
                 )
             }
 
+            composable(Routes.DEVICE_CALIBRATION) {
+                DeviceCalibrationScreen(
+                    onBack = { navController.popBackStack() },
+                    onCalibrationChanged = { cameraViewModel.refreshCustomContent() }
+                )
+            }
+
             composable(Routes.TOOLBOX) {
                 ToolboxScreen(
                     onBack = { navController.popBackStack() },
                     onLutCreatorClick = { navController.navigate(Routes.LUT_CREATOR) },
                     onLutSynthesisClick = { navController.navigate(Routes.LUT_SYNTHESIS) },
+                    onDeviceCalibrationClick = { navController.navigate(Routes.DEVICE_CALIBRATION) },
                     onColorWalkClick = { navController.navigate(Routes.COLOR_WALK) },
                     onFilmLibraryClick = { navController.navigate(Routes.FILM_LIBRARY) },
                     onPuzzleClick = { navController.navigate(Routes.PUZZLE) }

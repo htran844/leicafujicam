@@ -50,3 +50,14 @@ LUT trong gói đè LUT chung cùng id khi LutManager khởi tạo. Quy trình h
 bảng ColorChecker và công cụ PC nằm ở `docs/device-lut-calibration.md` +
 `tools/calibration/`. Danh sách gói hiện để trống — gói thật đầu tiên sẽ được tạo khi
 có ảnh chụp bảng màu từ máy thật.
+
+## Bản 1.0.5 — hiệu chuẩn màu ngay trên điện thoại
+Thêm màn "Hiệu chuẩn màu theo máy" trong Hộp công cụ (Toolbox): chọn ảnh chụp bảng
+ColorChecker 24 (chụp bằng chính app, bộ lọc "Không"), kéo 4 tay nắm vào lưới ô màu
+(hướng bảng tự nhận diện), app trích 24 ô, fit hiệu chỉnh đa thức trong không gian
+tuyến tính, báo ΔE2000 trước/sau, tổ hợp hiệu chỉnh với các phong cách tích hợp đã
+chọn rồi lưu thành LUT tùy chỉnh (mục "Device Calibration") dùng ngay trên máy.
+Kèm: kiểm chứng bằng ảnh chụp độc lập thứ hai, xóa hiệu chuẩn, và xuất gói ZIP đúng
+layout `assets/luts/devices/` để bake vào bản phát hành cho mọi người dùng cùng model.
+Module: `lut/calibration/` (ChartCalibration, PlutIO, CalibrationPackStore) +
+`ui/settings/DeviceCalibrationScreen.kt`. Chuỗi giao diện có đủ en/vi.

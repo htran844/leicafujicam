@@ -1519,4 +1519,34 @@
     <string name="about_app_title">leicafujicam</string>
     <string name="about_app_description">Phát triển bởi Hoàng &amp; Muse • Dựa trên mã nguồn mở PhotonCamera (Apache License 2.0)</string>
     <string name="donation_thanks">Cảm ơn bạn đã ủng hộ leicafujicam!</string>
+
+    <string name="calibration_title">Device Color Calibration</string>
+    <string name="calibration_toolbox_desc">Calibrate the built-in looks with a color chart, right on this device</string>
+    <string name="calibration_guide_body">Shoot a ColorChecker 24 chart with this app (filter set to None) under neutral light, then pick that photo here. The app measures the chart, computes this device\'s color correction, and saves calibrated versions of the built-in looks that work immediately on this phone. Export the pack afterwards so the calibration can be baked into a release for every user of this device model.</string>
+    <string name="calibration_guide_steps">How to shoot the chart:\n1. Set the filter to None; lock white balance and exposure.\n2. Use D65 / 5500K light; let the chart fill most of the frame; avoid glare and shadows.\n3. Take the photo, pick it below, and align the four handles to the corners of the patch grid.</string>
+    <string name="calibration_pick_photo">Pick chart photo</string>
+    <string name="calibration_saved_title">Calibration saved on this device</string>
+    <string name="calibration_saved_info">Device: %1$s\nSaved: %2$s\nDelta E mean: %3$s \u2192 %4$s (max %5$s \u2192 %6$s)</string>
+    <string name="calibration_recalibrate">Calibrate again</string>
+    <string name="calibration_verify">Verify with another photo</string>
+    <string name="calibration_export">Export device pack</string>
+    <string name="calibration_delete">Delete calibration</string>
+    <string name="calibration_corners_hint">Drag the four handles to the corners of the chart\'s patch grid (the colored area, not the card border). The chart orientation is detected automatically.</string>
+    <string name="calibration_extract">Extract colors</string>
+    <string name="calibration_result_title">Calibration result (Delta E 2000)</string>
+    <string name="calibration_de_before">Before: mean %1$s, max %2$s</string>
+    <string name="calibration_de_after">After: mean %1$s, max %2$s</string>
+    <string name="calibration_styles_title">Looks to calibrate</string>
+    <string name="calibration_save">Save calibrated looks</string>
+    <string name="calibration_done_title">Calibration saved</string>
+    <string name="calibration_done_body">The calibrated looks are now in your filter library under the Device Calibration category. Export the device pack and send it over so it can be baked into the next release for every user of this device model.</string>
+    <string name="calibration_share_title">Share calibration pack</string>
+    <string name="calibration_error_photo">Could not read that photo.</string>
+    <string name="calibration_error_extract">Could not extract the chart. Make sure the handles cover the patch grid and the photo is sharp and evenly lit.</string>
+    <string name="calibration_error_save">Could not save the calibration.</string>
+    <string name="calibration_error_export">Could not create the export file.</string>
+    <string name="calibration_verify_title">Verification (independent photo, Delta E 2000)</string>
+    <string name="calibration_back">Back</string>
+    <string name="calibration_ok">OK</string>
+    <string name="calibration_working">Working\u2026</string>
 </resources>

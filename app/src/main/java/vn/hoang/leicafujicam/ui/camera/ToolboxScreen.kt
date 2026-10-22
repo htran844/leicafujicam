@@ -38,6 +38,7 @@ fun ToolboxScreen(
     onBack: () -> Unit,
     onLutCreatorClick: () -> Unit,
     onLutSynthesisClick: () -> Unit,
+    onDeviceCalibrationClick: () -> Unit,
     onColorWalkClick: () -> Unit,
     onFilmLibraryClick: () -> Unit,
     onPuzzleClick: () -> Unit,
@@ -55,6 +56,12 @@ fun ToolboxScreen(
             descriptionRes = R.string.lut_synthesis_desc,
             icon = AppIcons.Layers,
             onClick = onLutSynthesisClick
+        ),
+        ToolboxItem(
+            titleRes = R.string.calibration_title,
+            descriptionRes = R.string.calibration_toolbox_desc,
+            icon = AppIcons.Tune,
+            onClick = onDeviceCalibrationClick
         ),
         ToolboxItem(
             titleRes = R.string.toolbox_puzzle_title,

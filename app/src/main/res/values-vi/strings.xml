@@ -1433,4 +1433,34 @@
     <string name="about_app_title">leicafujicam</string>
     <string name="about_app_description">Phát triển bởi Hoàng &amp; Muse • Dựa trên mã nguồn mở PhotonCamera (Apache License 2.0)</string>
     <string name="donation_thanks">Cảm ơn bạn đã ủng hộ leicafujicam!</string>
+
+    <string name="calibration_title">Hiệu chuẩn màu theo máy</string>
+    <string name="calibration_toolbox_desc">Hiệu chuẩn các phong cách tích hợp bằng bảng màu, ngay trên máy này</string>
+    <string name="calibration_guide_body">Chụp bảng ColorChecker 24 bằng chính app này (đặt bộ lọc là Không) dưới ánh sáng trung tính, rồi chọn ảnh đó tại đây. App sẽ đo bảng màu, tính hiệu chỉnh màu riêng cho máy này và lưu các bản đã hiệu chuẩn của những phong cách tích hợp — dùng được ngay trên máy. Sau đó xuất gói hiệu chuẩn để đưa vào bản phát hành cho mọi người dùng cùng model máy.</string>
+    <string name="calibration_guide_steps">Cách chụp bảng màu:\n1. Đặt bộ lọc là Không; khóa cân bằng trắng và phơi sáng.\n2. Dùng ánh sáng D65 / 5500K; để bảng chiếm phần lớn khung hình; tránh chói và bóng đổ.\n3. Chụp ảnh, chọn ảnh bên dưới và kéo 4 tay nắm vào 4 góc của lưới ô màu.</string>
+    <string name="calibration_pick_photo">Chọn ảnh bảng màu</string>
+    <string name="calibration_saved_title">Đã lưu hiệu chuẩn trên máy này</string>
+    <string name="calibration_saved_info">Máy: %1$s\nĐã lưu: %2$s\nDelta E trung bình: %3$s \u2192 %4$s (tối đa %5$s \u2192 %6$s)</string>
+    <string name="calibration_recalibrate">Hiệu chuẩn lại</string>
+    <string name="calibration_verify">Kiểm chứng bằng ảnh khác</string>
+    <string name="calibration_export">Xuất gói hiệu chuẩn</string>
+    <string name="calibration_delete">Xóa hiệu chuẩn</string>
+    <string name="calibration_corners_hint">Kéo 4 tay nắm vào 4 góc của lưới ô màu (phần màu, không phải viền thẻ). Hướng của bảng được nhận diện tự động.</string>
+    <string name="calibration_extract">Trích xuất màu</string>
+    <string name="calibration_result_title">Kết quả hiệu chuẩn (Delta E 2000)</string>
+    <string name="calibration_de_before">Trước: trung bình %1$s, tối đa %2$s</string>
+    <string name="calibration_de_after">Sau: trung bình %1$s, tối đa %2$s</string>
+    <string name="calibration_styles_title">Phong cách cần hiệu chuẩn</string>
+    <string name="calibration_save">Lưu các phong cách đã hiệu chuẩn</string>
+    <string name="calibration_done_title">Đã lưu hiệu chuẩn</string>
+    <string name="calibration_done_body">Các phong cách đã hiệu chuẩn đã có trong thư viện bộ lọc, mục Device Calibration. Hãy xuất gói hiệu chuẩn và gửi đi để đưa vào bản phát hành tiếp theo cho mọi người dùng cùng model máy.</string>
+    <string name="calibration_share_title">Chia sẻ gói hiệu chuẩn</string>
+    <string name="calibration_error_photo">Không đọc được ảnh đó.</string>
+    <string name="calibration_error_extract">Không trích xuất được bảng màu. Kiểm tra lại: tay nắm phải phủ đúng lưới ô màu, ảnh sắc nét và sáng đều.</string>
+    <string name="calibration_error_save">Không lưu được hiệu chuẩn.</string>
+    <string name="calibration_error_export">Không tạo được file xuất.</string>
+    <string name="calibration_verify_title">Kiểm chứng (ảnh độc lập, Delta E 2000)</string>
+    <string name="calibration_back">Quay lại</string>
+    <string name="calibration_ok">Đã hiểu</string>
+    <string name="calibration_working">Đang xử lý\u2026</string>
 </resources>
