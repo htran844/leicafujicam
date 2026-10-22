@@ -569,6 +569,16 @@ private data class CameraFeatureUpdate(
  * 使用 Camera2Controller 支持隐藏摄像头
  */
 @OptIn(ExperimentalCoroutinesApi::class)
+/** State of the pose-guide overlay shown on top of the camera preview. */
+data class PoseGuideState(
+    val poseId: String? = null,
+    val opacity: Float = 0.9f,
+    val scale: Float = 0.62f,
+    val centerX: Float = 0.5f,
+    val centerY: Float = 0.52f,
+    val flipped: Boolean = false
+)
+
 class CameraViewModel(application: Application) : AndroidViewModel(application) {
 
     companion object {
@@ -5250,6 +5260,25 @@ class CameraViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch {
             userPreferencesRepository.saveGridStyle(style)
         }
+    }
+
+    // ------------------------------------------------------------------
+    // Pose guide overlay
+    // ------------------------------------------------------------------
+
+    private val _poseGuideState = MutableStateFlow(PoseGuideState())
+    val poseGuideState: StateFlow<PoseGuideState> = _poseGuideState.asStateFlow()
+
+    fun setPoseGuidePose(poseId: String?) {
+        _poseGuideState.value = _poseGuideState.value.copy(poseId = poseId)
+    }
+
+    fun updatePoseGuide(transform: (PoseGuideState) -> PoseGuideState) {
+        _poseGuideState.value = transform(_poseGuideState.value)
+    }
+
+    fun clearPoseGuide() {
+        _poseGuideState.value = PoseGuideState()
     }
 
     /**

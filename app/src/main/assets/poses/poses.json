@@ -1,0 +1,7353 @@
+{
+ "poses": [
+  {
+   "id": "arms_crossed",
+   "name": {
+    "en": "Arms Crossed",
+    "vi": "Khoanh tay"
+   },
+   "standing": true,
+   "tags": [
+    "portrait",
+    "casual",
+    "confident",
+    "indoor",
+    "daylight"
+   ],
+   "tips": {
+    "en": [
+     "Keep shoulders relaxed",
+     "Chin slightly down for stronger jaw line"
+    ],
+    "vi": [
+     "Thả lỏng vai",
+     "Hơi cúi cằm để đường hàm rõ nét hơn"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "chest-up or three-quarter body"
+    ],
+    "vi": [
+     "Khung hình từ ngực trở lên hoặc 3/4 người"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.12
+    ],
+    "l_shoulder": [
+     0.42,
+     0.28
+    ],
+    "r_shoulder": [
+     0.58,
+     0.28
+    ],
+    "l_elbow": [
+     0.48,
+     0.4
+    ],
+    "r_elbow": [
+     0.52,
+     0.4
+    ],
+    "l_wrist": [
+     0.55,
+     0.42
+    ],
+    "r_wrist": [
+     0.45,
+     0.42
+    ],
+    "l_hip": [
+     0.45,
+     0.55
+    ],
+    "r_hip": [
+     0.55,
+     0.55
+    ],
+    "l_knee": [
+     0.45,
+     0.72
+    ],
+    "r_knee": [
+     0.55,
+     0.72
+    ],
+    "l_ankle": [
+     0.45,
+     0.9
+    ],
+    "r_ankle": [
+     0.55,
+     0.9
+    ]
+   }
+  },
+  {
+   "id": "arms_crossed_power",
+   "name": {
+    "en": "Arms Crossed Power",
+    "vi": "Khoanh tay uy lực"
+   },
+   "standing": true,
+   "tags": [
+    "studio",
+    "standing",
+    "portrait",
+    "power",
+    "business"
+   ],
+   "tips": {
+    "en": [
+     "Weight even; chin level; soft smile optional",
+     "Cross arms loosely so shoulders stay relaxed"
+    ],
+    "vi": [
+     "Trọng lượng đều hai chân; cằm ngang; có thể mỉm cười nhẹ",
+     "Khoanh tay lỏng để vai vẫn thả lỏng"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "three-quarter or front; eye-level; soft key"
+    ],
+    "vi": [
+     "Góc 3/4 hoặc chính diện; ngang tầm mắt; ánh sáng chính mềm"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.18
+    ],
+    "l_shoulder": [
+     0.38,
+     0.3
+    ],
+    "r_shoulder": [
+     0.62,
+     0.3
+    ],
+    "l_elbow": [
+     0.42,
+     0.44
+    ],
+    "r_elbow": [
+     0.58,
+     0.44
+    ],
+    "l_wrist": [
+     0.54,
+     0.42
+    ],
+    "r_wrist": [
+     0.46,
+     0.42
+    ],
+    "l_hip": [
+     0.44,
+     0.54
+    ],
+    "r_hip": [
+     0.56,
+     0.54
+    ],
+    "l_knee": [
+     0.44,
+     0.72
+    ],
+    "r_knee": [
+     0.56,
+     0.72
+    ],
+    "l_ankle": [
+     0.44,
+     0.92
+    ],
+    "r_ankle": [
+     0.56,
+     0.92
+    ]
+   }
+  },
+  {
+   "id": "arms_raised",
+   "name": {
+    "en": "Arms Raised Celebration",
+    "vi": "Giơ tay ăn mừng"
+   },
+   "standing": true,
+   "tags": [
+    "outdoor",
+    "celebration",
+    "energy",
+    "full_body",
+    "portrait",
+    "sports"
+   ],
+   "tips": {
+    "en": [
+     "Reach tall through fingertips",
+     "Soft knee bend for energy",
+     "Chin slightly lifted, open chest"
+    ],
+    "vi": [
+     "Vươn cao qua các đầu ngón tay",
+     "Hơi chùng gối để thêm năng lượng",
+     "Hơi ngẩng cằm, mở ngực"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "full body",
+     "slight low angle",
+     "leave sky room above hands"
+    ],
+    "vi": [
+     "Toàn thân",
+     "Góc máy hơi thấp",
+     "Chừa khoảng trời phía trên bàn tay"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.2
+    ],
+    "l_shoulder": [
+     0.38,
+     0.32
+    ],
+    "r_shoulder": [
+     0.62,
+     0.32
+    ],
+    "l_elbow": [
+     0.28,
+     0.18
+    ],
+    "r_elbow": [
+     0.72,
+     0.18
+    ],
+    "l_wrist": [
+     0.22,
+     0.08
+    ],
+    "r_wrist": [
+     0.78,
+     0.08
+    ],
+    "l_hip": [
+     0.44,
+     0.54
+    ],
+    "r_hip": [
+     0.56,
+     0.54
+    ],
+    "l_knee": [
+     0.44,
+     0.72
+    ],
+    "r_knee": [
+     0.56,
+     0.72
+    ],
+    "l_ankle": [
+     0.44,
+     0.9
+    ],
+    "r_ankle": [
+     0.56,
+     0.9
+    ]
+   }
+  },
+  {
+   "id": "back_to_camera",
+   "name": {
+    "en": "Back to Camera",
+    "vi": "Quay lưng với máy ảnh"
+   },
+   "standing": true,
+   "tags": [
+    "outdoor",
+    "editorial",
+    "silhouette",
+    "portrait",
+    "moody",
+    "fashion"
+   ],
+   "tips": {
+    "en": [
+     "Turn shoulders away; soft glance over one side optional",
+     "Weight even or slight hip shift",
+     "Hands relaxed at sides or in pockets"
+    ],
+    "vi": [
+     "Xoay vai ra xa máy ảnh; có thể liếc nhẹ qua một bên vai",
+     "Trọng lượng đều hoặc hơi dồn sang một hông",
+     "Thả lỏng tay hai bên hoặc đút túi"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "full body or 3/4",
+     "rim light edge",
+     "leading lines ahead of subject"
+    ],
+    "vi": [
+     "Toàn thân hoặc 3/4 người",
+     "Ánh sáng viền ở mép chủ thể",
+     "Đường dẫn hướng phía trước chủ thể"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.22
+    ],
+    "l_shoulder": [
+     0.58,
+     0.34
+    ],
+    "r_shoulder": [
+     0.42,
+     0.34
+    ],
+    "l_elbow": [
+     0.64,
+     0.48
+    ],
+    "r_elbow": [
+     0.36,
+     0.48
+    ],
+    "l_wrist": [
+     0.62,
+     0.6
+    ],
+    "r_wrist": [
+     0.38,
+     0.6
+    ],
+    "l_hip": [
+     0.56,
+     0.54
+    ],
+    "r_hip": [
+     0.44,
+     0.54
+    ],
+    "l_knee": [
+     0.56,
+     0.72
+    ],
+    "r_knee": [
+     0.44,
+     0.72
+    ],
+    "l_ankle": [
+     0.56,
+     0.9
+    ],
+    "r_ankle": [
+     0.44,
+     0.9
+    ]
+   }
+  },
+  {
+   "id": "backpack_turn",
+   "name": {
+    "en": "Backpack Over-Shoulder Turn",
+    "vi": "Quay vai với ba lô"
+   },
+   "standing": true,
+   "tags": [
+    "outdoor",
+    "travel",
+    "lifestyle",
+    "full body",
+    "street"
+   ],
+   "tips": {
+    "en": [
+     "Torso 3/4 to camera; look back over shoulder",
+     "One strap on; free hand on pack edge"
+    ],
+    "vi": [
+     "Thân người 3/4 so với máy ảnh; ngoái đầu nhìn qua vai",
+     "Đeo một quai; tay còn lại đặt lên mép ba lô"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "full body; slight low angle; city or trail"
+    ],
+    "vi": [
+     "Toàn thân; góc máy hơi thấp; bối cảnh phố hoặc đường mòn"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.54,
+     0.14
+    ],
+    "l_shoulder": [
+     0.42,
+     0.28
+    ],
+    "r_shoulder": [
+     0.64,
+     0.3
+    ],
+    "l_elbow": [
+     0.36,
+     0.44
+    ],
+    "r_elbow": [
+     0.72,
+     0.42
+    ],
+    "l_wrist": [
+     0.4,
+     0.54
+    ],
+    "r_wrist": [
+     0.66,
+     0.5
+    ],
+    "l_hip": [
+     0.44,
+     0.56
+    ],
+    "r_hip": [
+     0.58,
+     0.56
+    ],
+    "l_knee": [
+     0.42,
+     0.74
+    ],
+    "r_knee": [
+     0.6,
+     0.74
+    ],
+    "l_ankle": [
+     0.42,
+     0.92
+    ],
+    "r_ankle": [
+     0.6,
+     0.92
+    ]
+   }
+  },
+  {
+   "id": "bike_lean",
+   "name": {
+    "en": "Bike Lean",
+    "vi": "Tựa vào xe đạp"
+   },
+   "standing": true,
+   "tags": [
+    "outdoor",
+    "lifestyle",
+    "sport",
+    "street",
+    "full body"
+   ],
+   "tips": {
+    "en": [
+     "Lean hip against bike; free hand on handlebar",
+     "Weight on standing leg; soft smile to lens"
+    ],
+    "vi": [
+     "Tựa hông vào xe; tay còn lại đặt lên ghi đông",
+     "Dồn trọng lượng lên chân đứng; mỉm cười nhẹ vào ống kính"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "full body 3/4; street background bokeh optional"
+    ],
+    "vi": [
+     "Toàn thân góc 3/4; có thể làm mờ hậu cảnh đường phố (bokeh)"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.14
+    ],
+    "l_shoulder": [
+     0.38,
+     0.28
+    ],
+    "r_shoulder": [
+     0.62,
+     0.28
+    ],
+    "l_elbow": [
+     0.3,
+     0.42
+    ],
+    "r_elbow": [
+     0.72,
+     0.44
+    ],
+    "l_wrist": [
+     0.28,
+     0.54
+    ],
+    "r_wrist": [
+     0.7,
+     0.56
+    ],
+    "l_hip": [
+     0.42,
+     0.54
+    ],
+    "r_hip": [
+     0.58,
+     0.54
+    ],
+    "l_knee": [
+     0.4,
+     0.74
+    ],
+    "r_knee": [
+     0.62,
+     0.72
+    ],
+    "l_ankle": [
+     0.4,
+     0.92
+    ],
+    "r_ankle": [
+     0.64,
+     0.9
+    ]
+   }
+  },
+  {
+   "id": "book_reading",
+   "name": {
+    "en": "Book Reading (seated)",
+    "vi": "Ngồi đọc sách"
+   },
+   "standing": false,
+   "tags": [
+    "portrait",
+    "indoor",
+    "lifestyle",
+    "seated",
+    "study"
+   ],
+   "tips": {
+    "en": [
+     "Hold book at mid-chest; elbows soft",
+     "Chin slightly down toward page; eyes toward lens on cue"
+    ],
+    "vi": [
+     "Cầm sách ngang giữa ngực; khuỷu tay mềm",
+     "Hơi cúi cằm về phía trang sách; mắt nhìn vào ống kính khi có hiệu lệnh"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "waist-up seated; soft window side light"
+    ],
+    "vi": [
+     "Ngồi, khung hình từ thắt lưng trở lên; ánh sáng bên dịu từ cửa sổ"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.2
+    ],
+    "l_shoulder": [
+     0.38,
+     0.32
+    ],
+    "r_shoulder": [
+     0.62,
+     0.32
+    ],
+    "l_elbow": [
+     0.32,
+     0.48
+    ],
+    "r_elbow": [
+     0.68,
+     0.48
+    ],
+    "l_wrist": [
+     0.42,
+     0.52
+    ],
+    "r_wrist": [
+     0.58,
+     0.52
+    ],
+    "l_hip": [
+     0.42,
+     0.62
+    ],
+    "r_hip": [
+     0.58,
+     0.62
+    ],
+    "l_knee": [
+     0.44,
+     0.78
+    ],
+    "r_knee": [
+     0.56,
+     0.78
+    ],
+    "l_ankle": [
+     0.44,
+     0.92
+    ],
+    "r_ankle": [
+     0.56,
+     0.92
+    ]
+   }
+  },
+  {
+   "id": "chin_rest",
+   "name": {
+    "en": "Chin Rest on Hand",
+    "vi": "Chống cằm lên tay"
+   },
+   "standing": false,
+   "tags": [
+    "portrait",
+    "seated",
+    "thoughtful",
+    "indoor",
+    "soft-light"
+   ],
+   "tips": {
+    "en": [
+     "Elbow on table or knee; knuckles under chin lightly",
+     "Eyes soft toward camera or slightly off-axis"
+    ],
+    "vi": [
+     "Khuỷu tay đặt trên bàn hoặc gối; khớp ngón tay đỡ nhẹ dưới cằm",
+     "Mắt nhìn dịu vào máy ảnh hoặc hơi lệch trục"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "head-and-shoulders; shallow depth of field"
+    ],
+    "vi": [
+     "Khung hình đầu và vai; độ sâu trường ảnh nông"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.22
+    ],
+    "l_shoulder": [
+     0.38,
+     0.38
+    ],
+    "r_shoulder": [
+     0.62,
+     0.38
+    ],
+    "l_elbow": [
+     0.28,
+     0.55
+    ],
+    "r_elbow": [
+     0.55,
+     0.48
+    ],
+    "l_wrist": [
+     0.32,
+     0.68
+    ],
+    "r_wrist": [
+     0.52,
+     0.32
+    ],
+    "l_hip": [
+     0.42,
+     0.72
+    ],
+    "r_hip": [
+     0.58,
+     0.72
+    ],
+    "l_knee": [
+     0.42,
+     0.88
+    ],
+    "r_knee": [
+     0.58,
+     0.88
+    ],
+    "l_ankle": [
+     0.42,
+     0.98
+    ],
+    "r_ankle": [
+     0.58,
+     0.98
+    ]
+   }
+  },
+  {
+   "id": "classic_at_ease",
+   "name": {
+    "en": "Classic At Ease",
+    "vi": "Đứng thư thái cổ điển"
+   },
+   "standing": true,
+   "tags": [
+    "portrait",
+    "military",
+    "formal",
+    "full_body",
+    "outdoor"
+   ],
+   "tips": {
+    "en": [
+     "Feet shoulder-width apart, weight evenly distributed",
+     "Arms relaxed at sides with slight fist curl",
+     "Chin level, eyes forward for a confident stance"
+    ],
+    "vi": [
+     "Hai chân rộng bằng vai, trọng lượng phân bố đều",
+     "Thả lỏng tay hai bên, ngón tay hơi co nhẹ",
+     "Cằm ngang, mắt nhìn thẳng cho dáng đứng tự tin"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "full body",
+     "slight low angle to emphasize height",
+     "symmetrical framing"
+    ],
+    "vi": [
+     "Toàn thân",
+     "Góc máy hơi thấp để tôn chiều cao",
+     "Khung hình đối xứng"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.1
+    ],
+    "l_shoulder": [
+     0.4,
+     0.26
+    ],
+    "r_shoulder": [
+     0.6,
+     0.26
+    ],
+    "l_elbow": [
+     0.37,
+     0.44
+    ],
+    "r_elbow": [
+     0.63,
+     0.44
+    ],
+    "l_wrist": [
+     0.36,
+     0.62
+    ],
+    "r_wrist": [
+     0.64,
+     0.62
+    ],
+    "l_hip": [
+     0.44,
+     0.56
+    ],
+    "r_hip": [
+     0.56,
+     0.56
+    ],
+    "l_knee": [
+     0.43,
+     0.74
+    ],
+    "r_knee": [
+     0.57,
+     0.74
+    ],
+    "l_ankle": [
+     0.42,
+     0.92
+    ],
+    "r_ankle": [
+     0.58,
+     0.92
+    ]
+   }
+  },
+  {
+   "id": "coffee_cup",
+   "name": {
+    "en": "Coffee Cup (both hands)",
+    "vi": "Hai tay cầm cốc cà phê"
+   },
+   "standing": true,
+   "tags": [
+    "portrait",
+    "lifestyle",
+    "cafe",
+    "indoor",
+    "warm-light"
+   ],
+   "tips": {
+    "en": [
+     "Hold mug near sternum with both hands",
+     "Soft smile; steam / cup as lower-third interest"
+    ],
+    "vi": [
+     "Hai tay cầm cốc gần xương ức",
+     "Mỉm cười nhẹ; hơi nước / chiếc cốc tạo điểm nhấn ở phần dưới khung hình"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "waist-up; window side light preferred"
+    ],
+    "vi": [
+     "Khung hình từ thắt lưng trở lên; ưu tiên ánh sáng bên từ cửa sổ"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.16
+    ],
+    "l_shoulder": [
+     0.4,
+     0.3
+    ],
+    "r_shoulder": [
+     0.6,
+     0.3
+    ],
+    "l_elbow": [
+     0.34,
+     0.48
+    ],
+    "r_elbow": [
+     0.66,
+     0.48
+    ],
+    "l_wrist": [
+     0.44,
+     0.52
+    ],
+    "r_wrist": [
+     0.56,
+     0.52
+    ],
+    "l_hip": [
+     0.44,
+     0.58
+    ],
+    "r_hip": [
+     0.56,
+     0.58
+    ],
+    "l_knee": [
+     0.44,
+     0.75
+    ],
+    "r_knee": [
+     0.56,
+     0.75
+    ],
+    "l_ankle": [
+     0.44,
+     0.92
+    ],
+    "r_ankle": [
+     0.56,
+     0.92
+    ]
+   }
+  },
+  {
+   "id": "coffee_table_lean",
+   "name": {
+    "en": "Coffee Table Lean",
+    "vi": "Tựa người lên bàn cà phê"
+   },
+   "standing": false,
+   "tags": [
+    "indoor",
+    "lifestyle",
+    "cafe",
+    "seated",
+    "portrait"
+   ],
+   "tips": {
+    "en": [
+     "Forearms on table; torso slightly forward",
+     "Shoulders soft; gaze past camera or to lens"
+    ],
+    "vi": [
+     "Cẳng tay đặt trên bàn; thân người hơi nghiêng về phía trước",
+     "Vai thả lỏng; ánh mắt nhìn qua máy ảnh hoặc vào ống kính"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "waist-up seated; warm side light"
+    ],
+    "vi": [
+     "Ngồi, khung hình từ thắt lưng trở lên; ánh sáng bên ấm"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.2
+    ],
+    "l_shoulder": [
+     0.38,
+     0.34
+    ],
+    "r_shoulder": [
+     0.62,
+     0.34
+    ],
+    "l_elbow": [
+     0.34,
+     0.5
+    ],
+    "r_elbow": [
+     0.66,
+     0.5
+    ],
+    "l_wrist": [
+     0.42,
+     0.56
+    ],
+    "r_wrist": [
+     0.58,
+     0.56
+    ],
+    "l_hip": [
+     0.42,
+     0.64
+    ],
+    "r_hip": [
+     0.58,
+     0.64
+    ],
+    "l_knee": [
+     0.44,
+     0.8
+    ],
+    "r_knee": [
+     0.56,
+     0.8
+    ],
+    "l_ankle": [
+     0.44,
+     0.94
+    ],
+    "r_ankle": [
+     0.56,
+     0.94
+    ]
+   }
+  },
+  {
+   "id": "contrapposto",
+   "name": {
+    "en": "Contrapposto",
+    "vi": "Contrapposto"
+   },
+   "standing": true,
+   "tags": [
+    "portrait",
+    "outdoor",
+    "urban",
+    "daylight",
+    "classic"
+   ],
+   "tips": {
+    "en": [
+     "Weight on one leg",
+     "Soft S-curve in the torso",
+     "Relax the free shoulder"
+    ],
+    "vi": [
+     "Dồn trọng lượng lên một chân",
+     "Tạo đường cong chữ S mềm mại ở thân người",
+     "Thả lỏng vai phía chân không dồn trọng lượng"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "3/4 body crop",
+     "eye-level or slight low angle"
+    ],
+    "vi": [
+     "Khung hình 3/4 người",
+     "Ngang tầm mắt hoặc góc máy hơi thấp"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.12
+    ],
+    "l_shoulder": [
+     0.42,
+     0.28
+    ],
+    "r_shoulder": [
+     0.58,
+     0.28
+    ],
+    "l_elbow": [
+     0.38,
+     0.42
+    ],
+    "r_elbow": [
+     0.62,
+     0.42
+    ],
+    "l_wrist": [
+     0.36,
+     0.55
+    ],
+    "r_wrist": [
+     0.64,
+     0.55
+    ],
+    "l_hip": [
+     0.44,
+     0.56
+    ],
+    "r_hip": [
+     0.56,
+     0.54
+    ],
+    "l_knee": [
+     0.43,
+     0.74
+    ],
+    "r_knee": [
+     0.56,
+     0.71
+    ],
+    "l_ankle": [
+     0.42,
+     0.92
+    ],
+    "r_ankle": [
+     0.57,
+     0.88
+    ]
+   }
+  },
+  {
+   "id": "cross_arms_stand",
+   "name": {
+    "en": "Crossed Arms Stand",
+    "vi": "Đứng khoanh tay"
+   },
+   "standing": true,
+   "tags": [
+    "portrait",
+    "studio",
+    "confident",
+    "waist-up",
+    "indoor"
+   ],
+   "tips": {
+    "en": [
+     "Arms lightly crossed at chest; shoulders relaxed",
+     "Weight on one leg; soft smile to lens"
+    ],
+    "vi": [
+     "Khoanh tay nhẹ trước ngực; thả lỏng vai",
+     "Dồn trọng lượng lên một chân; mỉm cười nhẹ vào ống kính"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "waist-up; even studio light"
+    ],
+    "vi": [
+     "Khung hình từ thắt lưng trở lên; ánh sáng studio đều"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.15
+    ],
+    "l_shoulder": [
+     0.4,
+     0.28
+    ],
+    "r_shoulder": [
+     0.6,
+     0.28
+    ],
+    "l_elbow": [
+     0.36,
+     0.42
+    ],
+    "r_elbow": [
+     0.64,
+     0.42
+    ],
+    "l_wrist": [
+     0.52,
+     0.44
+    ],
+    "r_wrist": [
+     0.48,
+     0.44
+    ],
+    "l_hip": [
+     0.44,
+     0.56
+    ],
+    "r_hip": [
+     0.56,
+     0.56
+    ],
+    "l_knee": [
+     0.44,
+     0.74
+    ],
+    "r_knee": [
+     0.56,
+     0.74
+    ],
+    "l_ankle": [
+     0.44,
+     0.92
+    ],
+    "r_ankle": [
+     0.56,
+     0.92
+    ]
+   }
+  },
+  {
+   "id": "crouch_ready",
+   "name": {
+    "en": "Crouch Ready",
+    "vi": "Ngồi xổm sẵn sàng"
+   },
+   "standing": false,
+   "tags": [
+    "outdoor",
+    "action",
+    "street",
+    "athletic",
+    "dynamic",
+    "portrait"
+   ],
+   "tips": {
+    "en": [
+     "Weight on balls of feet",
+     "Knees soft, chest open toward camera",
+     "Hands free near thighs or lightly clasped"
+    ],
+    "vi": [
+     "Dồn trọng lượng lên phần trước bàn chân",
+     "Gối mềm, ngực mở hướng về máy ảnh",
+     "Tay để tự do gần đùi hoặc chắp nhẹ"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "slight low angle",
+     "three-quarter body",
+     "fast shutter for motion"
+    ],
+    "vi": [
+     "Góc máy hơi thấp",
+     "Khung hình 3/4 người",
+     "Tốc độ màn trập nhanh để bắt chuyển động"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.28
+    ],
+    "l_shoulder": [
+     0.4,
+     0.38
+    ],
+    "r_shoulder": [
+     0.6,
+     0.38
+    ],
+    "l_elbow": [
+     0.36,
+     0.5
+    ],
+    "r_elbow": [
+     0.64,
+     0.5
+    ],
+    "l_wrist": [
+     0.38,
+     0.6
+    ],
+    "r_wrist": [
+     0.62,
+     0.6
+    ],
+    "l_hip": [
+     0.44,
+     0.58
+    ],
+    "r_hip": [
+     0.56,
+     0.58
+    ],
+    "l_knee": [
+     0.4,
+     0.72
+    ],
+    "r_knee": [
+     0.6,
+     0.72
+    ],
+    "l_ankle": [
+     0.42,
+     0.88
+    ],
+    "r_ankle": [
+     0.58,
+     0.88
+    ]
+   }
+  },
+  {
+   "id": "crouch_street_photo",
+   "name": {
+    "en": "Crouch Street Photo",
+    "vi": "Ngồi xổm đường phố"
+   },
+   "standing": false,
+   "tags": [
+    "outdoor",
+    "street",
+    "crouch",
+    "full body",
+    "urban"
+   ],
+   "tips": {
+    "en": [
+     "Drop into a low crouch; chest open toward camera",
+     "Hands free or on knee; keep spine long"
+    ],
+    "vi": [
+     "Hạ người xuống tư thế ngồi xổm thấp; ngực mở hướng về máy ảnh",
+     "Tay để tự do hoặc đặt lên gối; giữ lưng thẳng dài"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "low angle full body; 1/250s street shutter"
+    ],
+    "vi": [
+     "Toàn thân góc thấp; tốc độ màn trập đường phố 1/250s"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.52,
+     0.28
+    ],
+    "l_shoulder": [
+     0.42,
+     0.38
+    ],
+    "r_shoulder": [
+     0.62,
+     0.38
+    ],
+    "l_elbow": [
+     0.38,
+     0.5
+    ],
+    "r_elbow": [
+     0.66,
+     0.5
+    ],
+    "l_wrist": [
+     0.4,
+     0.58
+    ],
+    "r_wrist": [
+     0.64,
+     0.58
+    ],
+    "l_hip": [
+     0.46,
+     0.58
+    ],
+    "r_hip": [
+     0.56,
+     0.58
+    ],
+    "l_knee": [
+     0.4,
+     0.72
+    ],
+    "r_knee": [
+     0.62,
+     0.72
+    ],
+    "l_ankle": [
+     0.42,
+     0.9
+    ],
+    "r_ankle": [
+     0.6,
+     0.9
+    ]
+   }
+  },
+  {
+   "id": "crouch_tie_shoe",
+   "name": {
+    "en": "Crouch Tie Shoe",
+    "vi": "Ngồi xổm buộc dây giày"
+   },
+   "standing": false,
+   "tags": [
+    "street",
+    "action",
+    "crouch",
+    "lifestyle",
+    "outdoor"
+   ],
+   "tips": {
+    "en": [
+     "Drop into a low crouch; one knee lower; hands near shoe laces",
+     "Keep spine long; eyes up toward camera or down at the shoe"
+    ],
+    "vi": [
+     "Ngồi xổm thấp; một gối thấp hơn; tay gần dây giày",
+     "Giữ lưng thẳng; mắt nhìn lên máy ảnh hoặc nhìn xuống giày"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "three-quarter front; knee-level; shallow DOF on hands"
+    ],
+    "vi": [
+     "Chính diện góc 3/4; ngang tầm gối; độ sâu trường ảnh nông tập trung vào tay"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.52,
+     0.28
+    ],
+    "l_shoulder": [
+     0.42,
+     0.36
+    ],
+    "r_shoulder": [
+     0.58,
+     0.36
+    ],
+    "l_elbow": [
+     0.4,
+     0.48
+    ],
+    "r_elbow": [
+     0.56,
+     0.5
+    ],
+    "l_wrist": [
+     0.44,
+     0.58
+    ],
+    "r_wrist": [
+     0.52,
+     0.6
+    ],
+    "l_hip": [
+     0.44,
+     0.58
+    ],
+    "r_hip": [
+     0.56,
+     0.58
+    ],
+    "l_knee": [
+     0.4,
+     0.74
+    ],
+    "r_knee": [
+     0.58,
+     0.72
+    ],
+    "l_ankle": [
+     0.38,
+     0.9
+    ],
+    "r_ankle": [
+     0.6,
+     0.88
+    ]
+   }
+  },
+  {
+   "id": "hand_on_chin",
+   "name": {
+    "en": "Hand on Chin",
+    "vi": "Tay chạm cằm"
+   },
+   "standing": true,
+   "tags": [
+    "indoor",
+    "studio",
+    "portrait",
+    "thoughtful",
+    "editorial",
+    "headshot"
+   ],
+   "tips": {
+    "en": [
+     "Light fingertips on chin; no hard press",
+     "Shoulders soft; neck long",
+     "Eyes slightly above camera or off to side"
+    ],
+    "vi": [
+     "Đầu ngón tay chạm nhẹ lên cằm; không ấn mạnh",
+     "Vai thả lỏng; cổ vươn dài",
+     "Mắt nhìn hơi cao hơn máy ảnh hoặc sang một bên"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "head-and-shoulders",
+     "soft key light",
+     "shallow DOF"
+    ],
+    "vi": [
+     "Khung hình đầu và vai",
+     "Ánh sáng chính mềm",
+     "Độ sâu trường ảnh nông"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.24
+    ],
+    "l_shoulder": [
+     0.4,
+     0.38
+    ],
+    "r_shoulder": [
+     0.6,
+     0.38
+    ],
+    "l_elbow": [
+     0.34,
+     0.5
+    ],
+    "r_elbow": [
+     0.68,
+     0.42
+    ],
+    "l_wrist": [
+     0.38,
+     0.6
+    ],
+    "r_wrist": [
+     0.56,
+     0.3
+    ],
+    "l_hip": [
+     0.44,
+     0.58
+    ],
+    "r_hip": [
+     0.56,
+     0.58
+    ],
+    "l_knee": [
+     0.44,
+     0.76
+    ],
+    "r_knee": [
+     0.56,
+     0.76
+    ],
+    "l_ankle": [
+     0.44,
+     0.92
+    ],
+    "r_ankle": [
+     0.56,
+     0.92
+    ]
+   }
+  },
+  {
+   "id": "hand_wave",
+   "name": {
+    "en": "Hand Wave",
+    "vi": "Vẫy tay"
+   },
+   "standing": true,
+   "tags": [
+    "portrait",
+    "casual",
+    "greeting",
+    "daylight",
+    "outdoor"
+   ],
+   "tips": {
+    "en": [
+     "Raise one hand near shoulder height",
+     "Soft smile, open torso to camera"
+    ],
+    "vi": [
+     "Giơ một tay lên gần ngang vai",
+     "Mỉm cười nhẹ, thân người mở hướng về máy ảnh"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "waist-up or full body with negative space on wave side"
+    ],
+    "vi": [
+     "Khung hình từ thắt lưng trở lên hoặc toàn thân, chừa khoảng trống phía tay vẫy"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.12
+    ],
+    "l_shoulder": [
+     0.42,
+     0.28
+    ],
+    "r_shoulder": [
+     0.58,
+     0.28
+    ],
+    "l_elbow": [
+     0.36,
+     0.42
+    ],
+    "r_elbow": [
+     0.72,
+     0.22
+    ],
+    "l_wrist": [
+     0.34,
+     0.55
+    ],
+    "r_wrist": [
+     0.78,
+     0.12
+    ],
+    "l_hip": [
+     0.45,
+     0.55
+    ],
+    "r_hip": [
+     0.55,
+     0.55
+    ],
+    "l_knee": [
+     0.45,
+     0.72
+    ],
+    "r_knee": [
+     0.55,
+     0.72
+    ],
+    "l_ankle": [
+     0.45,
+     0.9
+    ],
+    "r_ankle": [
+     0.55,
+     0.9
+    ]
+   }
+  },
+  {
+   "id": "hands_behind_back",
+   "name": {
+    "en": "Hands Behind Back",
+    "vi": "Chắp tay sau lưng"
+   },
+   "standing": true,
+   "tags": [
+    "portrait",
+    "studio",
+    "editorial",
+    "formal",
+    "standing"
+   ],
+   "tips": {
+    "en": [
+     "Interlace fingers lightly behind the lower back",
+     "Roll shoulders back without puffing the chest",
+     "Shift weight onto one foot for a natural S-curve"
+    ],
+    "vi": [
+     "Đan nhẹ các ngón tay sau lưng dưới",
+     "Cuộn vai ra sau mà không ưỡn ngực",
+     "Dồn trọng lượng sang một chân để tạo đường cong chữ S tự nhiên"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "eye-level three-quarter",
+     "slight low angle for authority"
+    ],
+    "vi": [
+     "Góc 3/4 ngang tầm mắt",
+     "Góc máy hơi thấp để tăng vẻ uy quyền"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.15
+    ],
+    "l_shoulder": [
+     0.4,
+     0.28
+    ],
+    "r_shoulder": [
+     0.6,
+     0.28
+    ],
+    "l_elbow": [
+     0.36,
+     0.42
+    ],
+    "r_elbow": [
+     0.64,
+     0.42
+    ],
+    "l_wrist": [
+     0.46,
+     0.48
+    ],
+    "r_wrist": [
+     0.54,
+     0.48
+    ],
+    "l_hip": [
+     0.44,
+     0.52
+    ],
+    "r_hip": [
+     0.56,
+     0.52
+    ],
+    "l_knee": [
+     0.45,
+     0.72
+    ],
+    "r_knee": [
+     0.56,
+     0.7
+    ],
+    "l_ankle": [
+     0.45,
+     0.92
+    ],
+    "r_ankle": [
+     0.57,
+     0.9
+    ]
+   }
+  },
+  {
+   "id": "hands_clasped_front",
+   "name": {
+    "en": "Hands Clasped in Front",
+    "vi": "Chắp tay phía trước"
+   },
+   "standing": true,
+   "tags": [
+    "portrait",
+    "formal",
+    "professional",
+    "waist-up",
+    "studio"
+   ],
+   "tips": {
+    "en": [
+     "Clasp hands loosely in front at belt height",
+     "Keep shoulders relaxed and chest open",
+     "Straight spine with a slight forward head tilt for approachability"
+    ],
+    "vi": [
+     "Chắp tay lỏng phía trước ngang thắt lưng",
+     "Thả lỏng vai và mở ngực",
+     "Lưng thẳng, đầu hơi nghiêng về phía trước để tạo cảm giác thân thiện"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "waist-up",
+     "even studio lighting",
+     "neutral background"
+    ],
+    "vi": [
+     "Khung hình từ thắt lưng trở lên",
+     "Ánh sáng studio đều",
+     "Phông nền trung tính"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.12
+    ],
+    "l_shoulder": [
+     0.39,
+     0.27
+    ],
+    "r_shoulder": [
+     0.61,
+     0.27
+    ],
+    "l_elbow": [
+     0.34,
+     0.43
+    ],
+    "r_elbow": [
+     0.66,
+     0.43
+    ],
+    "l_wrist": [
+     0.47,
+     0.52
+    ],
+    "r_wrist": [
+     0.53,
+     0.52
+    ],
+    "l_hip": [
+     0.43,
+     0.56
+    ],
+    "r_hip": [
+     0.57,
+     0.56
+    ],
+    "l_knee": [
+     0.42,
+     0.74
+    ],
+    "r_knee": [
+     0.58,
+     0.74
+    ],
+    "l_ankle": [
+     0.41,
+     0.92
+    ],
+    "r_ankle": [
+     0.59,
+     0.92
+    ]
+   }
+  },
+  {
+   "id": "hands_in_pockets",
+   "name": {
+    "en": "Hands in Pockets",
+    "vi": "Đút tay túi quần"
+   },
+   "standing": true,
+   "tags": [
+    "urban",
+    "casual",
+    "street",
+    "daylight",
+    "wall"
+   ],
+   "tips": {
+    "en": [
+     "Thumbs out of pockets for natural hands",
+     "Slight lean into the wall"
+    ],
+    "vi": [
+     "Để ngón cái ngoài túi cho bàn tay tự nhiên",
+     "Hơi tựa người vào tường"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "vertical frame",
+     "leave headroom"
+    ],
+    "vi": [
+     "Khung hình dọc",
+     "Chừa khoảng trống phía trên đầu"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.12
+    ],
+    "l_shoulder": [
+     0.42,
+     0.28
+    ],
+    "r_shoulder": [
+     0.58,
+     0.28
+    ],
+    "l_elbow": [
+     0.4,
+     0.48
+    ],
+    "r_elbow": [
+     0.6,
+     0.48
+    ],
+    "l_wrist": [
+     0.44,
+     0.58
+    ],
+    "r_wrist": [
+     0.56,
+     0.58
+    ],
+    "l_hip": [
+     0.45,
+     0.55
+    ],
+    "r_hip": [
+     0.55,
+     0.55
+    ],
+    "l_knee": [
+     0.45,
+     0.72
+    ],
+    "r_knee": [
+     0.55,
+     0.72
+    ],
+    "l_ankle": [
+     0.45,
+     0.9
+    ],
+    "r_ankle": [
+     0.55,
+     0.9
+    ]
+   }
+  },
+  {
+   "id": "hands_on_hips",
+   "name": {
+    "en": "Hands on Hips",
+    "vi": "Chống tay lên hông"
+   },
+   "standing": true,
+   "tags": [
+    "beach",
+    "outdoor",
+    "casual",
+    "daylight",
+    "portrait"
+   ],
+   "tips": {
+    "en": [
+     "Elbows soft",
+     "Weight on back leg"
+    ],
+    "vi": [
+     "Khuỷu tay mềm",
+     "Dồn trọng lượng lên chân sau"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "full body if background is strong"
+    ],
+    "vi": [
+     "Toàn thân nếu hậu cảnh đẹp"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.12
+    ],
+    "l_shoulder": [
+     0.42,
+     0.28
+    ],
+    "r_shoulder": [
+     0.58,
+     0.28
+    ],
+    "l_elbow": [
+     0.36,
+     0.42
+    ],
+    "r_elbow": [
+     0.64,
+     0.42
+    ],
+    "l_wrist": [
+     0.42,
+     0.55
+    ],
+    "r_wrist": [
+     0.58,
+     0.55
+    ],
+    "l_hip": [
+     0.45,
+     0.55
+    ],
+    "r_hip": [
+     0.55,
+     0.55
+    ],
+    "l_knee": [
+     0.45,
+     0.72
+    ],
+    "r_knee": [
+     0.55,
+     0.72
+    ],
+    "l_ankle": [
+     0.45,
+     0.9
+    ],
+    "r_ankle": [
+     0.55,
+     0.9
+    ]
+   }
+  },
+  {
+   "id": "hands_on_hips_hero",
+   "name": {
+    "en": "Hands On Hips Hero",
+    "vi": "Chống tay lên hông đầy uy lực"
+   },
+   "standing": true,
+   "tags": [
+    "studio",
+    "standing",
+    "portrait",
+    "power",
+    "editorial"
+   ],
+   "tips": {
+    "en": [
+     "Feet shoulder-width; elbows soft out; chest open",
+     "Chin level; slight weight shift to back hip"
+    ],
+    "vi": [
+     "Hai chân rộng bằng vai; khuỷu tay hơi hướng ra ngoài; ngực mở",
+     "Cằm ngang; hơi dồn trọng lượng về hông sau"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "front or three-quarter; eye-level; soft key + fill"
+    ],
+    "vi": [
+     "Chính diện hoặc góc 3/4; ngang tầm mắt; sáng chính mềm + sáng phụ"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.17
+    ],
+    "l_shoulder": [
+     0.36,
+     0.29
+    ],
+    "r_shoulder": [
+     0.64,
+     0.29
+    ],
+    "l_elbow": [
+     0.3,
+     0.42
+    ],
+    "r_elbow": [
+     0.7,
+     0.42
+    ],
+    "l_wrist": [
+     0.38,
+     0.5
+    ],
+    "r_wrist": [
+     0.62,
+     0.5
+    ],
+    "l_hip": [
+     0.44,
+     0.54
+    ],
+    "r_hip": [
+     0.56,
+     0.54
+    ],
+    "l_knee": [
+     0.44,
+     0.72
+    ],
+    "r_knee": [
+     0.56,
+     0.72
+    ],
+    "l_ankle": [
+     0.44,
+     0.92
+    ],
+    "r_ankle": [
+     0.56,
+     0.92
+    ]
+   }
+  },
+  {
+   "id": "hat_tip",
+   "name": {
+    "en": "Hat Tip",
+    "vi": "Chạm vành mũ chào"
+   },
+   "standing": true,
+   "tags": [
+    "portrait",
+    "outdoor",
+    "lifestyle",
+    "greeting",
+    "waist-up"
+   ],
+   "tips": {
+    "en": [
+     "Fingers lightly touch brim; elbow soft",
+     "Chin slightly down; eyes to lens"
+    ],
+    "vi": [
+     "Ngón tay chạm nhẹ vành mũ; khuỷu tay mềm",
+     "Hơi cúi cằm; mắt nhìn vào ống kính"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "waist-up; open sky or soft backlight"
+    ],
+    "vi": [
+     "Khung hình từ thắt lưng trở lên; trời thoáng hoặc ánh sáng ngược mềm"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.16
+    ],
+    "l_shoulder": [
+     0.4,
+     0.3
+    ],
+    "r_shoulder": [
+     0.6,
+     0.3
+    ],
+    "l_elbow": [
+     0.34,
+     0.44
+    ],
+    "r_elbow": [
+     0.72,
+     0.26
+    ],
+    "l_wrist": [
+     0.36,
+     0.56
+    ],
+    "r_wrist": [
+     0.58,
+     0.14
+    ],
+    "l_hip": [
+     0.44,
+     0.58
+    ],
+    "r_hip": [
+     0.56,
+     0.58
+    ],
+    "l_knee": [
+     0.44,
+     0.76
+    ],
+    "r_knee": [
+     0.56,
+     0.76
+    ],
+    "l_ankle": [
+     0.44,
+     0.92
+    ],
+    "r_ankle": [
+     0.56,
+     0.92
+    ]
+   }
+  },
+  {
+   "id": "jump_midair",
+   "name": {
+    "en": "Jump Mid-Air",
+    "vi": "Nhảy lơ lửng"
+   },
+   "standing": false,
+   "tags": [
+    "outdoor",
+    "action",
+    "athletic",
+    "dynamic",
+    "sports",
+    "portrait"
+   ],
+   "tips": {
+    "en": [
+     "Shoot peak hang time",
+     "Point toes and lengthen through arms",
+     "Keep face relaxed; strong core"
+    ],
+    "vi": [
+     "Chụp ở khoảnh khắc lơ lửng cao nhất",
+     "Duỗi mũi chân và vươn dài qua cánh tay",
+     "Giữ khuôn mặt thư giãn; siết cơ trung tâm"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "fast shutter",
+     "slight low angle",
+     "full body with sky room"
+    ],
+    "vi": [
+     "Tốc độ màn trập nhanh",
+     "Góc máy hơi thấp",
+     "Toàn thân, chừa khoảng trời phía trên"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.2
+    ],
+    "l_shoulder": [
+     0.38,
+     0.3
+    ],
+    "r_shoulder": [
+     0.62,
+     0.3
+    ],
+    "l_elbow": [
+     0.28,
+     0.24
+    ],
+    "r_elbow": [
+     0.72,
+     0.24
+    ],
+    "l_wrist": [
+     0.22,
+     0.16
+    ],
+    "r_wrist": [
+     0.78,
+     0.16
+    ],
+    "l_hip": [
+     0.44,
+     0.48
+    ],
+    "r_hip": [
+     0.56,
+     0.48
+    ],
+    "l_knee": [
+     0.4,
+     0.62
+    ],
+    "r_knee": [
+     0.6,
+     0.62
+    ],
+    "l_ankle": [
+     0.38,
+     0.76
+    ],
+    "r_ankle": [
+     0.62,
+     0.76
+    ]
+   }
+  },
+  {
+   "id": "jump_midair_arms_open",
+   "name": {
+    "en": "Jump Midair Arms Open",
+    "vi": "Nhảy lơ lửng dang rộng tay"
+   },
+   "standing": true,
+   "tags": [
+    "outdoor",
+    "action",
+    "jump",
+    "energy",
+    "portrait"
+   ],
+   "tips": {
+    "en": [
+     "Burst jump; chin slightly up; arms wide for silhouette",
+     "Shoot burst mode; pick peak hang frame"
+    ],
+    "vi": [
+     "Bật nhảy; cằm hơi ngẩng; dang rộng tay để tạo bóng silhouette",
+     "Chụp liên tục; chọn khung hình ở đỉnh lơ lửng"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "full body; slight low angle; fast shutter"
+    ],
+    "vi": [
+     "Toàn thân; góc máy hơi thấp; tốc độ màn trập nhanh"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.14
+    ],
+    "l_shoulder": [
+     0.34,
+     0.26
+    ],
+    "r_shoulder": [
+     0.66,
+     0.26
+    ],
+    "l_elbow": [
+     0.22,
+     0.3
+    ],
+    "r_elbow": [
+     0.78,
+     0.3
+    ],
+    "l_wrist": [
+     0.12,
+     0.28
+    ],
+    "r_wrist": [
+     0.88,
+     0.28
+    ],
+    "l_hip": [
+     0.44,
+     0.48
+    ],
+    "r_hip": [
+     0.56,
+     0.48
+    ],
+    "l_knee": [
+     0.4,
+     0.66
+    ],
+    "r_knee": [
+     0.6,
+     0.66
+    ],
+    "l_ankle": [
+     0.38,
+     0.84
+    ],
+    "r_ankle": [
+     0.62,
+     0.84
+    ]
+   }
+  },
+  {
+   "id": "kneel_profile",
+   "name": {
+    "en": "Kneel Profile",
+    "vi": "Quỳ gối, mặt nghiêng"
+   },
+   "standing": false,
+   "tags": [
+    "indoor",
+    "studio",
+    "profile",
+    "portrait",
+    "editorial",
+    "fashion"
+   ],
+   "tips": {
+    "en": [
+     "Kneel tall through the spine",
+     "Front knee soft; back foot relaxed",
+     "Chin slightly lifted off the shoulder"
+    ],
+    "vi": [
+     "Quỳ thẳng, vươn dài cột sống",
+     "Gối trước mềm; bàn chân sau thả lỏng",
+     "Cằm hơi nhấc khỏi vai"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "profile or three-quarter",
+     "mid-body crop option",
+     "soft side key light"
+    ],
+    "vi": [
+     "Góc nghiêng hoặc 3/4",
+     "Có thể cắt khung hình giữa thân",
+     "Ánh sáng chính mềm từ bên"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.58,
+     0.26
+    ],
+    "l_shoulder": [
+     0.48,
+     0.36
+    ],
+    "r_shoulder": [
+     0.62,
+     0.36
+    ],
+    "l_elbow": [
+     0.44,
+     0.48
+    ],
+    "r_elbow": [
+     0.68,
+     0.48
+    ],
+    "l_wrist": [
+     0.46,
+     0.58
+    ],
+    "r_wrist": [
+     0.66,
+     0.56
+    ],
+    "l_hip": [
+     0.5,
+     0.58
+    ],
+    "r_hip": [
+     0.58,
+     0.58
+    ],
+    "l_knee": [
+     0.48,
+     0.78
+    ],
+    "r_knee": [
+     0.62,
+     0.72
+    ],
+    "l_ankle": [
+     0.46,
+     0.92
+    ],
+    "r_ankle": [
+     0.7,
+     0.82
+    ]
+   }
+  },
+  {
+   "id": "kneel_propose",
+   "name": {
+    "en": "Kneel Propose",
+    "vi": "Quỳ gối cầu hôn"
+   },
+   "standing": false,
+   "tags": [
+    "indoor",
+    "romantic",
+    "portrait",
+    "event",
+    "low angle"
+   ],
+   "tips": {
+    "en": [
+     "Front knee at 90°",
+     "Upright chest",
+     "Soft smile to camera"
+    ],
+    "vi": [
+     "Gối trước tạo góc 90°",
+     "Ngực thẳng",
+     "Mỉm cười nhẹ vào máy ảnh"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "slight low angle",
+     "include hands and face",
+     "shallow depth"
+    ],
+    "vi": [
+     "Góc máy hơi thấp",
+     "Lấy cả tay và khuôn mặt vào khung",
+     "Độ sâu trường ảnh nông"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.22
+    ],
+    "l_shoulder": [
+     0.4,
+     0.34
+    ],
+    "r_shoulder": [
+     0.6,
+     0.34
+    ],
+    "l_elbow": [
+     0.36,
+     0.46
+    ],
+    "r_elbow": [
+     0.64,
+     0.46
+    ],
+    "l_wrist": [
+     0.42,
+     0.56
+    ],
+    "r_wrist": [
+     0.58,
+     0.56
+    ],
+    "l_hip": [
+     0.45,
+     0.58
+    ],
+    "r_hip": [
+     0.55,
+     0.58
+    ],
+    "l_knee": [
+     0.42,
+     0.78
+    ],
+    "r_knee": [
+     0.58,
+     0.72
+    ],
+    "l_ankle": [
+     0.4,
+     0.92
+    ],
+    "r_ankle": [
+     0.62,
+     0.9
+    ]
+   }
+  },
+  {
+   "id": "kneeling_propose_style",
+   "name": {
+    "en": "Kneeling Propose Style",
+    "vi": "Quỳ gối kiểu cầu hôn"
+   },
+   "standing": false,
+   "tags": [
+    "indoor",
+    "kneeling",
+    "romantic",
+    "portrait",
+    "ceremony"
+   ],
+   "tips": {
+    "en": [
+     "One knee down; upright torso; soft eye contact forward",
+     "Hands at mid-chest height or offering gesture"
+    ],
+    "vi": [
+     "Một gối chạm đất; thân người thẳng; ánh mắt dịu nhìn về phía trước",
+     "Tay ở ngang giữa ngực hoặc trong tư thế trao tặng"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "three-quarter body; eye-level; soft side light"
+    ],
+    "vi": [
+     "Khung hình 3/4 người; ngang tầm mắt; ánh sáng bên mềm"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.22
+    ],
+    "l_shoulder": [
+     0.4,
+     0.34
+    ],
+    "r_shoulder": [
+     0.6,
+     0.34
+    ],
+    "l_elbow": [
+     0.36,
+     0.48
+    ],
+    "r_elbow": [
+     0.64,
+     0.48
+    ],
+    "l_wrist": [
+     0.42,
+     0.56
+    ],
+    "r_wrist": [
+     0.58,
+     0.56
+    ],
+    "l_hip": [
+     0.44,
+     0.58
+    ],
+    "r_hip": [
+     0.56,
+     0.58
+    ],
+    "l_knee": [
+     0.42,
+     0.78
+    ],
+    "r_knee": [
+     0.58,
+     0.72
+    ],
+    "l_ankle": [
+     0.4,
+     0.94
+    ],
+    "r_ankle": [
+     0.62,
+     0.9
+    ]
+   }
+  },
+  {
+   "id": "laptop_desk",
+   "name": {
+    "en": "Laptop Desk (seated)",
+    "vi": "Ngồi bàn với laptop"
+   },
+   "standing": false,
+   "tags": [
+    "indoor",
+    "work",
+    "seated",
+    "lifestyle",
+    "desk"
+   ],
+   "tips": {
+    "en": [
+     "Sit upright; screen slightly below eye line",
+     "Hands on keyboard; shoulders relaxed"
+    ],
+    "vi": [
+     "Ngồi thẳng; màn hình hơi thấp hơn đường tầm mắt",
+     "Tay đặt trên bàn phím; thả lỏng vai"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "3/4 seated; soft side window light"
+    ],
+    "vi": [
+     "Ngồi góc 3/4; ánh sáng bên dịu từ cửa sổ"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.18
+    ],
+    "l_shoulder": [
+     0.38,
+     0.3
+    ],
+    "r_shoulder": [
+     0.62,
+     0.3
+    ],
+    "l_elbow": [
+     0.34,
+     0.46
+    ],
+    "r_elbow": [
+     0.66,
+     0.46
+    ],
+    "l_wrist": [
+     0.42,
+     0.54
+    ],
+    "r_wrist": [
+     0.58,
+     0.54
+    ],
+    "l_hip": [
+     0.42,
+     0.6
+    ],
+    "r_hip": [
+     0.58,
+     0.6
+    ],
+    "l_knee": [
+     0.44,
+     0.78
+    ],
+    "r_knee": [
+     0.56,
+     0.78
+    ],
+    "l_ankle": [
+     0.44,
+     0.92
+    ],
+    "r_ankle": [
+     0.56,
+     0.92
+    ]
+   }
+  },
+  {
+   "id": "lean_forward",
+   "name": {
+    "en": "Lean Forward",
+    "vi": "Nghiêng người về phía trước"
+   },
+   "standing": true,
+   "tags": [
+    "outdoor",
+    "candid",
+    "street",
+    "dynamic",
+    "portrait",
+    "editorial"
+   ],
+   "tips": {
+    "en": [
+     "Hinge from hips, not rounded upper back",
+     "Weight mostly on front foot",
+     "Hands free or lightly clasped"
+    ],
+    "vi": [
+     "Gập người từ hông, không cong lưng trên",
+     "Trọng lượng chủ yếu ở chân trước",
+     "Tay để tự do hoặc chắp nhẹ"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "slight high angle",
+     "three-quarter body",
+     "motion blur option"
+    ],
+    "vi": [
+     "Góc máy hơi cao",
+     "Khung hình 3/4 người",
+     "Có thể dùng hiệu ứng nhòe chuyển động"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.52,
+     0.24
+    ],
+    "l_shoulder": [
+     0.4,
+     0.34
+    ],
+    "r_shoulder": [
+     0.6,
+     0.34
+    ],
+    "l_elbow": [
+     0.36,
+     0.46
+    ],
+    "r_elbow": [
+     0.64,
+     0.46
+    ],
+    "l_wrist": [
+     0.38,
+     0.56
+    ],
+    "r_wrist": [
+     0.62,
+     0.56
+    ],
+    "l_hip": [
+     0.44,
+     0.54
+    ],
+    "r_hip": [
+     0.56,
+     0.54
+    ],
+    "l_knee": [
+     0.42,
+     0.72
+    ],
+    "r_knee": [
+     0.58,
+     0.72
+    ],
+    "l_ankle": [
+     0.4,
+     0.9
+    ],
+    "r_ankle": [
+     0.58,
+     0.9
+    ]
+   }
+  },
+  {
+   "id": "lean_forward_desk",
+   "name": {
+    "en": "Lean Forward Desk",
+    "vi": "Nghiêng người trên bàn"
+   },
+   "standing": false,
+   "tags": [
+    "indoor",
+    "office",
+    "portrait",
+    "casual",
+    "seated"
+   ],
+   "tips": {
+    "en": [
+     "Elbows on desk",
+     "Lean slightly toward camera"
+    ],
+    "vi": [
+     "Khuỷu tay đặt trên bàn",
+     "Hơi nghiêng người về phía máy ảnh"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "chest-up framing"
+    ],
+    "vi": [
+     "Khung hình từ ngực trở lên"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.18
+    ],
+    "l_shoulder": [
+     0.4,
+     0.32
+    ],
+    "r_shoulder": [
+     0.6,
+     0.32
+    ],
+    "l_elbow": [
+     0.38,
+     0.48
+    ],
+    "r_elbow": [
+     0.62,
+     0.48
+    ],
+    "l_wrist": [
+     0.42,
+     0.55
+    ],
+    "r_wrist": [
+     0.58,
+     0.55
+    ],
+    "l_hip": [
+     0.44,
+     0.62
+    ],
+    "r_hip": [
+     0.56,
+     0.62
+    ],
+    "l_knee": [
+     0.45,
+     0.78
+    ],
+    "r_knee": [
+     0.55,
+     0.78
+    ],
+    "l_ankle": [
+     0.45,
+     0.92
+    ],
+    "r_ankle": [
+     0.55,
+     0.92
+    ]
+   }
+  },
+  {
+   "id": "lean_on_rail",
+   "name": {
+    "en": "Lean on Rail",
+    "vi": "Tựa vào lan can"
+   },
+   "standing": true,
+   "tags": [
+    "outdoor",
+    "urban",
+    "balcony",
+    "cityscape",
+    "evening"
+   ],
+   "tips": {
+    "en": [
+     "Elbow soft on the rail",
+     "Hips back slightly"
+    ],
+    "vi": [
+     "Khuỷu tay mềm đặt trên lan can",
+     "Hông hơi đưa ra sau"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "include environment",
+     "rule of thirds on subject"
+    ],
+    "vi": [
+     "Lấy cả môi trường xung quanh vào khung",
+     "Đặt chủ thể theo quy tắc một phần ba"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.12
+    ],
+    "l_shoulder": [
+     0.42,
+     0.28
+    ],
+    "r_shoulder": [
+     0.58,
+     0.28
+    ],
+    "l_elbow": [
+     0.42,
+     0.4
+    ],
+    "r_elbow": [
+     0.58,
+     0.4
+    ],
+    "l_wrist": [
+     0.42,
+     0.48
+    ],
+    "r_wrist": [
+     0.58,
+     0.48
+    ],
+    "l_hip": [
+     0.46,
+     0.58
+    ],
+    "r_hip": [
+     0.54,
+     0.58
+    ],
+    "l_knee": [
+     0.45,
+     0.72
+    ],
+    "r_knee": [
+     0.55,
+     0.72
+    ],
+    "l_ankle": [
+     0.45,
+     0.9
+    ],
+    "r_ankle": [
+     0.55,
+     0.9
+    ]
+   }
+  },
+  {
+   "id": "lean_wall_casual",
+   "name": {
+    "en": "Lean Wall Casual",
+    "vi": "Tựa tường tự nhiên"
+   },
+   "standing": true,
+   "tags": [
+    "outdoor",
+    "street",
+    "casual",
+    "portrait",
+    "urban"
+   ],
+   "tips": {
+    "en": [
+     "One shoulder to wall",
+     "Soft knee bend",
+     "Look past camera"
+    ],
+    "vi": [
+     "Một vai tựa vào tường",
+     "Hơi chùng gối",
+     "Nhìn qua phía máy ảnh"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "3/4 body",
+     "eye level",
+     "leave wall texture"
+    ],
+    "vi": [
+     "Khung hình 3/4 người",
+     "Ngang tầm mắt",
+     "Giữ lại vân bề mặt của tường"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.52,
+     0.14
+    ],
+    "l_shoulder": [
+     0.4,
+     0.28
+    ],
+    "r_shoulder": [
+     0.62,
+     0.28
+    ],
+    "l_elbow": [
+     0.34,
+     0.4
+    ],
+    "r_elbow": [
+     0.68,
+     0.42
+    ],
+    "l_wrist": [
+     0.32,
+     0.5
+    ],
+    "r_wrist": [
+     0.7,
+     0.52
+    ],
+    "l_hip": [
+     0.46,
+     0.54
+    ],
+    "r_hip": [
+     0.56,
+     0.54
+    ],
+    "l_knee": [
+     0.46,
+     0.72
+    ],
+    "r_knee": [
+     0.58,
+     0.72
+    ],
+    "l_ankle": [
+     0.46,
+     0.9
+    ],
+    "r_ankle": [
+     0.58,
+     0.9
+    ]
+   }
+  },
+  {
+   "id": "lean_wall_casual_soft",
+   "name": {
+    "en": "Lean Wall Casual Soft",
+    "vi": "Tựa tường tự nhiên nhẹ nhàng"
+   },
+   "standing": true,
+   "tags": [
+    "studio",
+    "standing",
+    "portrait",
+    "casual",
+    "urban"
+   ],
+   "tips": {
+    "en": [
+     "One shoulder lightly on wall; opposite foot slightly forward",
+     "Hands relaxed at pockets or belt; chin soft toward camera"
+    ],
+    "vi": [
+     "Một vai tựa nhẹ vào tường; chân đối diện hơi bước lên phía trước",
+     "Tay thả lỏng ở túi hoặc thắt lưng; cằm mềm hướng về máy ảnh"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "three-quarter; eye-level; soft side key"
+    ],
+    "vi": [
+     "Góc 3/4; ngang tầm mắt; ánh sáng chính mềm từ bên"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.52,
+     0.17
+    ],
+    "l_shoulder": [
+     0.36,
+     0.29
+    ],
+    "r_shoulder": [
+     0.6,
+     0.3
+    ],
+    "l_elbow": [
+     0.34,
+     0.42
+    ],
+    "r_elbow": [
+     0.62,
+     0.44
+    ],
+    "l_wrist": [
+     0.38,
+     0.52
+    ],
+    "r_wrist": [
+     0.58,
+     0.52
+    ],
+    "l_hip": [
+     0.44,
+     0.54
+    ],
+    "r_hip": [
+     0.56,
+     0.54
+    ],
+    "l_knee": [
+     0.46,
+     0.72
+    ],
+    "r_knee": [
+     0.54,
+     0.73
+    ],
+    "l_ankle": [
+     0.45,
+     0.92
+    ],
+    "r_ankle": [
+     0.56,
+     0.93
+    ]
+   }
+  },
+  {
+   "id": "lean_window_portrait",
+   "name": {
+    "en": "Lean Window Portrait",
+    "vi": "Chân dung tựa cửa sổ"
+   },
+   "standing": true,
+   "tags": [
+    "indoor",
+    "portrait",
+    "window",
+    "lean",
+    "soft light"
+   ],
+   "tips": {
+    "en": [
+     "Lean outer shoulder to window frame; face toward light",
+     "Far hand on hip or frame; keep neck long"
+    ],
+    "vi": [
+     "Tựa vai ngoài vào khung cửa sổ; mặt hướng về phía ánh sáng",
+     "Tay xa đặt lên hông hoặc khung cửa; giữ cổ vươn dài"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "85mm head-to-waist; expose for face"
+    ],
+    "vi": [
+     "Ống kính 85mm, khung hình từ đầu đến thắt lưng; đo sáng theo khuôn mặt"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.54,
+     0.18
+    ],
+    "l_shoulder": [
+     0.42,
+     0.3
+    ],
+    "r_shoulder": [
+     0.62,
+     0.28
+    ],
+    "l_elbow": [
+     0.38,
+     0.44
+    ],
+    "r_elbow": [
+     0.68,
+     0.42
+    ],
+    "l_wrist": [
+     0.4,
+     0.54
+    ],
+    "r_wrist": [
+     0.66,
+     0.52
+    ],
+    "l_hip": [
+     0.46,
+     0.56
+    ],
+    "r_hip": [
+     0.56,
+     0.56
+    ],
+    "l_knee": [
+     0.46,
+     0.74
+    ],
+    "r_knee": [
+     0.58,
+     0.74
+    ],
+    "l_ankle": [
+     0.46,
+     0.94
+    ],
+    "r_ankle": [
+     0.58,
+     0.94
+    ]
+   }
+  },
+  {
+   "id": "lean_window_portrait_soft",
+   "name": {
+    "en": "Lean Window Portrait Soft",
+    "vi": "Chân dung tựa cửa sổ nhẹ nhàng"
+   },
+   "standing": true,
+   "tags": [
+    "indoor",
+    "window",
+    "portrait",
+    "lifestyle",
+    "natural-light"
+   ],
+   "tips": {
+    "en": [
+     "Shoulder against window frame; weight on far leg; soft S-curve",
+     "Chin slightly down toward light; free hand on sill or hip"
+    ],
+    "vi": [
+     "Vai tựa vào khung cửa sổ; dồn trọng lượng lên chân xa; đường cong chữ S mềm",
+     "Hơi cúi cằm về phía ánh sáng; tay tự do đặt lên bậu cửa hoặc hông"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "three-quarter front; window as key light; 50–85mm"
+    ],
+    "vi": [
+     "Chính diện góc 3/4; cửa sổ làm ánh sáng chính; ống kính 50–85mm"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.54,
+     0.2
+    ],
+    "l_shoulder": [
+     0.44,
+     0.32
+    ],
+    "r_shoulder": [
+     0.58,
+     0.3
+    ],
+    "l_elbow": [
+     0.4,
+     0.46
+    ],
+    "r_elbow": [
+     0.62,
+     0.44
+    ],
+    "l_wrist": [
+     0.38,
+     0.56
+    ],
+    "r_wrist": [
+     0.6,
+     0.52
+    ],
+    "l_hip": [
+     0.46,
+     0.56
+    ],
+    "r_hip": [
+     0.56,
+     0.54
+    ],
+    "l_knee": [
+     0.46,
+     0.74
+    ],
+    "r_knee": [
+     0.58,
+     0.72
+    ],
+    "l_ankle": [
+     0.46,
+     0.92
+    ],
+    "r_ankle": [
+     0.58,
+     0.91
+    ]
+   }
+  },
+  {
+   "id": "leaning_doorframe",
+   "name": {
+    "en": "Leaning Doorframe",
+    "vi": "Tựa khung cửa"
+   },
+   "standing": true,
+   "tags": [
+    "indoor",
+    "standing",
+    "lean",
+    "portrait",
+    "doorway"
+   ],
+   "tips": {
+    "en": [
+     "Shoulder lightly against frame; weight on far leg",
+     "Far hand in pocket or on hip; near hand free along frame"
+    ],
+    "vi": [
+     "Vai tựa nhẹ vào khung cửa; dồn trọng lượng lên chân xa",
+     "Tay xa đút túi hoặc đặt lên hông; tay gần để tự do dọc khung cửa"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "three-quarter body; eye-level; soft window fill"
+    ],
+    "vi": [
+     "Khung hình 3/4 người; ngang tầm mắt; ánh sáng cửa sổ phụ mềm"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.18
+    ],
+    "l_shoulder": [
+     0.4,
+     0.3
+    ],
+    "r_shoulder": [
+     0.58,
+     0.28
+    ],
+    "l_elbow": [
+     0.36,
+     0.44
+    ],
+    "r_elbow": [
+     0.62,
+     0.42
+    ],
+    "l_wrist": [
+     0.34,
+     0.56
+    ],
+    "r_wrist": [
+     0.58,
+     0.5
+    ],
+    "l_hip": [
+     0.44,
+     0.54
+    ],
+    "r_hip": [
+     0.54,
+     0.54
+    ],
+    "l_knee": [
+     0.42,
+     0.72
+    ],
+    "r_knee": [
+     0.56,
+     0.7
+    ],
+    "l_ankle": [
+     0.4,
+     0.92
+    ],
+    "r_ankle": [
+     0.58,
+     0.9
+    ]
+   }
+  },
+  {
+   "id": "leaning_rail",
+   "name": {
+    "en": "Leaning on Rail",
+    "vi": "Tựa lưng vào lan can"
+   },
+   "standing": true,
+   "tags": [
+    "portrait",
+    "outdoor",
+    "urban",
+    "relaxed",
+    "waist-up"
+   ],
+   "tips": {
+    "en": [
+     "Lean back slightly with elbows resting on a railing or ledge",
+     "One foot crossed over the other at ankle level",
+     "Tilt head slightly for a candid feel"
+    ],
+    "vi": [
+     "Hơi ngả người ra sau, khuỷu tay tựa lên lan can hoặc gờ",
+     "Một chân bắt chéo qua chân kia ở mắt cá",
+     "Hơi nghiêng đầu để tạo cảm giác tự nhiên, không sắp đặt"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "waist-up with railing in frame",
+     "golden-hour backlight",
+     "shallow depth of field"
+    ],
+    "vi": [
+     "Khung hình từ thắt lưng trở lên, có lan can trong khung",
+     "Ánh sáng ngược giờ vàng",
+     "Độ sâu trường ảnh nông"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.14
+    ],
+    "l_shoulder": [
+     0.39,
+     0.29
+    ],
+    "r_shoulder": [
+     0.61,
+     0.29
+    ],
+    "l_elbow": [
+     0.32,
+     0.46
+    ],
+    "r_elbow": [
+     0.68,
+     0.46
+    ],
+    "l_wrist": [
+     0.3,
+     0.54
+    ],
+    "r_wrist": [
+     0.7,
+     0.54
+    ],
+    "l_hip": [
+     0.43,
+     0.58
+    ],
+    "r_hip": [
+     0.57,
+     0.58
+    ],
+    "l_knee": [
+     0.41,
+     0.76
+    ],
+    "r_knee": [
+     0.59,
+     0.75
+    ],
+    "l_ankle": [
+     0.4,
+     0.92
+    ],
+    "r_ankle": [
+     0.6,
+     0.92
+    ]
+   }
+  },
+  {
+   "id": "look_down_phone",
+   "name": {
+    "en": "Look Down Phone",
+    "vi": "Cúi nhìn điện thoại"
+   },
+   "standing": true,
+   "tags": [
+    "street",
+    "candid",
+    "lifestyle",
+    "urban",
+    "portrait"
+   ],
+   "tips": {
+    "en": [
+     "Hold phone at chest height, elbows soft",
+     "Chin slightly down toward the screen",
+     "Weight on one leg for a natural hip shift"
+    ],
+    "vi": [
+     "Cầm điện thoại ngang ngực, khuỷu tay mềm",
+     "Hơi cúi cằm về phía màn hình",
+     "Dồn trọng lượng lên một chân để hông lệch tự nhiên"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "eye-level three-quarter",
+     "shallow depth for bokeh street lights"
+    ],
+    "vi": [
+     "Góc 3/4 ngang tầm mắt",
+     "Độ sâu trường ảnh nông để đèn đường thành bokeh"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.18
+    ],
+    "l_shoulder": [
+     0.4,
+     0.3
+    ],
+    "r_shoulder": [
+     0.6,
+     0.3
+    ],
+    "l_elbow": [
+     0.38,
+     0.42
+    ],
+    "r_elbow": [
+     0.62,
+     0.42
+    ],
+    "l_wrist": [
+     0.46,
+     0.48
+    ],
+    "r_wrist": [
+     0.54,
+     0.48
+    ],
+    "l_hip": [
+     0.44,
+     0.54
+    ],
+    "r_hip": [
+     0.56,
+     0.54
+    ],
+    "l_knee": [
+     0.45,
+     0.72
+    ],
+    "r_knee": [
+     0.56,
+     0.72
+    ],
+    "l_ankle": [
+     0.45,
+     0.92
+    ],
+    "r_ankle": [
+     0.57,
+     0.9
+    ]
+   }
+  },
+  {
+   "id": "looking_away",
+   "name": {
+    "en": "Looking Away",
+    "vi": "Nhìn xa xăm"
+   },
+   "standing": true,
+   "tags": [
+    "portrait",
+    "golden_hour",
+    "outdoor",
+    "emotional",
+    "beach"
+   ],
+   "tips": {
+    "en": [
+     "Chin slightly down",
+     "Eyes toward the light source"
+    ],
+    "vi": [
+     "Hơi cúi cằm",
+     "Mắt hướng về phía nguồn sáng"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "profile or 3/4 face",
+     "negative space on gaze side"
+    ],
+    "vi": [
+     "Mặt nghiêng hoàn toàn hoặc 3/4",
+     "Khoảng trống ở phía ánh mắt nhìn"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.54,
+     0.13
+    ],
+    "l_shoulder": [
+     0.42,
+     0.28
+    ],
+    "r_shoulder": [
+     0.58,
+     0.28
+    ],
+    "l_elbow": [
+     0.38,
+     0.42
+    ],
+    "r_elbow": [
+     0.62,
+     0.42
+    ],
+    "l_wrist": [
+     0.36,
+     0.55
+    ],
+    "r_wrist": [
+     0.64,
+     0.55
+    ],
+    "l_hip": [
+     0.45,
+     0.55
+    ],
+    "r_hip": [
+     0.55,
+     0.55
+    ],
+    "l_knee": [
+     0.45,
+     0.72
+    ],
+    "r_knee": [
+     0.55,
+     0.72
+    ],
+    "l_ankle": [
+     0.45,
+     0.9
+    ],
+    "r_ankle": [
+     0.55,
+     0.9
+    ]
+   }
+  },
+  {
+   "id": "night_city_lean_against_rail",
+   "name": {
+    "en": "Night City — Lean Against Rail",
+    "vi": "Đêm phố — tựa lan can"
+   },
+   "standing": true,
+   "tags": [
+    "portrait",
+    "night",
+    "urban",
+    "lifestyle",
+    "moody"
+   ],
+   "tips": {
+    "en": [
+     "Lean one hip against the railing; cross arms or rest one hand on the rail",
+     "Let ambient neon / city lights provide rim lighting; avoid harsh flash"
+    ],
+    "vi": [
+     "Tựa một bên hông vào lan can; khoanh tay hoặc đặt một tay lên lan can",
+     "Để ánh đèn neon / đèn phố xung quanh tạo ánh sáng viền; tránh flash gắt"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "waist-up or 3/4; shallow DOF with bokeh lights in background",
+     "low-light ISO — use wide aperture for clean skin tones"
+    ],
+    "vi": [
+     "Khung hình từ thắt lưng trở lên hoặc 3/4; độ sâu trường ảnh nông với đèn bokeh ở hậu cảnh",
+     "ISO cho thiếu sáng — dùng khẩu độ rộng để da vẫn sạch"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.15
+    ],
+    "l_shoulder": [
+     0.37,
+     0.29
+    ],
+    "r_shoulder": [
+     0.63,
+     0.29
+    ],
+    "l_elbow": [
+     0.28,
+     0.44
+    ],
+    "r_elbow": [
+     0.72,
+     0.4
+    ],
+    "l_wrist": [
+     0.26,
+     0.56
+    ],
+    "r_wrist": [
+     0.68,
+     0.5
+    ],
+    "l_hip": [
+     0.42,
+     0.58
+    ],
+    "r_hip": [
+     0.58,
+     0.58
+    ],
+    "l_knee": [
+     0.4,
+     0.76
+    ],
+    "r_knee": [
+     0.62,
+     0.74
+    ],
+    "l_ankle": [
+     0.38,
+     0.94
+    ],
+    "r_ankle": [
+     0.64,
+     0.92
+    ]
+   }
+  },
+  {
+   "id": "one_knee_down",
+   "name": {
+    "en": "One Knee Down",
+    "vi": "Một gối chạm đất"
+   },
+   "standing": false,
+   "tags": [
+    "outdoor",
+    "proposal",
+    "full body",
+    "lifestyle",
+    "grounded"
+   ],
+   "tips": {
+    "en": [
+     "One knee on ground; upright torso",
+     "Hands free or clasped; look to subject or lens"
+    ],
+    "vi": [
+     "Một gối chạm đất; thân người thẳng",
+     "Tay để tự do hoặc chắp lại; nhìn về phía chủ thể hoặc ống kính"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "full body; slight high angle optional"
+    ],
+    "vi": [
+     "Toàn thân; có thể dùng góc máy hơi cao"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.22
+    ],
+    "l_shoulder": [
+     0.4,
+     0.34
+    ],
+    "r_shoulder": [
+     0.6,
+     0.34
+    ],
+    "l_elbow": [
+     0.34,
+     0.48
+    ],
+    "r_elbow": [
+     0.66,
+     0.48
+    ],
+    "l_wrist": [
+     0.38,
+     0.58
+    ],
+    "r_wrist": [
+     0.62,
+     0.58
+    ],
+    "l_hip": [
+     0.44,
+     0.58
+    ],
+    "r_hip": [
+     0.56,
+     0.58
+    ],
+    "l_knee": [
+     0.44,
+     0.78
+    ],
+    "r_knee": [
+     0.58,
+     0.7
+    ],
+    "l_ankle": [
+     0.44,
+     0.92
+    ],
+    "r_ankle": [
+     0.62,
+     0.88
+    ]
+   }
+  },
+  {
+   "id": "outdoor_running_midstride",
+   "name": {
+    "en": "Outdoor Running Midstride",
+    "vi": "Chạy ngoài trời giữa sải bước"
+   },
+   "standing": true,
+   "tags": [
+    "outdoor",
+    "action",
+    "fitness",
+    "running",
+    "dynamic"
+   ],
+   "tips": {
+    "en": [
+     "Land on midfoot",
+     "Arms at 90 degrees",
+     "Lean torso slightly forward"
+    ],
+    "vi": [
+     "Tiếp đất bằng phần giữa bàn chân",
+     "Cánh tay gập 90 độ",
+     "Thân người hơi nghiêng về phía trước"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "side angle catches stride",
+     "low angle for hero shot"
+    ],
+    "vi": [
+     "Góc ngang bắt trọn sải bước",
+     "Góc máy thấp cho khung hình hùng tráng"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.15
+    ],
+    "l_shoulder": [
+     0.4,
+     0.3
+    ],
+    "r_shoulder": [
+     0.6,
+     0.3
+    ],
+    "l_elbow": [
+     0.32,
+     0.45
+    ],
+    "r_elbow": [
+     0.7,
+     0.45
+    ],
+    "l_wrist": [
+     0.25,
+     0.4
+    ],
+    "r_wrist": [
+     0.78,
+     0.4
+    ],
+    "l_hip": [
+     0.45,
+     0.55
+    ],
+    "r_hip": [
+     0.6,
+     0.55
+    ],
+    "l_knee": [
+     0.3,
+     0.7
+    ],
+    "r_knee": [
+     0.75,
+     0.7
+    ],
+    "l_ankle": [
+     0.2,
+     0.9
+    ],
+    "r_ankle": [
+     0.85,
+     0.9
+    ]
+   }
+  },
+  {
+   "id": "over_shoulder",
+   "name": {
+    "en": "Over the Shoulder",
+    "vi": "Qua vai"
+   },
+   "standing": true,
+   "tags": [
+    "portrait",
+    "golden_hour",
+    "outdoor",
+    "romantic",
+    "forest"
+   ],
+   "tips": {
+    "en": [
+     "Twist torso gently",
+     "Chin toward shoulder"
+    ],
+    "vi": [
+     "Xoay nhẹ thân người",
+     "Cằm hướng về phía vai"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "shallow DOF",
+     "catchlight in eyes"
+    ],
+    "vi": [
+     "Độ sâu trường ảnh nông",
+     "Điểm sáng trong mắt"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.56,
+     0.14
+    ],
+    "l_shoulder": [
+     0.48,
+     0.3
+    ],
+    "r_shoulder": [
+     0.6,
+     0.28
+    ],
+    "l_elbow": [
+     0.38,
+     0.42
+    ],
+    "r_elbow": [
+     0.62,
+     0.42
+    ],
+    "l_wrist": [
+     0.36,
+     0.55
+    ],
+    "r_wrist": [
+     0.64,
+     0.55
+    ],
+    "l_hip": [
+     0.45,
+     0.55
+    ],
+    "r_hip": [
+     0.55,
+     0.55
+    ],
+    "l_knee": [
+     0.45,
+     0.72
+    ],
+    "r_knee": [
+     0.55,
+     0.72
+    ],
+    "l_ankle": [
+     0.45,
+     0.9
+    ],
+    "r_ankle": [
+     0.55,
+     0.9
+    ]
+   }
+  },
+  {
+   "id": "over_shoulder_look",
+   "name": {
+    "en": "Over Shoulder Look",
+    "vi": "Nhìn qua vai"
+   },
+   "standing": true,
+   "tags": [
+    "portrait",
+    "profile",
+    "editorial",
+    "indoor",
+    "half body"
+   ],
+   "tips": {
+    "en": [
+     "Turn torso 45°; look back over the near shoulder",
+     "Keep far shoulder soft; chin slightly down"
+    ],
+    "vi": [
+     "Xoay thân người 45°; ngoái nhìn qua vai gần",
+     "Giữ vai xa mềm; hơi cúi cằm"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "85mm-equivalent; eye-level; soft side key"
+    ],
+    "vi": [
+     "Tương đương 85mm; ngang tầm mắt; ánh sáng chính mềm từ bên"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.58,
+     0.18
+    ],
+    "l_shoulder": [
+     0.42,
+     0.3
+    ],
+    "r_shoulder": [
+     0.62,
+     0.28
+    ],
+    "l_elbow": [
+     0.38,
+     0.44
+    ],
+    "r_elbow": [
+     0.68,
+     0.42
+    ],
+    "l_wrist": [
+     0.36,
+     0.56
+    ],
+    "r_wrist": [
+     0.7,
+     0.54
+    ],
+    "l_hip": [
+     0.46,
+     0.58
+    ],
+    "r_hip": [
+     0.58,
+     0.58
+    ],
+    "l_knee": [
+     0.46,
+     0.76
+    ],
+    "r_knee": [
+     0.58,
+     0.76
+    ],
+    "l_ankle": [
+     0.46,
+     0.94
+    ],
+    "r_ankle": [
+     0.58,
+     0.94
+    ]
+   }
+  },
+  {
+   "id": "over_shoulder_look_soft",
+   "name": {
+    "en": "Over Shoulder Look Soft",
+    "vi": "Nhìn qua vai nhẹ nhàng"
+   },
+   "standing": true,
+   "tags": [
+    "studio",
+    "standing",
+    "portrait",
+    "fashion",
+    "editorial"
+   ],
+   "tips": {
+    "en": [
+     "Body angled 45° from camera; head turns back to lens",
+     "Near hand lightly on hip; weight on back leg"
+    ],
+    "vi": [
+     "Thân người nghiêng 45° so với máy ảnh; đầu quay lại nhìn vào ống kính",
+     "Tay gần đặt nhẹ lên hông; dồn trọng lượng lên chân sau"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "three-quarter rear; eye-level; soft rim + key"
+    ],
+    "vi": [
+     "3/4 từ phía sau; ngang tầm mắt; sáng viền + sáng chính mềm"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.58,
+     0.18
+    ],
+    "l_shoulder": [
+     0.4,
+     0.3
+    ],
+    "r_shoulder": [
+     0.62,
+     0.29
+    ],
+    "l_elbow": [
+     0.36,
+     0.44
+    ],
+    "r_elbow": [
+     0.66,
+     0.42
+    ],
+    "l_wrist": [
+     0.42,
+     0.52
+    ],
+    "r_wrist": [
+     0.6,
+     0.48
+    ],
+    "l_hip": [
+     0.44,
+     0.54
+    ],
+    "r_hip": [
+     0.56,
+     0.54
+    ],
+    "l_knee": [
+     0.45,
+     0.72
+    ],
+    "r_knee": [
+     0.55,
+     0.73
+    ],
+    "l_ankle": [
+     0.44,
+     0.92
+    ],
+    "r_ankle": [
+     0.57,
+     0.93
+    ]
+   }
+  },
+  {
+   "id": "over_shoulder_lookback",
+   "name": {
+    "en": "Over Shoulder Lookback",
+    "vi": "Quay đầu nhìn qua vai"
+   },
+   "standing": true,
+   "tags": [
+    "outdoor",
+    "standing",
+    "portrait",
+    "lookback",
+    "candid"
+   ],
+   "tips": {
+    "en": [
+     "Body faces away; chin turns to camera over far shoulder",
+     "Soft S-curve in spine; weight on back leg"
+    ],
+    "vi": [
+     "Thân người quay ra xa máy ảnh; cằm quay về phía máy ảnh qua vai xa",
+     "Đường cong chữ S mềm ở cột sống; dồn trọng lượng lên chân sau"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "three-quarter rear; eye-level; catch light on cheek"
+    ],
+    "vi": [
+     "3/4 từ phía sau; ngang tầm mắt; ánh sáng bắt sáng trên gò má"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.58,
+     0.2
+    ],
+    "l_shoulder": [
+     0.42,
+     0.32
+    ],
+    "r_shoulder": [
+     0.6,
+     0.3
+    ],
+    "l_elbow": [
+     0.38,
+     0.46
+    ],
+    "r_elbow": [
+     0.64,
+     0.44
+    ],
+    "l_wrist": [
+     0.36,
+     0.58
+    ],
+    "r_wrist": [
+     0.62,
+     0.54
+    ],
+    "l_hip": [
+     0.44,
+     0.54
+    ],
+    "r_hip": [
+     0.54,
+     0.54
+    ],
+    "l_knee": [
+     0.42,
+     0.72
+    ],
+    "r_knee": [
+     0.56,
+     0.7
+    ],
+    "l_ankle": [
+     0.4,
+     0.92
+    ],
+    "r_ankle": [
+     0.58,
+     0.9
+    ]
+   }
+  },
+  {
+   "id": "palm_up_explain",
+   "name": {
+    "en": "Palm Up Explain",
+    "vi": "Tay ngửa giải thích"
+   },
+   "standing": true,
+   "tags": [
+    "portrait",
+    "communication",
+    "presenter",
+    "waist-up",
+    "studio"
+   ],
+   "tips": {
+    "en": [
+     "Both palms facing up at waist height suggests openness",
+     "Slight forward lean engages the viewer",
+     "Keep elbows close to the torso for natural framing"
+    ],
+    "vi": [
+     "Hai lòng bàn tay hướng lên ngang thắt lưng gợi cảm giác cởi mở",
+     "Hơi nghiêng người về phía trước giúp thu hút người xem",
+     "Giữ khuỷu tay gần thân người để khung hình tự nhiên"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "waist-up",
+     "eye-level",
+     "clean background"
+    ],
+    "vi": [
+     "Khung hình từ thắt lưng trở lên",
+     "Ngang tầm mắt",
+     "Phông nền gọn gàng"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.12
+    ],
+    "l_shoulder": [
+     0.38,
+     0.28
+    ],
+    "r_shoulder": [
+     0.62,
+     0.28
+    ],
+    "l_elbow": [
+     0.3,
+     0.42
+    ],
+    "r_elbow": [
+     0.7,
+     0.42
+    ],
+    "l_wrist": [
+     0.28,
+     0.5
+    ],
+    "r_wrist": [
+     0.72,
+     0.5
+    ],
+    "l_hip": [
+     0.43,
+     0.56
+    ],
+    "r_hip": [
+     0.57,
+     0.56
+    ],
+    "l_knee": [
+     0.42,
+     0.74
+    ],
+    "r_knee": [
+     0.58,
+     0.74
+    ],
+    "l_ankle": [
+     0.41,
+     0.92
+    ],
+    "r_ankle": [
+     0.59,
+     0.92
+    ]
+   }
+  },
+  {
+   "id": "phone_scroll",
+   "name": {
+    "en": "Phone Scroll (looking down)",
+    "vi": "Lướt điện thoại (cúi nhìn)"
+   },
+   "standing": true,
+   "tags": [
+    "portrait",
+    "casual",
+    "phone",
+    "lifestyle",
+    "daylight",
+    "indoor"
+   ],
+   "tips": {
+    "en": [
+     "Chin slightly down toward phone at chest height",
+     "Elbows soft; keep face lit from above or window side"
+    ],
+    "vi": [
+     "Hơi cúi cằm về phía điện thoại ngang ngực",
+     "Khuỷu tay mềm; giữ khuôn mặt được chiếu sáng từ phía trên hoặc phía cửa sổ"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "waist-up or three-quarter; phone in lower third"
+    ],
+    "vi": [
+     "Khung hình từ thắt lưng trở lên hoặc 3/4; điện thoại ở phần ba dưới khung hình"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.2
+    ],
+    "l_shoulder": [
+     0.4,
+     0.32
+    ],
+    "r_shoulder": [
+     0.6,
+     0.32
+    ],
+    "l_elbow": [
+     0.34,
+     0.48
+    ],
+    "r_elbow": [
+     0.66,
+     0.48
+    ],
+    "l_wrist": [
+     0.42,
+     0.58
+    ],
+    "r_wrist": [
+     0.58,
+     0.58
+    ],
+    "l_hip": [
+     0.44,
+     0.58
+    ],
+    "r_hip": [
+     0.56,
+     0.58
+    ],
+    "l_knee": [
+     0.44,
+     0.75
+    ],
+    "r_knee": [
+     0.56,
+     0.75
+    ],
+    "l_ankle": [
+     0.44,
+     0.92
+    ],
+    "r_ankle": [
+     0.56,
+     0.92
+    ]
+   }
+  },
+  {
+   "id": "point_forward",
+   "name": {
+    "en": "Point Forward",
+    "vi": "Chỉ tay về phía trước"
+   },
+   "standing": true,
+   "tags": [
+    "outdoor",
+    "action",
+    "directional",
+    "editorial",
+    "portrait",
+    "dynamic"
+   ],
+   "tips": {
+    "en": [
+     "Extend arm fully without locking elbow hard",
+     "Eyes follow the point",
+     "Plant front foot toward camera direction"
+    ],
+    "vi": [
+     "Duỗi thẳng tay nhưng không khóa cứng khuỷu",
+     "Mắt nhìn theo hướng chỉ",
+     "Chân trước bước về hướng máy ảnh"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "three-quarter body",
+     "space in point direction",
+     "mid shutter"
+    ],
+    "vi": [
+     "Khung hình 3/4 người",
+     "Chừa khoảng trống theo hướng chỉ tay",
+     "Tốc độ màn trập trung bình"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.48,
+     0.22
+    ],
+    "l_shoulder": [
+     0.38,
+     0.34
+    ],
+    "r_shoulder": [
+     0.58,
+     0.34
+    ],
+    "l_elbow": [
+     0.34,
+     0.48
+    ],
+    "r_elbow": [
+     0.72,
+     0.36
+    ],
+    "l_wrist": [
+     0.36,
+     0.6
+    ],
+    "r_wrist": [
+     0.86,
+     0.34
+    ],
+    "l_hip": [
+     0.42,
+     0.54
+    ],
+    "r_hip": [
+     0.54,
+     0.54
+    ],
+    "l_knee": [
+     0.4,
+     0.72
+    ],
+    "r_knee": [
+     0.56,
+     0.72
+    ],
+    "l_ankle": [
+     0.38,
+     0.9
+    ],
+    "r_ankle": [
+     0.56,
+     0.9
+    ]
+   }
+  },
+  {
+   "id": "power_stance",
+   "name": {
+    "en": "Power Stance",
+    "vi": "Tư thế uy lực"
+   },
+   "standing": true,
+   "tags": [
+    "urban",
+    "business",
+    "indoor",
+    "studio",
+    "confident"
+   ],
+   "tips": {
+    "en": [
+     "Feet shoulder-width",
+     "Shoulders back",
+     "Chin level"
+    ],
+    "vi": [
+     "Hai chân rộng bằng vai",
+     "Vai mở ra sau",
+     "Cằm ngang"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "straight-on or slight low angle"
+    ],
+    "vi": [
+     "Chính diện hoặc góc máy hơi thấp"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.12
+    ],
+    "l_shoulder": [
+     0.4,
+     0.27
+    ],
+    "r_shoulder": [
+     0.6,
+     0.27
+    ],
+    "l_elbow": [
+     0.38,
+     0.42
+    ],
+    "r_elbow": [
+     0.62,
+     0.42
+    ],
+    "l_wrist": [
+     0.36,
+     0.55
+    ],
+    "r_wrist": [
+     0.64,
+     0.55
+    ],
+    "l_hip": [
+     0.45,
+     0.55
+    ],
+    "r_hip": [
+     0.55,
+     0.55
+    ],
+    "l_knee": [
+     0.45,
+     0.72
+    ],
+    "r_knee": [
+     0.55,
+     0.72
+    ],
+    "l_ankle": [
+     0.4,
+     0.9
+    ],
+    "r_ankle": [
+     0.6,
+     0.9
+    ]
+   }
+  },
+  {
+   "id": "rooftop_golden_hour_stand",
+   "name": {
+    "en": "Rooftop Golden Hour Stand",
+    "vi": "Đứng trên sân thượng giờ vàng"
+   },
+   "standing": true,
+   "tags": [
+    "outdoor",
+    "portrait",
+    "golden-hour",
+    "urban",
+    "warm-light"
+   ],
+   "tips": {
+    "en": [
+     "Turn body 45 degrees from camera",
+     "Relax shoulders",
+     "Slight smile or candid gaze"
+    ],
+    "vi": [
+     "Xoay thân người 45 độ so với máy ảnh",
+     "Thả lỏng vai",
+     "Mỉm cười nhẹ hoặc ánh mắt tự nhiên như khoảnh khắc đời thường"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "backlight for rim glow",
+     "eye-level for natural feel"
+    ],
+    "vi": [
+     "Ánh sáng ngược để tạo viền sáng rực",
+     "Ngang tầm mắt cho cảm giác tự nhiên"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.12
+    ],
+    "l_shoulder": [
+     0.42,
+     0.28
+    ],
+    "r_shoulder": [
+     0.58,
+     0.28
+    ],
+    "l_elbow": [
+     0.4,
+     0.42
+    ],
+    "r_elbow": [
+     0.6,
+     0.42
+    ],
+    "l_wrist": [
+     0.38,
+     0.55
+    ],
+    "r_wrist": [
+     0.62,
+     0.55
+    ],
+    "l_hip": [
+     0.45,
+     0.55
+    ],
+    "r_hip": [
+     0.55,
+     0.55
+    ],
+    "l_knee": [
+     0.45,
+     0.72
+    ],
+    "r_knee": [
+     0.55,
+     0.72
+    ],
+    "l_ankle": [
+     0.45,
+     0.9
+    ],
+    "r_ankle": [
+     0.55,
+     0.9
+    ]
+   }
+  },
+  {
+   "id": "seated_cafe_laptop",
+   "name": {
+    "en": "Seated Cafe Laptop",
+    "vi": "Ngồi quán cà phê dùng laptop"
+   },
+   "standing": false,
+   "tags": [
+    "indoor",
+    "seated",
+    "lifestyle",
+    "workspace",
+    "candid"
+   ],
+   "tips": {
+    "en": [
+     "Sit tall but relaxed",
+     "Hands light on keyboard",
+     "Eyes on screen for natural focus"
+    ],
+    "vi": [
+     "Ngồi thẳng nhưng thư giãn",
+     "Tay đặt nhẹ trên bàn phím",
+     "Mắt nhìn vào màn hình để tập trung tự nhiên"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "three-quarter angle from across table",
+     "window light from side"
+    ],
+    "vi": [
+     "Góc 3/4 từ phía bên kia bàn",
+     "Ánh sáng cửa sổ từ bên"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.35
+    ],
+    "l_shoulder": [
+     0.4,
+     0.45
+    ],
+    "r_shoulder": [
+     0.6,
+     0.45
+    ],
+    "l_elbow": [
+     0.35,
+     0.55
+    ],
+    "r_elbow": [
+     0.65,
+     0.55
+    ],
+    "l_wrist": [
+     0.45,
+     0.6
+    ],
+    "r_wrist": [
+     0.55,
+     0.6
+    ],
+    "l_hip": [
+     0.45,
+     0.7
+    ],
+    "r_hip": [
+     0.55,
+     0.7
+    ],
+    "l_knee": [
+     0.45,
+     0.85
+    ],
+    "r_knee": [
+     0.55,
+     0.85
+    ],
+    "l_ankle": [
+     0.45,
+     1.0
+    ],
+    "r_ankle": [
+     0.55,
+     1.0
+    ]
+   }
+  },
+  {
+   "id": "seated_crossed_legs",
+   "name": {
+    "en": "Seated Crossed Legs",
+    "vi": "Ngồi vắt chéo chân"
+   },
+   "standing": false,
+   "tags": [
+    "studio",
+    "seated",
+    "portrait",
+    "casual",
+    "indoor"
+   ],
+   "tips": {
+    "en": [
+     "Sit tall on stool; legs crossed at knee; hands on top knee",
+     "Shoulders soft; chin level; eyes to camera"
+    ],
+    "vi": [
+     "Ngồi thẳng trên ghế đẩu; vắt chéo chân ở đầu gối; tay đặt lên gối trên",
+     "Vai thả lỏng; cằm ngang; mắt nhìn vào máy ảnh"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "three-quarter; eye-level; soft key"
+    ],
+    "vi": [
+     "Góc 3/4; ngang tầm mắt; ánh sáng chính mềm"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.2
+    ],
+    "l_shoulder": [
+     0.38,
+     0.32
+    ],
+    "r_shoulder": [
+     0.62,
+     0.32
+    ],
+    "l_elbow": [
+     0.36,
+     0.44
+    ],
+    "r_elbow": [
+     0.64,
+     0.44
+    ],
+    "l_wrist": [
+     0.44,
+     0.54
+    ],
+    "r_wrist": [
+     0.52,
+     0.54
+    ],
+    "l_hip": [
+     0.44,
+     0.56
+    ],
+    "r_hip": [
+     0.56,
+     0.56
+    ],
+    "l_knee": [
+     0.48,
+     0.72
+    ],
+    "r_knee": [
+     0.58,
+     0.7
+    ],
+    "l_ankle": [
+     0.54,
+     0.78
+    ],
+    "r_ankle": [
+     0.6,
+     0.88
+    ]
+   }
+  },
+  {
+   "id": "seated_profile",
+   "name": {
+    "en": "Seated Profile",
+    "vi": "Ngồi góc nghiêng"
+   },
+   "standing": false,
+   "tags": [
+    "studio",
+    "indoor",
+    "portrait",
+    "profile",
+    "editorial"
+   ],
+   "tips": {
+    "en": [
+     "Sit tall with weight on one hip",
+     "Turn shoulders slightly toward camera",
+     "Hands relaxed on lap or chair arm"
+    ],
+    "vi": [
+     "Ngồi thẳng, trọng lượng dồn lên một bên hông",
+     "Hơi xoay vai về phía máy ảnh",
+     "Tay thả lỏng trên đùi hoặc tay vịn ghế"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "three-quarter or pure profile",
+     "eye-level or slightly above"
+    ],
+    "vi": [
+     "Góc 3/4 hoặc nghiêng hoàn toàn",
+     "Ngang tầm mắt hoặc hơi cao hơn"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.55,
+     0.18
+    ],
+    "l_shoulder": [
+     0.42,
+     0.32
+    ],
+    "r_shoulder": [
+     0.58,
+     0.3
+    ],
+    "l_elbow": [
+     0.38,
+     0.48
+    ],
+    "r_elbow": [
+     0.62,
+     0.46
+    ],
+    "l_wrist": [
+     0.4,
+     0.58
+    ],
+    "r_wrist": [
+     0.6,
+     0.56
+    ],
+    "l_hip": [
+     0.44,
+     0.58
+    ],
+    "r_hip": [
+     0.56,
+     0.58
+    ],
+    "l_knee": [
+     0.46,
+     0.74
+    ],
+    "r_knee": [
+     0.58,
+     0.72
+    ],
+    "l_ankle": [
+     0.48,
+     0.88
+    ],
+    "r_ankle": [
+     0.6,
+     0.86
+    ]
+   }
+  },
+  {
+   "id": "seated_profile_window",
+   "name": {
+    "en": "Seated Profile Window",
+    "vi": "Ngồi nghiêng bên cửa sổ"
+   },
+   "standing": false,
+   "tags": [
+    "studio",
+    "seated",
+    "portrait",
+    "window",
+    "profile"
+   ],
+   "tips": {
+    "en": [
+     "Sit upright near window; shoulders open toward light",
+     "Chin slightly down; far hand rests on thigh"
+    ],
+    "vi": [
+     "Ngồi thẳng gần cửa sổ; vai mở hướng về phía ánh sáng",
+     "Hơi cúi cằm; tay xa đặt lên đùi"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "profile or three-quarter; eye-level; soft window key"
+    ],
+    "vi": [
+     "Góc nghiêng hoặc 3/4; ngang tầm mắt; ánh sáng chính mềm từ cửa sổ"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.55,
+     0.22
+    ],
+    "l_shoulder": [
+     0.42,
+     0.34
+    ],
+    "r_shoulder": [
+     0.58,
+     0.33
+    ],
+    "l_elbow": [
+     0.4,
+     0.46
+    ],
+    "r_elbow": [
+     0.62,
+     0.45
+    ],
+    "l_wrist": [
+     0.44,
+     0.56
+    ],
+    "r_wrist": [
+     0.6,
+     0.54
+    ],
+    "l_hip": [
+     0.46,
+     0.58
+    ],
+    "r_hip": [
+     0.56,
+     0.57
+    ],
+    "l_knee": [
+     0.48,
+     0.74
+    ],
+    "r_knee": [
+     0.58,
+     0.72
+    ],
+    "l_ankle": [
+     0.5,
+     0.9
+    ],
+    "r_ankle": [
+     0.6,
+     0.88
+    ]
+   }
+  },
+  {
+   "id": "seated_window_light",
+   "name": {
+    "en": "Seated Window Light",
+    "vi": "Ngồi trong ánh sáng cửa sổ"
+   },
+   "standing": false,
+   "tags": [
+    "portrait",
+    "indoor",
+    "seated",
+    "window",
+    "soft light"
+   ],
+   "tips": {
+    "en": [
+     "Sit 45° to the window; face toward soft light",
+     "Hands relaxed in lap; shoulders down"
+    ],
+    "vi": [
+     "Ngồi chếch 45° so với cửa sổ; mặt hướng về phía ánh sáng mềm",
+     "Tay thả lỏng trên đùi; hạ vai xuống"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "50–85mm; eye level; expose for face"
+    ],
+    "vi": [
+     "Ống kính 50–85mm; ngang tầm mắt; đo sáng theo khuôn mặt"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.52,
+     0.22
+    ],
+    "l_shoulder": [
+     0.4,
+     0.34
+    ],
+    "r_shoulder": [
+     0.62,
+     0.34
+    ],
+    "l_elbow": [
+     0.36,
+     0.48
+    ],
+    "r_elbow": [
+     0.66,
+     0.48
+    ],
+    "l_wrist": [
+     0.4,
+     0.58
+    ],
+    "r_wrist": [
+     0.62,
+     0.58
+    ],
+    "l_hip": [
+     0.44,
+     0.62
+    ],
+    "r_hip": [
+     0.58,
+     0.62
+    ],
+    "l_knee": [
+     0.44,
+     0.78
+    ],
+    "r_knee": [
+     0.58,
+     0.78
+    ],
+    "l_ankle": [
+     0.44,
+     0.94
+    ],
+    "r_ankle": [
+     0.58,
+     0.94
+    ]
+   }
+  },
+  {
+   "id": "selfie_peace",
+   "name": {
+    "en": "Selfie Peace Sign",
+    "vi": "Selfie giơ tay chữ V"
+   },
+   "standing": true,
+   "tags": [
+    "portrait",
+    "casual",
+    "selfie",
+    "daylight",
+    "indoor"
+   ],
+   "tips": {
+    "en": [
+     "Raise hand near cheek with peace (V) sign",
+     "Slight head tilt, eyes to lens"
+    ],
+    "vi": [
+     "Giơ tay gần má với dấu chữ V (peace)",
+     "Hơi nghiêng đầu, mắt nhìn vào ống kính"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "head-and-shoulders or waist-up, arm in frame"
+    ],
+    "vi": [
+     "Khung hình đầu và vai hoặc từ thắt lưng trở lên, tay nằm trong khung"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.18
+    ],
+    "l_shoulder": [
+     0.4,
+     0.32
+    ],
+    "r_shoulder": [
+     0.6,
+     0.32
+    ],
+    "l_elbow": [
+     0.32,
+     0.48
+    ],
+    "r_elbow": [
+     0.7,
+     0.28
+    ],
+    "l_wrist": [
+     0.3,
+     0.62
+    ],
+    "r_wrist": [
+     0.62,
+     0.14
+    ],
+    "l_hip": [
+     0.44,
+     0.58
+    ],
+    "r_hip": [
+     0.56,
+     0.58
+    ],
+    "l_knee": [
+     0.44,
+     0.75
+    ],
+    "r_knee": [
+     0.56,
+     0.75
+    ],
+    "l_ankle": [
+     0.44,
+     0.92
+    ],
+    "r_ankle": [
+     0.56,
+     0.92
+    ]
+   }
+  },
+  {
+   "id": "side_profile_chin_up",
+   "name": {
+    "en": "Side Profile Chin Up",
+    "vi": "Nghiêng mặt, ngẩng cằm"
+   },
+   "standing": true,
+   "tags": [
+    "studio",
+    "portrait",
+    "profile",
+    "standing",
+    "chin"
+   ],
+   "tips": {
+    "en": [
+     "True side profile; soft stretch through neck",
+     "Chin slightly lifted; shoulders down and back"
+    ],
+    "vi": [
+     "Nghiêng mặt hoàn toàn sang bên; vươn nhẹ qua cổ",
+     "Hơi nâng cằm; vai hạ xuống và mở ra sau"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "profile 90°; eye-level; soft key from front"
+    ],
+    "vi": [
+     "Góc nghiêng 90°; ngang tầm mắt; ánh sáng chính mềm từ phía trước"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.62,
+     0.2
+    ],
+    "l_shoulder": [
+     0.48,
+     0.34
+    ],
+    "r_shoulder": [
+     0.52,
+     0.34
+    ],
+    "l_elbow": [
+     0.46,
+     0.48
+    ],
+    "r_elbow": [
+     0.54,
+     0.48
+    ],
+    "l_wrist": [
+     0.44,
+     0.6
+    ],
+    "r_wrist": [
+     0.56,
+     0.6
+    ],
+    "l_hip": [
+     0.48,
+     0.56
+    ],
+    "r_hip": [
+     0.52,
+     0.56
+    ],
+    "l_knee": [
+     0.48,
+     0.74
+    ],
+    "r_knee": [
+     0.52,
+     0.74
+    ],
+    "l_ankle": [
+     0.48,
+     0.92
+    ],
+    "r_ankle": [
+     0.52,
+     0.92
+    ]
+   }
+  },
+  {
+   "id": "side_profile_look",
+   "name": {
+    "en": "Side Profile Look",
+    "vi": "Ánh nhìn nghiêng"
+   },
+   "standing": true,
+   "tags": [
+    "portrait",
+    "profile",
+    "studio",
+    "fashion",
+    "daylight"
+   ],
+   "tips": {
+    "en": [
+     "Chin slightly forward",
+     "Far shoulder drop for length"
+    ],
+    "vi": [
+     "Cằm hơi đưa về phía trước",
+     "Hạ vai xa để kéo dài đường nét"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "true profile or 3/4 profile"
+    ],
+    "vi": [
+     "Nghiêng hoàn toàn hoặc nghiêng 3/4"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.62,
+     0.14
+    ],
+    "l_shoulder": [
+     0.48,
+     0.28
+    ],
+    "r_shoulder": [
+     0.55,
+     0.3
+    ],
+    "l_elbow": [
+     0.46,
+     0.42
+    ],
+    "r_elbow": [
+     0.58,
+     0.44
+    ],
+    "l_wrist": [
+     0.47,
+     0.55
+    ],
+    "r_wrist": [
+     0.6,
+     0.56
+    ],
+    "l_hip": [
+     0.48,
+     0.55
+    ],
+    "r_hip": [
+     0.54,
+     0.55
+    ],
+    "l_knee": [
+     0.48,
+     0.72
+    ],
+    "r_knee": [
+     0.54,
+     0.72
+    ],
+    "l_ankle": [
+     0.48,
+     0.9
+    ],
+    "r_ankle": [
+     0.54,
+     0.9
+    ]
+   }
+  },
+  {
+   "id": "side_profile_standing",
+   "name": {
+    "en": "Side Profile Standing",
+    "vi": "Đứng nghiêng hoàn toàn"
+   },
+   "standing": true,
+   "tags": [
+    "studio",
+    "standing",
+    "profile",
+    "portrait",
+    "editorial"
+   ],
+   "tips": {
+    "en": [
+     "Body in true profile; chin slightly forward; shoulders stacked",
+     "Hands relaxed at sides or one on hip; weight on back leg"
+    ],
+    "vi": [
+     "Thân người nghiêng hoàn toàn sang bên; cằm hơi đưa ra phía trước; vai xếp thẳng",
+     "Tay thả lỏng hai bên hoặc một tay lên hông; dồn trọng lượng lên chân sau"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "true side; eye-level; soft key from front of face"
+    ],
+    "vi": [
+     "Nghiêng hoàn toàn sang bên; ngang tầm mắt; ánh sáng chính mềm từ phía trước mặt"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.58,
+     0.18
+    ],
+    "l_shoulder": [
+     0.48,
+     0.3
+    ],
+    "r_shoulder": [
+     0.52,
+     0.3
+    ],
+    "l_elbow": [
+     0.46,
+     0.44
+    ],
+    "r_elbow": [
+     0.54,
+     0.44
+    ],
+    "l_wrist": [
+     0.45,
+     0.56
+    ],
+    "r_wrist": [
+     0.55,
+     0.56
+    ],
+    "l_hip": [
+     0.48,
+     0.54
+    ],
+    "r_hip": [
+     0.52,
+     0.54
+    ],
+    "l_knee": [
+     0.48,
+     0.72
+    ],
+    "r_knee": [
+     0.52,
+     0.73
+    ],
+    "l_ankle": [
+     0.48,
+     0.92
+    ],
+    "r_ankle": [
+     0.52,
+     0.93
+    ]
+   }
+  },
+  {
+   "id": "side_profile_walk",
+   "name": {
+    "en": "Side Profile Walk",
+    "vi": "Sải bước góc nghiêng"
+   },
+   "standing": true,
+   "tags": [
+    "outdoor",
+    "full body",
+    "motion",
+    "street",
+    "profile"
+   ],
+   "tips": {
+    "en": [
+     "Walk parallel to camera; mid-stride",
+     "Chin level; arms natural swing"
+    ],
+    "vi": [
+     "Đi song song với máy ảnh; giữa sải bước",
+     "Cằm ngang; tay vung tự nhiên"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "full body side; 1/125s+ shutter for freeze"
+    ],
+    "vi": [
+     "Toàn thân góc bên; tốc độ màn trập 1/125s trở lên để đóng băng chuyển động"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.55,
+     0.16
+    ],
+    "l_shoulder": [
+     0.48,
+     0.28
+    ],
+    "r_shoulder": [
+     0.62,
+     0.28
+    ],
+    "l_elbow": [
+     0.44,
+     0.42
+    ],
+    "r_elbow": [
+     0.68,
+     0.4
+    ],
+    "l_wrist": [
+     0.42,
+     0.54
+    ],
+    "r_wrist": [
+     0.72,
+     0.5
+    ],
+    "l_hip": [
+     0.5,
+     0.56
+    ],
+    "r_hip": [
+     0.58,
+     0.56
+    ],
+    "l_knee": [
+     0.46,
+     0.74
+    ],
+    "r_knee": [
+     0.62,
+     0.72
+    ],
+    "l_ankle": [
+     0.44,
+     0.92
+    ],
+    "r_ankle": [
+     0.64,
+     0.9
+    ]
+   }
+  },
+  {
+   "id": "sit_cross_legged",
+   "name": {
+    "en": "Sit Cross-Legged",
+    "vi": "Ngồi xếp bằng"
+   },
+   "standing": false,
+   "tags": [
+    "indoor",
+    "studio",
+    "floor",
+    "casual",
+    "yoga",
+    "portrait"
+   ],
+   "tips": {
+    "en": [
+     "Sit tall through the spine",
+     "Hands rest on knees or one hand supports behind",
+     "Soft gaze off-camera"
+    ],
+    "vi": [
+     "Ngồi thẳng, vươn dài cột sống",
+     "Tay đặt lên gối hoặc một tay chống phía sau",
+     "Ánh mắt dịu nhìn ra ngoài khung hình"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "slight high angle",
+     "three-quarter body"
+    ],
+    "vi": [
+     "Góc máy hơi cao",
+     "Khung hình 3/4 người"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.22
+    ],
+    "l_shoulder": [
+     0.4,
+     0.34
+    ],
+    "r_shoulder": [
+     0.6,
+     0.34
+    ],
+    "l_elbow": [
+     0.34,
+     0.48
+    ],
+    "r_elbow": [
+     0.66,
+     0.48
+    ],
+    "l_wrist": [
+     0.38,
+     0.58
+    ],
+    "r_wrist": [
+     0.62,
+     0.58
+    ],
+    "l_hip": [
+     0.44,
+     0.58
+    ],
+    "r_hip": [
+     0.56,
+     0.58
+    ],
+    "l_knee": [
+     0.32,
+     0.62
+    ],
+    "r_knee": [
+     0.68,
+     0.62
+    ],
+    "l_ankle": [
+     0.42,
+     0.7
+    ],
+    "r_ankle": [
+     0.58,
+     0.7
+    ]
+   }
+  },
+  {
+   "id": "sit_on_stool",
+   "name": {
+    "en": "Sit on Stool",
+    "vi": "Ngồi trên ghế đẩu"
+   },
+   "standing": false,
+   "tags": [
+    "studio",
+    "indoor",
+    "portrait",
+    "seated",
+    "fashion"
+   ],
+   "tips": {
+    "en": [
+     "Perch on the front edge of the stool",
+     "Cross ankles lightly for a clean line",
+     "Hands on thighs or one on the seat"
+    ],
+    "vi": [
+     "Ngồi ở mép trước của ghế đẩu",
+     "Bắt chéo nhẹ mắt cá chân để đường nét gọn gàng",
+     "Tay đặt lên đùi hoặc một tay đặt lên ghế"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "three-quarter front",
+     "slight low angle for legs"
+    ],
+    "vi": [
+     "Chính diện góc 3/4",
+     "Góc máy hơi thấp để tôn đôi chân"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.16
+    ],
+    "l_shoulder": [
+     0.4,
+     0.3
+    ],
+    "r_shoulder": [
+     0.6,
+     0.3
+    ],
+    "l_elbow": [
+     0.36,
+     0.44
+    ],
+    "r_elbow": [
+     0.64,
+     0.44
+    ],
+    "l_wrist": [
+     0.4,
+     0.54
+    ],
+    "r_wrist": [
+     0.6,
+     0.54
+    ],
+    "l_hip": [
+     0.44,
+     0.56
+    ],
+    "r_hip": [
+     0.56,
+     0.56
+    ],
+    "l_knee": [
+     0.42,
+     0.72
+    ],
+    "r_knee": [
+     0.58,
+     0.72
+    ],
+    "l_ankle": [
+     0.4,
+     0.9
+    ],
+    "r_ankle": [
+     0.6,
+     0.9
+    ]
+   }
+  },
+  {
+   "id": "sitting_stairs_casual",
+   "name": {
+    "en": "Sitting Stairs Casual",
+    "vi": "Ngồi cầu thang tự nhiên"
+   },
+   "standing": false,
+   "tags": [
+    "outdoor",
+    "seated",
+    "stairs",
+    "casual",
+    "portrait"
+   ],
+   "tips": {
+    "en": [
+     "Sit mid-stair; one foot lower for diagonal line",
+     "Elbows on knees or one hand back for support"
+    ],
+    "vi": [
+     "Ngồi giữa bậc thang; một chân thấp hơn để tạo đường chéo",
+     "Khuỷu tay đặt lên gối hoặc một tay chống phía sau"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "three-quarter body; slight low angle"
+    ],
+    "vi": [
+     "Khung hình 3/4 người; góc máy hơi thấp"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.52,
+     0.26
+    ],
+    "l_shoulder": [
+     0.42,
+     0.36
+    ],
+    "r_shoulder": [
+     0.62,
+     0.36
+    ],
+    "l_elbow": [
+     0.38,
+     0.48
+    ],
+    "r_elbow": [
+     0.66,
+     0.48
+    ],
+    "l_wrist": [
+     0.42,
+     0.56
+    ],
+    "r_wrist": [
+     0.62,
+     0.56
+    ],
+    "l_hip": [
+     0.46,
+     0.58
+    ],
+    "r_hip": [
+     0.56,
+     0.58
+    ],
+    "l_knee": [
+     0.44,
+     0.74
+    ],
+    "r_knee": [
+     0.6,
+     0.72
+    ],
+    "l_ankle": [
+     0.42,
+     0.9
+    ],
+    "r_ankle": [
+     0.62,
+     0.88
+    ]
+   }
+  },
+  {
+   "id": "standing_three_quarter_turn",
+   "name": {
+    "en": "Standing Three-Quarter Turn",
+    "vi": "Đứng xoay người 3/4"
+   },
+   "standing": true,
+   "tags": [
+    "portrait",
+    "indoor",
+    "studio",
+    "three-quarter",
+    "standing"
+   ],
+   "tips": {
+    "en": [
+     "Turn hips 30–45° from camera; face back toward lens",
+     "Front shoulder slightly lower; weight on back foot"
+    ],
+    "vi": [
+     "Xoay hông 30–45° so với máy ảnh; mặt quay lại hướng ống kính",
+     "Vai trước hơi thấp hơn; dồn trọng lượng lên chân sau"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "head-to-knee crop; soft key 45°"
+    ],
+    "vi": [
+     "Khung hình từ đầu đến đầu gối; ánh sáng chính mềm ở góc 45°"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.54,
+     0.16
+    ],
+    "l_shoulder": [
+     0.44,
+     0.28
+    ],
+    "r_shoulder": [
+     0.6,
+     0.3
+    ],
+    "l_elbow": [
+     0.4,
+     0.42
+    ],
+    "r_elbow": [
+     0.64,
+     0.44
+    ],
+    "l_wrist": [
+     0.38,
+     0.54
+    ],
+    "r_wrist": [
+     0.66,
+     0.56
+    ],
+    "l_hip": [
+     0.46,
+     0.56
+    ],
+    "r_hip": [
+     0.56,
+     0.56
+    ],
+    "l_knee": [
+     0.46,
+     0.74
+    ],
+    "r_knee": [
+     0.56,
+     0.74
+    ],
+    "l_ankle": [
+     0.46,
+     0.94
+    ],
+    "r_ankle": [
+     0.56,
+     0.94
+    ]
+   }
+  },
+  {
+   "id": "stretch_reach",
+   "name": {
+    "en": "Stretch Reach",
+    "vi": "Vươn người duỗi tay"
+   },
+   "standing": true,
+   "tags": [
+    "outdoor",
+    "athletic",
+    "yoga",
+    "dynamic",
+    "full_body",
+    "portrait"
+   ],
+   "tips": {
+    "en": [
+     "Reach long through fingertips",
+     "Keep ribs stacked over pelvis",
+     "Ground through both feet evenly"
+    ],
+    "vi": [
+     "Vươn dài qua các đầu ngón tay",
+     "Giữ xương sườn xếp thẳng trên xương chậu",
+     "Đứng vững đều trên cả hai chân"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "full body",
+     "slight low angle",
+     "negative space above hands"
+    ],
+    "vi": [
+     "Toàn thân",
+     "Góc máy hơi thấp",
+     "Khoảng trống phía trên bàn tay"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.18
+    ],
+    "l_shoulder": [
+     0.38,
+     0.3
+    ],
+    "r_shoulder": [
+     0.62,
+     0.3
+    ],
+    "l_elbow": [
+     0.28,
+     0.22
+    ],
+    "r_elbow": [
+     0.72,
+     0.22
+    ],
+    "l_wrist": [
+     0.22,
+     0.12
+    ],
+    "r_wrist": [
+     0.78,
+     0.12
+    ],
+    "l_hip": [
+     0.44,
+     0.52
+    ],
+    "r_hip": [
+     0.56,
+     0.52
+    ],
+    "l_knee": [
+     0.44,
+     0.72
+    ],
+    "r_knee": [
+     0.56,
+     0.72
+    ],
+    "l_ankle": [
+     0.44,
+     0.9
+    ],
+    "r_ankle": [
+     0.56,
+     0.9
+    ]
+   }
+  },
+  {
+   "id": "umbrella_walk",
+   "name": {
+    "en": "Umbrella Walk",
+    "vi": "Sải bước với ô"
+   },
+   "standing": true,
+   "tags": [
+    "outdoor",
+    "lifestyle",
+    "street",
+    "rain",
+    "full body"
+   ],
+   "tips": {
+    "en": [
+     "Hold umbrella slightly ahead and above forehead",
+     "Stride mid-step; free hand relaxed at side"
+    ],
+    "vi": [
+     "Cầm ô hơi phía trước và cao hơn trán",
+     "Đang giữa bước đi; tay tự do thả lỏng bên người"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "full body 3/4; low street angle optional"
+    ],
+    "vi": [
+     "Toàn thân góc 3/4; có thể dùng góc đường phố thấp"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.14
+    ],
+    "l_shoulder": [
+     0.4,
+     0.28
+    ],
+    "r_shoulder": [
+     0.6,
+     0.28
+    ],
+    "l_elbow": [
+     0.36,
+     0.4
+    ],
+    "r_elbow": [
+     0.7,
+     0.22
+    ],
+    "l_wrist": [
+     0.38,
+     0.52
+    ],
+    "r_wrist": [
+     0.62,
+     0.12
+    ],
+    "l_hip": [
+     0.44,
+     0.56
+    ],
+    "r_hip": [
+     0.56,
+     0.56
+    ],
+    "l_knee": [
+     0.42,
+     0.74
+    ],
+    "r_knee": [
+     0.58,
+     0.72
+    ],
+    "l_ankle": [
+     0.4,
+     0.92
+    ],
+    "r_ankle": [
+     0.6,
+     0.9
+    ]
+   }
+  },
+  {
+   "id": "walk_toward_camera",
+   "name": {
+    "en": "Walk Toward Camera",
+    "vi": "Bước về phía ống kính"
+   },
+   "standing": true,
+   "tags": [
+    "street",
+    "urban",
+    "motion",
+    "daylight",
+    "outdoor"
+   ],
+   "tips": {
+    "en": [
+     "Mid-stride freeze",
+     "Front foot toward camera"
+    ],
+    "vi": [
+     "Đóng băng giữa sải bước",
+     "Chân trước hướng về máy ảnh"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "shutter 1/250+",
+     "lead room in front"
+    ],
+    "vi": [
+     "Tốc độ màn trập 1/250 trở lên",
+     "Chừa khoảng trống phía trước"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.12
+    ],
+    "l_shoulder": [
+     0.42,
+     0.28
+    ],
+    "r_shoulder": [
+     0.58,
+     0.28
+    ],
+    "l_elbow": [
+     0.38,
+     0.42
+    ],
+    "r_elbow": [
+     0.62,
+     0.42
+    ],
+    "l_wrist": [
+     0.36,
+     0.55
+    ],
+    "r_wrist": [
+     0.64,
+     0.55
+    ],
+    "l_hip": [
+     0.45,
+     0.55
+    ],
+    "r_hip": [
+     0.55,
+     0.55
+    ],
+    "l_knee": [
+     0.48,
+     0.7
+    ],
+    "r_knee": [
+     0.54,
+     0.74
+    ],
+    "l_ankle": [
+     0.48,
+     0.86
+    ],
+    "r_ankle": [
+     0.56,
+     0.92
+    ]
+   }
+  },
+  {
+   "id": "walking_toward_camera",
+   "name": {
+    "en": "Walking Toward Camera",
+    "vi": "Đi bộ về phía máy ảnh"
+   },
+   "standing": true,
+   "tags": [
+    "studio",
+    "standing",
+    "motion",
+    "editorial",
+    "full-body"
+   ],
+   "tips": {
+    "en": [
+     "Mid-stride; front foot heel-first; shoulders open to lens",
+     "Arms relaxed swing; eyes to camera; soft smile optional"
+    ],
+    "vi": [
+     "Giữa sải bước; chân trước tiếp đất bằng gót; vai mở hướng về ống kính",
+     "Tay vung thả lỏng; mắt nhìn vào máy ảnh; có thể mỉm cười nhẹ"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "front; slightly low angle; motion freeze"
+    ],
+    "vi": [
+     "Chính diện; góc máy hơi thấp; đóng băng chuyển động"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.16
+    ],
+    "l_shoulder": [
+     0.38,
+     0.28
+    ],
+    "r_shoulder": [
+     0.62,
+     0.28
+    ],
+    "l_elbow": [
+     0.34,
+     0.4
+    ],
+    "r_elbow": [
+     0.68,
+     0.42
+    ],
+    "l_wrist": [
+     0.36,
+     0.52
+    ],
+    "r_wrist": [
+     0.7,
+     0.54
+    ],
+    "l_hip": [
+     0.44,
+     0.52
+    ],
+    "r_hip": [
+     0.56,
+     0.52
+    ],
+    "l_knee": [
+     0.42,
+     0.7
+    ],
+    "r_knee": [
+     0.58,
+     0.74
+    ],
+    "l_ankle": [
+     0.4,
+     0.9
+    ],
+    "r_ankle": [
+     0.6,
+     0.92
+    ]
+   }
+  },
+  {
+   "id": "wall_lean",
+   "name": {
+    "en": "Wall Lean",
+    "vi": "Tựa tường"
+   },
+   "standing": true,
+   "tags": [
+    "outdoor",
+    "street",
+    "portrait",
+    "editorial",
+    "casual"
+   ],
+   "tips": {
+    "en": [
+     "Place one shoulder and hip lightly against the wall",
+     "Cross ankles or rest the free foot on the toe",
+     "Keep chin slightly down for a soft gaze"
+    ],
+    "vi": [
+     "Đặt nhẹ một vai và hông vào tường",
+     "Bắt chéo mắt cá chân hoặc chống chân tự do bằng mũi chân",
+     "Hơi cúi cằm để ánh mắt dịu"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "three-quarter angle",
+     "eye-level or slightly below"
+    ],
+    "vi": [
+     "Góc 3/4",
+     "Ngang tầm mắt hoặc hơi thấp hơn"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.52,
+     0.16
+    ],
+    "l_shoulder": [
+     0.38,
+     0.28
+    ],
+    "r_shoulder": [
+     0.58,
+     0.28
+    ],
+    "l_elbow": [
+     0.34,
+     0.42
+    ],
+    "r_elbow": [
+     0.62,
+     0.4
+    ],
+    "l_wrist": [
+     0.36,
+     0.52
+    ],
+    "r_wrist": [
+     0.6,
+     0.5
+    ],
+    "l_hip": [
+     0.42,
+     0.52
+    ],
+    "r_hip": [
+     0.56,
+     0.52
+    ],
+    "l_knee": [
+     0.44,
+     0.7
+    ],
+    "r_knee": [
+     0.58,
+     0.68
+    ],
+    "l_ankle": [
+     0.44,
+     0.9
+    ],
+    "r_ankle": [
+     0.6,
+     0.88
+    ]
+   }
+  },
+  {
+   "id": "weight_shift_standing",
+   "name": {
+    "en": "Weight Shift Standing",
+    "vi": "Đứng dồn trọng lượng một bên"
+   },
+   "standing": true,
+   "tags": [
+    "portrait",
+    "casual",
+    "natural",
+    "waist-up",
+    "indoor"
+   ],
+   "tips": {
+    "en": [
+     "Shift most weight to one hip",
+     "Let the free leg bend slightly at the knee",
+     "Keep shoulders level for a relaxed look"
+    ],
+    "vi": [
+     "Dồn phần lớn trọng lượng sang một bên hông",
+     "Để chân tự do hơi chùng ở đầu gối",
+     "Giữ vai ngang để trông thư giãn"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "waist-up crop",
+     "soft window light from the side"
+    ],
+    "vi": [
+     "Khung hình cắt từ thắt lưng trở lên",
+     "Ánh sáng cửa sổ mềm từ bên"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.13
+    ],
+    "l_shoulder": [
+     0.4,
+     0.28
+    ],
+    "r_shoulder": [
+     0.6,
+     0.27
+    ],
+    "l_elbow": [
+     0.35,
+     0.44
+    ],
+    "r_elbow": [
+     0.65,
+     0.43
+    ],
+    "l_wrist": [
+     0.33,
+     0.58
+    ],
+    "r_wrist": [
+     0.67,
+     0.57
+    ],
+    "l_hip": [
+     0.42,
+     0.56
+    ],
+    "r_hip": [
+     0.58,
+     0.55
+    ],
+    "l_knee": [
+     0.4,
+     0.74
+    ],
+    "r_knee": [
+     0.6,
+     0.73
+    ],
+    "l_ankle": [
+     0.39,
+     0.92
+    ],
+    "r_ankle": [
+     0.61,
+     0.92
+    ]
+   }
+  },
+  {
+   "id": "window_gaze",
+   "name": {
+    "en": "Window Gaze",
+    "vi": "Nhìn ra cửa sổ"
+   },
+   "standing": true,
+   "tags": [
+    "indoor",
+    "portrait",
+    "natural-light",
+    "lifestyle",
+    "waist-up"
+   ],
+   "tips": {
+    "en": [
+     "Stand beside window; face soft light",
+     "Hands relaxed; eyes slightly off-camera"
+    ],
+    "vi": [
+     "Đứng cạnh cửa sổ; mặt hướng về phía ánh sáng mềm",
+     "Tay thả lỏng; mắt hơi lệch khỏi máy ảnh"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "waist-up; window as key light; clean background"
+    ],
+    "vi": [
+     "Khung hình từ thắt lưng trở lên; cửa sổ làm ánh sáng chính; phông nền gọn gàng"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.48,
+     0.16
+    ],
+    "l_shoulder": [
+     0.38,
+     0.3
+    ],
+    "r_shoulder": [
+     0.6,
+     0.3
+    ],
+    "l_elbow": [
+     0.32,
+     0.46
+    ],
+    "r_elbow": [
+     0.66,
+     0.46
+    ],
+    "l_wrist": [
+     0.34,
+     0.58
+    ],
+    "r_wrist": [
+     0.64,
+     0.58
+    ],
+    "l_hip": [
+     0.42,
+     0.58
+    ],
+    "r_hip": [
+     0.56,
+     0.58
+    ],
+    "l_knee": [
+     0.42,
+     0.76
+    ],
+    "r_knee": [
+     0.56,
+     0.76
+    ],
+    "l_ankle": [
+     0.42,
+     0.92
+    ],
+    "r_ankle": [
+     0.56,
+     0.92
+    ]
+   }
+  },
+  {
+   "id": "window_light_stand",
+   "name": {
+    "en": "Window Light Stand",
+    "vi": "Đứng trong ánh sáng cửa sổ"
+   },
+   "standing": true,
+   "tags": [
+    "indoor",
+    "window",
+    "soft_light",
+    "portrait",
+    "home"
+   ],
+   "tips": {
+    "en": [
+     "Face the window at 45 degrees",
+     "Far shoulder slightly back"
+    ],
+    "vi": [
+     "Mặt hướng về cửa sổ ở góc 45 độ",
+     "Vai xa hơi đưa ra sau"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "expose for face",
+     "include window rim light"
+    ],
+    "vi": [
+     "Đo sáng theo khuôn mặt",
+     "Lấy cả ánh sáng viền từ cửa sổ"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.48,
+     0.12
+    ],
+    "l_shoulder": [
+     0.4,
+     0.28
+    ],
+    "r_shoulder": [
+     0.56,
+     0.28
+    ],
+    "l_elbow": [
+     0.38,
+     0.42
+    ],
+    "r_elbow": [
+     0.62,
+     0.42
+    ],
+    "l_wrist": [
+     0.36,
+     0.55
+    ],
+    "r_wrist": [
+     0.64,
+     0.55
+    ],
+    "l_hip": [
+     0.45,
+     0.55
+    ],
+    "r_hip": [
+     0.55,
+     0.55
+    ],
+    "l_knee": [
+     0.45,
+     0.72
+    ],
+    "r_knee": [
+     0.55,
+     0.72
+    ],
+    "l_ankle": [
+     0.45,
+     0.9
+    ],
+    "r_ankle": [
+     0.55,
+     0.9
+    ]
+   }
+  },
+  {
+   "id": "yoga_tree",
+   "name": {
+    "en": "Yoga Tree Pose",
+    "vi": "Tư thế yoga cái cây"
+   },
+   "standing": true,
+   "tags": [
+    "indoor",
+    "yoga",
+    "balance",
+    "full body",
+    "studio",
+    "calm"
+   ],
+   "tips": {
+    "en": [
+     "Press standing foot firmly into floor",
+     "Knee opens to side without twisting hips",
+     "Hands at heart or overhead with soft shoulders"
+    ],
+    "vi": [
+     "Ấn chắc bàn chân trụ xuống sàn",
+     "Đầu gối mở sang bên mà không vặn hông",
+     "Tay chắp trước ngực hoặc đưa lên cao với vai mềm"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "full body vertical",
+     "eye level",
+     "plain background"
+    ],
+    "vi": [
+     "Toàn thân, khung hình dọc",
+     "Ngang tầm mắt",
+     "Phông nền đơn giản"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5,
+     0.12
+    ],
+    "l_shoulder": [
+     0.42,
+     0.26
+    ],
+    "r_shoulder": [
+     0.58,
+     0.26
+    ],
+    "l_elbow": [
+     0.4,
+     0.36
+    ],
+    "r_elbow": [
+     0.6,
+     0.36
+    ],
+    "l_wrist": [
+     0.46,
+     0.42
+    ],
+    "r_wrist": [
+     0.54,
+     0.42
+    ],
+    "l_hip": [
+     0.46,
+     0.52
+    ],
+    "r_hip": [
+     0.54,
+     0.52
+    ],
+    "l_knee": [
+     0.46,
+     0.72
+    ],
+    "r_knee": [
+     0.62,
+     0.58
+    ],
+    "l_ankle": [
+     0.46,
+     0.92
+    ],
+    "r_ankle": [
+     0.54,
+     0.7
+    ]
+   }
+  }
+ ],
+ "scenes": [
+  {
+   "id": "beach_sunset",
+   "name": {
+    "en": "Beach Sunset",
+    "vi": "Hoàng hôn trên biển"
+   },
+   "tags": [
+    "beach",
+    "outdoor",
+    "golden_hour",
+    "portrait",
+    "daylight"
+   ],
+   "mood": [
+    "warm",
+    "romantic"
+   ],
+   "expectedPoses": [
+    "looking_away",
+    "hands_on_hips",
+    "over_shoulder"
+   ],
+   "composition": {
+    "horizon": "lower_third",
+    "subject_placement": "right_third"
+   }
+  },
+  {
+   "id": "cafe_window",
+   "name": {
+    "en": "Cafe Window Seat",
+    "vi": "Ghế bên cửa sổ quán cà phê"
+   },
+   "tags": [
+    "indoor",
+    "cafe",
+    "window",
+    "natural light",
+    "portrait",
+    "casual"
+   ],
+   "mood": [],
+   "expectedPoses": [
+    "looking_away",
+    "lean_on_rail",
+    "seated_profile",
+    "window_light_stand"
+   ],
+   "composition": {}
+  },
+  {
+   "id": "cafe_window_counter",
+   "name": {
+    "en": "Cafe Window Counter",
+    "vi": "Quầy bar bên cửa sổ quán cà phê"
+   },
+   "tags": [
+    "indoor",
+    "cafe",
+    "window",
+    "seated",
+    "portrait",
+    "lifestyle",
+    "warm-light"
+   ],
+   "mood": [
+    "casual",
+    "cozy"
+   ],
+   "expectedPoses": [
+    "seated_cafe_laptop",
+    "coffee_cup",
+    "seated_window_light",
+    "seated_profile"
+   ],
+   "composition": {
+    "key_light": "side light from the cafe window",
+    "foreground": "cup, notebook, or laptop on the counter",
+    "framing": "eye-level seated portrait"
+   }
+  },
+  {
+   "id": "city_balcony",
+   "name": {
+    "en": "City Balcony",
+    "vi": "Ban công thành phố"
+   },
+   "tags": [
+    "urban",
+    "balcony",
+    "cityscape",
+    "evening",
+    "outdoor"
+   ],
+   "mood": [
+    "cinematic"
+   ],
+   "expectedPoses": [
+    "lean_on_rail",
+    "looking_away",
+    "contrapposto"
+   ],
+   "composition": {
+    "include": "skyline",
+    "subject_placement": "left_third"
+   }
+  },
+  {
+   "id": "festival_crowd",
+   "name": {
+    "en": "Festival Crowd Edge",
+    "vi": "Rìa đám đông lễ hội"
+   },
+   "tags": [
+    "outdoor",
+    "festival",
+    "crowd",
+    "daylight",
+    "colorful",
+    "candid"
+   ],
+   "mood": [],
+   "expectedPoses": [
+    "arms_raised",
+    "jump_midair",
+    "walk_toward_camera",
+    "looking_away"
+   ],
+   "composition": {}
+  },
+  {
+   "id": "forest_path",
+   "name": {
+    "en": "Forest Path",
+    "vi": "Lối mòn trong rừng"
+   },
+   "tags": [
+    "forest",
+    "outdoor",
+    "golden_hour",
+    "romantic",
+    "portrait"
+   ],
+   "mood": [
+    "soft",
+    "moody"
+   ],
+   "expectedPoses": [
+    "over_shoulder",
+    "looking_away",
+    "contrapposto"
+   ],
+   "composition": {
+    "depth": "path_leading_lines"
+   }
+  },
+  {
+   "id": "garden_path",
+   "name": {
+    "en": "Garden Path Morning",
+    "vi": "Lối đi vườn buổi sáng"
+   },
+   "tags": [
+    "outdoor",
+    "nature",
+    "morning",
+    "green",
+    "soft_light",
+    "portrait"
+   ],
+   "mood": [],
+   "expectedPoses": [
+    "stretch_reach",
+    "walk_toward_camera",
+    "looking_away",
+    "contrapposto"
+   ],
+   "composition": {}
+  },
+  {
+   "id": "garden_proposal",
+   "name": {
+    "en": "Garden Proposal Path",
+    "vi": "Lối vườn cầu hôn"
+   },
+   "tags": [
+    "outdoor",
+    "garden",
+    "romantic",
+    "daylight",
+    "flowers"
+   ],
+   "mood": [],
+   "expectedPoses": [
+    "kneel_propose",
+    "walk_toward_camera",
+    "side_profile_look"
+   ],
+   "composition": {}
+  },
+  {
+   "id": "harbor_pier",
+   "name": {
+    "en": "Harbor Pier Morning",
+    "vi": "Cầu cảng buổi sáng"
+   },
+   "tags": [
+    "outdoor",
+    "water",
+    "morning",
+    "travel",
+    "blue",
+    "wide"
+   ],
+   "mood": [],
+   "expectedPoses": [
+    "point_forward",
+    "walk_toward_camera",
+    "looking_away",
+    "lean_on_rail"
+   ],
+   "composition": {}
+  },
+  {
+   "id": "home_window",
+   "name": {
+    "en": "Home Window Light",
+    "vi": "Ánh sáng cửa sổ ở nhà"
+   },
+   "tags": [
+    "indoor",
+    "window",
+    "soft_light",
+    "portrait",
+    "home"
+   ],
+   "mood": [
+    "intimate"
+   ],
+   "expectedPoses": [
+    "window_light_stand",
+    "looking_away",
+    "arms_crossed"
+   ],
+   "composition": {
+    "key_light": "window",
+    "fill": "bounce"
+   }
+  },
+  {
+   "id": "indoor_loft",
+   "name": {
+    "en": "Indoor Loft Window",
+    "vi": "Cửa sổ phòng loft"
+   },
+   "tags": [
+    "indoor",
+    "loft",
+    "portrait",
+    "window",
+    "soft light",
+    "lean",
+    "lifestyle"
+   ],
+   "mood": [
+    "relaxed",
+    "editorial"
+   ],
+   "expectedPoses": [
+    "lean_window_portrait",
+    "window_gaze",
+    "hands_in_pockets",
+    "coffee_table_lean"
+   ],
+   "composition": {
+    "key_light": "large loft window at 45 degrees",
+    "background": "exposed brick and open floor plan",
+    "framing": "waist-up or three-quarter portrait"
+   }
+  },
+  {
+   "id": "library_nook",
+   "name": {
+    "en": "Library Nook",
+    "vi": "Góc nhỏ thư viện"
+   },
+   "tags": [
+    "indoor",
+    "warm",
+    "books",
+    "portrait",
+    "quiet",
+    "editorial"
+   ],
+   "mood": [],
+   "expectedPoses": [
+    "kneel_profile",
+    "seated_profile",
+    "looking_away",
+    "over_shoulder"
+   ],
+   "composition": {}
+  },
+  {
+   "id": "market_day",
+   "name": {
+    "en": "Outdoor Market Day",
+    "vi": "Ngày chợ ngoài trời"
+   },
+   "tags": [
+    "outdoor",
+    "street",
+    "crowded",
+    "colorful",
+    "daylight",
+    "candid"
+   ],
+   "mood": [],
+   "expectedPoses": [
+    "crouch_ready",
+    "walk_toward_camera",
+    "looking_away",
+    "hands_in_pockets"
+   ],
+   "composition": {}
+  },
+  {
+   "id": "mountain_trail",
+   "name": {
+    "en": "Mountain Trail Vista",
+    "vi": "Đường mòn núi ngắm cảnh"
+   },
+   "tags": [
+    "outdoor",
+    "nature",
+    "trail",
+    "daylight",
+    "wide",
+    "adventure"
+   ],
+   "mood": [],
+   "expectedPoses": [
+    "back_to_camera",
+    "walk_toward_camera",
+    "looking_away",
+    "lean_forward"
+   ],
+   "composition": {}
+  },
+  {
+   "id": "neon_alley",
+   "name": {
+    "en": "Neon Alley Night",
+    "vi": "Hẻm neon ban đêm"
+   },
+   "tags": [
+    "outdoor",
+    "urban",
+    "night",
+    "neon",
+    "street",
+    "moody"
+   ],
+   "mood": [],
+   "expectedPoses": [
+    "hand_on_chin",
+    "lean_forward",
+    "looking_away",
+    "over_shoulder"
+   ],
+   "composition": {}
+  },
+  {
+   "id": "office_lobby",
+   "name": {
+    "en": "Office Lobby",
+    "vi": "Sảnh văn phòng"
+   },
+   "tags": [
+    "indoor",
+    "business",
+    "urban",
+    "confident",
+    "studio"
+   ],
+   "mood": [
+    "professional"
+   ],
+   "expectedPoses": [
+    "power_stance",
+    "arms_crossed",
+    "hands_in_pockets"
+   ],
+   "composition": {
+    "vertical_lines": "architecture"
+   }
+  },
+  {
+   "id": "rooftop_night",
+   "name": {
+    "en": "Rooftop Night City",
+    "vi": "Sân thượng ngắm phố đêm"
+   },
+   "tags": [
+    "outdoor",
+    "urban",
+    "night",
+    "city",
+    "dramatic",
+    "portrait"
+   ],
+   "mood": [],
+   "expectedPoses": [
+    "power_stance",
+    "looking_away",
+    "over_shoulder",
+    "lean_on_rail"
+   ],
+   "composition": {}
+  },
+  {
+   "id": "sports_field",
+   "name": {
+    "en": "Sports Field Afternoon",
+    "vi": "Sân thể thao buổi chiều"
+   },
+   "tags": [
+    "outdoor",
+    "sports",
+    "daylight",
+    "action",
+    "green",
+    "wide"
+   ],
+   "mood": [],
+   "expectedPoses": [
+    "jump_midair",
+    "power_stance",
+    "stretch_reach",
+    "walk_toward_camera"
+   ],
+   "composition": {}
+  },
+  {
+   "id": "street_crossing",
+   "name": {
+    "en": "Street Crossing",
+    "vi": "Vạch qua đường"
+   },
+   "tags": [
+    "street",
+    "urban",
+    "motion",
+    "daylight",
+    "outdoor"
+   ],
+   "mood": [
+    "dynamic"
+   ],
+   "expectedPoses": [
+    "walk_toward_camera",
+    "hands_in_pockets",
+    "power_stance"
+   ],
+   "composition": {
+    "leading_lines": "crosswalk",
+    "shutter": "fast"
+   }
+  },
+  {
+   "id": "studio_gray",
+   "name": {
+    "en": "Studio Gray Backdrop",
+    "vi": "Phông xám studio"
+   },
+   "tags": [
+    "studio",
+    "indoor",
+    "portrait",
+    "business",
+    "confident"
+   ],
+   "mood": [
+    "clean"
+   ],
+   "expectedPoses": [
+    "power_stance",
+    "arms_crossed",
+    "hands_on_hips"
+   ],
+   "composition": {
+    "backdrop": "seamless",
+    "lighting": "butterfly_or_loop"
+   }
+  },
+  {
+   "id": "subway_platform",
+   "name": {
+    "en": "Subway Platform",
+    "vi": "Sân ga tàu điện ngầm"
+   },
+   "tags": [
+    "urban",
+    "indoor",
+    "transit",
+    "candid",
+    "cool_light",
+    "street"
+   ],
+   "mood": [],
+   "expectedPoses": [
+    "lean_forward",
+    "walk_toward_camera",
+    "hands_in_pockets",
+    "looking_away"
+   ],
+   "composition": {}
+  },
+  {
+   "id": "urban_wall",
+   "name": {
+    "en": "Urban Wall",
+    "vi": "Bức tường đô thị"
+   },
+   "tags": [
+    "urban",
+    "wall",
+    "street",
+    "daylight",
+    "casual"
+   ],
+   "mood": [
+    "edgy"
+   ],
+   "expectedPoses": [
+    "hands_in_pockets",
+    "contrapposto",
+    "lean_on_rail"
+   ],
+   "composition": {
+    "background": "texture_wall",
+    "subject_placement": "center_left"
+   }
+  },
+  {
+   "id": "yoga_studio_morning",
+   "name": {
+    "en": "Yoga Studio Morning Light",
+    "vi": "Ánh sáng sớm ở phòng yoga"
+   },
+   "tags": [
+    "indoor",
+    "yoga",
+    "studio",
+    "soft light",
+    "calm",
+    "minimal"
+   ],
+   "mood": [],
+   "expectedPoses": [
+    "yoga_tree",
+    "stretch_reach",
+    "sit_cross_legged",
+    "power_stance"
+   ],
+   "composition": {}
+  }
+ ]
+}

@@ -69,3 +69,14 @@ theo phân tích ảnh đã xuất bản của nhiếp ảnh gia tomosaki (@phot
 xanh cobalt đậm (hue đo ~206, bão hòa .64), xanh lá ngọc lục bảo (~110, .55),
 da ấm tự nhiên (~24, .41), vùng sáng trung tính hơi lạnh, tương phản mạnh với
 đen thật. Thông số trong `tools/make_custom_luts.py` (khóa `tomosaki`).
+
+## 1.0.7 — Hướng dẫn tạo dáng (Pose Guide)
+
+Tính năng chọn dáng theo bối cảnh với lớp phủ hình que trực tiếp trên camera
+(Hộp công cụ → Hướng dẫn tạo dáng). Dữ liệu khởi điểm (76 dáng, 23 bối cảnh,
+khung xương 13 điểm + mẹo cho người mẫu/người chụp) được chuyển thể từ dự án
+mở **PoseGuide** (https://github.com/mergeos-bounties/PoseGuide), giấy phép
+MIT, Copyright (c) 2026 MergeOS / ThanhTrucSolutions — toàn văn giấy phép nằm
+tại `app/src/main/assets/poses/POSEGUIDE-LICENSE.txt`, dữ liệu đóng gói tại
+`app/src/main/assets/poses/poses.json` (sinh bởi
+`tools/pose-data/build_pose_catalog.py`).

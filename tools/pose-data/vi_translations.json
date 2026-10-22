@@ -1,0 +1,913 @@
+{
+ "poses": {
+  "arms_crossed": {
+   "name": "Khoanh tay",
+   "tips": [
+    "Thả lỏng vai",
+    "Hơi cúi cằm để đường hàm rõ nét hơn"
+   ],
+   "cameraCues": [
+    "Khung hình từ ngực trở lên hoặc 3/4 người"
+   ]
+  },
+  "arms_crossed_power": {
+   "name": "Khoanh tay uy lực",
+   "tips": [
+    "Trọng lượng đều hai chân; cằm ngang; có thể mỉm cười nhẹ",
+    "Khoanh tay lỏng để vai vẫn thả lỏng"
+   ],
+   "cameraCues": [
+    "Góc 3/4 hoặc chính diện; ngang tầm mắt; ánh sáng chính mềm"
+   ]
+  },
+  "arms_raised": {
+   "name": "Giơ tay ăn mừng",
+   "tips": [
+    "Vươn cao qua các đầu ngón tay",
+    "Hơi chùng gối để thêm năng lượng",
+    "Hơi ngẩng cằm, mở ngực"
+   ],
+   "cameraCues": [
+    "Toàn thân",
+    "Góc máy hơi thấp",
+    "Chừa khoảng trời phía trên bàn tay"
+   ]
+  },
+  "back_to_camera": {
+   "name": "Quay lưng với máy ảnh",
+   "tips": [
+    "Xoay vai ra xa máy ảnh; có thể liếc nhẹ qua một bên vai",
+    "Trọng lượng đều hoặc hơi dồn sang một hông",
+    "Thả lỏng tay hai bên hoặc đút túi"
+   ],
+   "cameraCues": [
+    "Toàn thân hoặc 3/4 người",
+    "Ánh sáng viền ở mép chủ thể",
+    "Đường dẫn hướng phía trước chủ thể"
+   ]
+  },
+  "backpack_turn": {
+   "name": "Quay vai với ba lô",
+   "tips": [
+    "Thân người 3/4 so với máy ảnh; ngoái đầu nhìn qua vai",
+    "Đeo một quai; tay còn lại đặt lên mép ba lô"
+   ],
+   "cameraCues": [
+    "Toàn thân; góc máy hơi thấp; bối cảnh phố hoặc đường mòn"
+   ]
+  },
+  "bike_lean": {
+   "name": "Tựa vào xe đạp",
+   "tips": [
+    "Tựa hông vào xe; tay còn lại đặt lên ghi đông",
+    "Dồn trọng lượng lên chân đứng; mỉm cười nhẹ vào ống kính"
+   ],
+   "cameraCues": [
+    "Toàn thân góc 3/4; có thể làm mờ hậu cảnh đường phố (bokeh)"
+   ]
+  },
+  "book_reading": {
+   "name": "Ngồi đọc sách",
+   "tips": [
+    "Cầm sách ngang giữa ngực; khuỷu tay mềm",
+    "Hơi cúi cằm về phía trang sách; mắt nhìn vào ống kính khi có hiệu lệnh"
+   ],
+   "cameraCues": [
+    "Ngồi, khung hình từ thắt lưng trở lên; ánh sáng bên dịu từ cửa sổ"
+   ]
+  },
+  "chin_rest": {
+   "name": "Chống cằm lên tay",
+   "tips": [
+    "Khuỷu tay đặt trên bàn hoặc gối; khớp ngón tay đỡ nhẹ dưới cằm",
+    "Mắt nhìn dịu vào máy ảnh hoặc hơi lệch trục"
+   ],
+   "cameraCues": [
+    "Khung hình đầu và vai; độ sâu trường ảnh nông"
+   ]
+  },
+  "classic_at_ease": {
+   "name": "Đứng thư thái cổ điển",
+   "tips": [
+    "Hai chân rộng bằng vai, trọng lượng phân bố đều",
+    "Thả lỏng tay hai bên, ngón tay hơi co nhẹ",
+    "Cằm ngang, mắt nhìn thẳng cho dáng đứng tự tin"
+   ],
+   "cameraCues": [
+    "Toàn thân",
+    "Góc máy hơi thấp để tôn chiều cao",
+    "Khung hình đối xứng"
+   ]
+  },
+  "coffee_cup": {
+   "name": "Hai tay cầm cốc cà phê",
+   "tips": [
+    "Hai tay cầm cốc gần xương ức",
+    "Mỉm cười nhẹ; hơi nước / chiếc cốc tạo điểm nhấn ở phần dưới khung hình"
+   ],
+   "cameraCues": [
+    "Khung hình từ thắt lưng trở lên; ưu tiên ánh sáng bên từ cửa sổ"
+   ]
+  },
+  "coffee_table_lean": {
+   "name": "Tựa người lên bàn cà phê",
+   "tips": [
+    "Cẳng tay đặt trên bàn; thân người hơi nghiêng về phía trước",
+    "Vai thả lỏng; ánh mắt nhìn qua máy ảnh hoặc vào ống kính"
+   ],
+   "cameraCues": [
+    "Ngồi, khung hình từ thắt lưng trở lên; ánh sáng bên ấm"
+   ]
+  },
+  "contrapposto": {
+   "name": "Contrapposto",
+   "tips": [
+    "Dồn trọng lượng lên một chân",
+    "Tạo đường cong chữ S mềm mại ở thân người",
+    "Thả lỏng vai phía chân không dồn trọng lượng"
+   ],
+   "cameraCues": [
+    "Khung hình 3/4 người",
+    "Ngang tầm mắt hoặc góc máy hơi thấp"
+   ]
+  },
+  "cross_arms_stand": {
+   "name": "Đứng khoanh tay",
+   "tips": [
+    "Khoanh tay nhẹ trước ngực; thả lỏng vai",
+    "Dồn trọng lượng lên một chân; mỉm cười nhẹ vào ống kính"
+   ],
+   "cameraCues": [
+    "Khung hình từ thắt lưng trở lên; ánh sáng studio đều"
+   ]
+  },
+  "crouch_ready": {
+   "name": "Ngồi xổm sẵn sàng",
+   "tips": [
+    "Dồn trọng lượng lên phần trước bàn chân",
+    "Gối mềm, ngực mở hướng về máy ảnh",
+    "Tay để tự do gần đùi hoặc chắp nhẹ"
+   ],
+   "cameraCues": [
+    "Góc máy hơi thấp",
+    "Khung hình 3/4 người",
+    "Tốc độ màn trập nhanh để bắt chuyển động"
+   ]
+  },
+  "crouch_street_photo": {
+   "name": "Ngồi xổm đường phố",
+   "tips": [
+    "Hạ người xuống tư thế ngồi xổm thấp; ngực mở hướng về máy ảnh",
+    "Tay để tự do hoặc đặt lên gối; giữ lưng thẳng dài"
+   ],
+   "cameraCues": [
+    "Toàn thân góc thấp; tốc độ màn trập đường phố 1/250s"
+   ]
+  },
+  "crouch_tie_shoe": {
+   "name": "Ngồi xổm buộc dây giày",
+   "tips": [
+    "Ngồi xổm thấp; một gối thấp hơn; tay gần dây giày",
+    "Giữ lưng thẳng; mắt nhìn lên máy ảnh hoặc nhìn xuống giày"
+   ],
+   "cameraCues": [
+    "Chính diện góc 3/4; ngang tầm gối; độ sâu trường ảnh nông tập trung vào tay"
+   ]
+  },
+  "hand_on_chin": {
+   "name": "Tay chạm cằm",
+   "tips": [
+    "Đầu ngón tay chạm nhẹ lên cằm; không ấn mạnh",
+    "Vai thả lỏng; cổ vươn dài",
+    "Mắt nhìn hơi cao hơn máy ảnh hoặc sang một bên"
+   ],
+   "cameraCues": [
+    "Khung hình đầu và vai",
+    "Ánh sáng chính mềm",
+    "Độ sâu trường ảnh nông"
+   ]
+  },
+  "hand_wave": {
+   "name": "Vẫy tay",
+   "tips": [
+    "Giơ một tay lên gần ngang vai",
+    "Mỉm cười nhẹ, thân người mở hướng về máy ảnh"
+   ],
+   "cameraCues": [
+    "Khung hình từ thắt lưng trở lên hoặc toàn thân, chừa khoảng trống phía tay vẫy"
+   ]
+  },
+  "hands_behind_back": {
+   "name": "Chắp tay sau lưng",
+   "tips": [
+    "Đan nhẹ các ngón tay sau lưng dưới",
+    "Cuộn vai ra sau mà không ưỡn ngực",
+    "Dồn trọng lượng sang một chân để tạo đường cong chữ S tự nhiên"
+   ],
+   "cameraCues": [
+    "Góc 3/4 ngang tầm mắt",
+    "Góc máy hơi thấp để tăng vẻ uy quyền"
+   ]
+  },
+  "hands_clasped_front": {
+   "name": "Chắp tay phía trước",
+   "tips": [
+    "Chắp tay lỏng phía trước ngang thắt lưng",
+    "Thả lỏng vai và mở ngực",
+    "Lưng thẳng, đầu hơi nghiêng về phía trước để tạo cảm giác thân thiện"
+   ],
+   "cameraCues": [
+    "Khung hình từ thắt lưng trở lên",
+    "Ánh sáng studio đều",
+    "Phông nền trung tính"
+   ]
+  },
+  "hands_in_pockets": {
+   "name": "Đút tay túi quần",
+   "tips": [
+    "Để ngón cái ngoài túi cho bàn tay tự nhiên",
+    "Hơi tựa người vào tường"
+   ],
+   "cameraCues": [
+    "Khung hình dọc",
+    "Chừa khoảng trống phía trên đầu"
+   ]
+  },
+  "hands_on_hips": {
+   "name": "Chống tay lên hông",
+   "tips": [
+    "Khuỷu tay mềm",
+    "Dồn trọng lượng lên chân sau"
+   ],
+   "cameraCues": [
+    "Toàn thân nếu hậu cảnh đẹp"
+   ]
+  },
+  "hands_on_hips_hero": {
+   "name": "Chống tay lên hông đầy uy lực",
+   "tips": [
+    "Hai chân rộng bằng vai; khuỷu tay hơi hướng ra ngoài; ngực mở",
+    "Cằm ngang; hơi dồn trọng lượng về hông sau"
+   ],
+   "cameraCues": [
+    "Chính diện hoặc góc 3/4; ngang tầm mắt; sáng chính mềm + sáng phụ"
+   ]
+  },
+  "hat_tip": {
+   "name": "Chạm vành mũ chào",
+   "tips": [
+    "Ngón tay chạm nhẹ vành mũ; khuỷu tay mềm",
+    "Hơi cúi cằm; mắt nhìn vào ống kính"
+   ],
+   "cameraCues": [
+    "Khung hình từ thắt lưng trở lên; trời thoáng hoặc ánh sáng ngược mềm"
+   ]
+  },
+  "jump_midair": {
+   "name": "Nhảy lơ lửng",
+   "tips": [
+    "Chụp ở khoảnh khắc lơ lửng cao nhất",
+    "Duỗi mũi chân và vươn dài qua cánh tay",
+    "Giữ khuôn mặt thư giãn; siết cơ trung tâm"
+   ],
+   "cameraCues": [
+    "Tốc độ màn trập nhanh",
+    "Góc máy hơi thấp",
+    "Toàn thân, chừa khoảng trời phía trên"
+   ]
+  },
+  "jump_midair_arms_open": {
+   "name": "Nhảy lơ lửng dang rộng tay",
+   "tips": [
+    "Bật nhảy; cằm hơi ngẩng; dang rộng tay để tạo bóng silhouette",
+    "Chụp liên tục; chọn khung hình ở đỉnh lơ lửng"
+   ],
+   "cameraCues": [
+    "Toàn thân; góc máy hơi thấp; tốc độ màn trập nhanh"
+   ]
+  },
+  "kneel_profile": {
+   "name": "Quỳ gối, mặt nghiêng",
+   "tips": [
+    "Quỳ thẳng, vươn dài cột sống",
+    "Gối trước mềm; bàn chân sau thả lỏng",
+    "Cằm hơi nhấc khỏi vai"
+   ],
+   "cameraCues": [
+    "Góc nghiêng hoặc 3/4",
+    "Có thể cắt khung hình giữa thân",
+    "Ánh sáng chính mềm từ bên"
+   ]
+  },
+  "kneel_propose": {
+   "name": "Quỳ gối cầu hôn",
+   "tips": [
+    "Gối trước tạo góc 90°",
+    "Ngực thẳng",
+    "Mỉm cười nhẹ vào máy ảnh"
+   ],
+   "cameraCues": [
+    "Góc máy hơi thấp",
+    "Lấy cả tay và khuôn mặt vào khung",
+    "Độ sâu trường ảnh nông"
+   ]
+  },
+  "kneeling_propose_style": {
+   "name": "Quỳ gối kiểu cầu hôn",
+   "tips": [
+    "Một gối chạm đất; thân người thẳng; ánh mắt dịu nhìn về phía trước",
+    "Tay ở ngang giữa ngực hoặc trong tư thế trao tặng"
+   ],
+   "cameraCues": [
+    "Khung hình 3/4 người; ngang tầm mắt; ánh sáng bên mềm"
+   ]
+  },
+  "laptop_desk": {
+   "name": "Ngồi bàn với laptop",
+   "tips": [
+    "Ngồi thẳng; màn hình hơi thấp hơn đường tầm mắt",
+    "Tay đặt trên bàn phím; thả lỏng vai"
+   ],
+   "cameraCues": [
+    "Ngồi góc 3/4; ánh sáng bên dịu từ cửa sổ"
+   ]
+  },
+  "lean_forward": {
+   "name": "Nghiêng người về phía trước",
+   "tips": [
+    "Gập người từ hông, không cong lưng trên",
+    "Trọng lượng chủ yếu ở chân trước",
+    "Tay để tự do hoặc chắp nhẹ"
+   ],
+   "cameraCues": [
+    "Góc máy hơi cao",
+    "Khung hình 3/4 người",
+    "Có thể dùng hiệu ứng nhòe chuyển động"
+   ]
+  },
+  "lean_forward_desk": {
+   "name": "Nghiêng người trên bàn",
+   "tips": [
+    "Khuỷu tay đặt trên bàn",
+    "Hơi nghiêng người về phía máy ảnh"
+   ],
+   "cameraCues": [
+    "Khung hình từ ngực trở lên"
+   ]
+  },
+  "lean_on_rail": {
+   "name": "Tựa vào lan can",
+   "tips": [
+    "Khuỷu tay mềm đặt trên lan can",
+    "Hông hơi đưa ra sau"
+   ],
+   "cameraCues": [
+    "Lấy cả môi trường xung quanh vào khung",
+    "Đặt chủ thể theo quy tắc một phần ba"
+   ]
+  },
+  "lean_wall_casual": {
+   "name": "Tựa tường tự nhiên",
+   "tips": [
+    "Một vai tựa vào tường",
+    "Hơi chùng gối",
+    "Nhìn qua phía máy ảnh"
+   ],
+   "cameraCues": [
+    "Khung hình 3/4 người",
+    "Ngang tầm mắt",
+    "Giữ lại vân bề mặt của tường"
+   ]
+  },
+  "lean_wall_casual_soft": {
+   "name": "Tựa tường tự nhiên nhẹ nhàng",
+   "tips": [
+    "Một vai tựa nhẹ vào tường; chân đối diện hơi bước lên phía trước",
+    "Tay thả lỏng ở túi hoặc thắt lưng; cằm mềm hướng về máy ảnh"
+   ],
+   "cameraCues": [
+    "Góc 3/4; ngang tầm mắt; ánh sáng chính mềm từ bên"
+   ]
+  },
+  "lean_window_portrait": {
+   "name": "Chân dung tựa cửa sổ",
+   "tips": [
+    "Tựa vai ngoài vào khung cửa sổ; mặt hướng về phía ánh sáng",
+    "Tay xa đặt lên hông hoặc khung cửa; giữ cổ vươn dài"
+   ],
+   "cameraCues": [
+    "Ống kính 85mm, khung hình từ đầu đến thắt lưng; đo sáng theo khuôn mặt"
+   ]
+  },
+  "lean_window_portrait_soft": {
+   "name": "Chân dung tựa cửa sổ nhẹ nhàng",
+   "tips": [
+    "Vai tựa vào khung cửa sổ; dồn trọng lượng lên chân xa; đường cong chữ S mềm",
+    "Hơi cúi cằm về phía ánh sáng; tay tự do đặt lên bậu cửa hoặc hông"
+   ],
+   "cameraCues": [
+    "Chính diện góc 3/4; cửa sổ làm ánh sáng chính; ống kính 50–85mm"
+   ]
+  },
+  "leaning_doorframe": {
+   "name": "Tựa khung cửa",
+   "tips": [
+    "Vai tựa nhẹ vào khung cửa; dồn trọng lượng lên chân xa",
+    "Tay xa đút túi hoặc đặt lên hông; tay gần để tự do dọc khung cửa"
+   ],
+   "cameraCues": [
+    "Khung hình 3/4 người; ngang tầm mắt; ánh sáng cửa sổ phụ mềm"
+   ]
+  },
+  "leaning_rail": {
+   "name": "Tựa lưng vào lan can",
+   "tips": [
+    "Hơi ngả người ra sau, khuỷu tay tựa lên lan can hoặc gờ",
+    "Một chân bắt chéo qua chân kia ở mắt cá",
+    "Hơi nghiêng đầu để tạo cảm giác tự nhiên, không sắp đặt"
+   ],
+   "cameraCues": [
+    "Khung hình từ thắt lưng trở lên, có lan can trong khung",
+    "Ánh sáng ngược giờ vàng",
+    "Độ sâu trường ảnh nông"
+   ]
+  },
+  "look_down_phone": {
+   "name": "Cúi nhìn điện thoại",
+   "tips": [
+    "Cầm điện thoại ngang ngực, khuỷu tay mềm",
+    "Hơi cúi cằm về phía màn hình",
+    "Dồn trọng lượng lên một chân để hông lệch tự nhiên"
+   ],
+   "cameraCues": [
+    "Góc 3/4 ngang tầm mắt",
+    "Độ sâu trường ảnh nông để đèn đường thành bokeh"
+   ]
+  },
+  "looking_away": {
+   "name": "Nhìn xa xăm",
+   "tips": [
+    "Hơi cúi cằm",
+    "Mắt hướng về phía nguồn sáng"
+   ],
+   "cameraCues": [
+    "Mặt nghiêng hoàn toàn hoặc 3/4",
+    "Khoảng trống ở phía ánh mắt nhìn"
+   ]
+  },
+  "night_city_lean_against_rail": {
+   "name": "Đêm phố — tựa lan can",
+   "tips": [
+    "Tựa một bên hông vào lan can; khoanh tay hoặc đặt một tay lên lan can",
+    "Để ánh đèn neon / đèn phố xung quanh tạo ánh sáng viền; tránh flash gắt"
+   ],
+   "cameraCues": [
+    "Khung hình từ thắt lưng trở lên hoặc 3/4; độ sâu trường ảnh nông với đèn bokeh ở hậu cảnh",
+    "ISO cho thiếu sáng — dùng khẩu độ rộng để da vẫn sạch"
+   ]
+  },
+  "one_knee_down": {
+   "name": "Một gối chạm đất",
+   "tips": [
+    "Một gối chạm đất; thân người thẳng",
+    "Tay để tự do hoặc chắp lại; nhìn về phía chủ thể hoặc ống kính"
+   ],
+   "cameraCues": [
+    "Toàn thân; có thể dùng góc máy hơi cao"
+   ]
+  },
+  "outdoor_running_midstride": {
+   "name": "Chạy ngoài trời giữa sải bước",
+   "tips": [
+    "Tiếp đất bằng phần giữa bàn chân",
+    "Cánh tay gập 90 độ",
+    "Thân người hơi nghiêng về phía trước"
+   ],
+   "cameraCues": [
+    "Góc ngang bắt trọn sải bước",
+    "Góc máy thấp cho khung hình hùng tráng"
+   ]
+  },
+  "over_shoulder": {
+   "name": "Qua vai",
+   "tips": [
+    "Xoay nhẹ thân người",
+    "Cằm hướng về phía vai"
+   ],
+   "cameraCues": [
+    "Độ sâu trường ảnh nông",
+    "Điểm sáng trong mắt"
+   ]
+  },
+  "over_shoulder_look": {
+   "name": "Nhìn qua vai",
+   "tips": [
+    "Xoay thân người 45°; ngoái nhìn qua vai gần",
+    "Giữ vai xa mềm; hơi cúi cằm"
+   ],
+   "cameraCues": [
+    "Tương đương 85mm; ngang tầm mắt; ánh sáng chính mềm từ bên"
+   ]
+  },
+  "over_shoulder_look_soft": {
+   "name": "Nhìn qua vai nhẹ nhàng",
+   "tips": [
+    "Thân người nghiêng 45° so với máy ảnh; đầu quay lại nhìn vào ống kính",
+    "Tay gần đặt nhẹ lên hông; dồn trọng lượng lên chân sau"
+   ],
+   "cameraCues": [
+    "3/4 từ phía sau; ngang tầm mắt; sáng viền + sáng chính mềm"
+   ]
+  },
+  "over_shoulder_lookback": {
+   "name": "Quay đầu nhìn qua vai",
+   "tips": [
+    "Thân người quay ra xa máy ảnh; cằm quay về phía máy ảnh qua vai xa",
+    "Đường cong chữ S mềm ở cột sống; dồn trọng lượng lên chân sau"
+   ],
+   "cameraCues": [
+    "3/4 từ phía sau; ngang tầm mắt; ánh sáng bắt sáng trên gò má"
+   ]
+  },
+  "palm_up_explain": {
+   "name": "Tay ngửa giải thích",
+   "tips": [
+    "Hai lòng bàn tay hướng lên ngang thắt lưng gợi cảm giác cởi mở",
+    "Hơi nghiêng người về phía trước giúp thu hút người xem",
+    "Giữ khuỷu tay gần thân người để khung hình tự nhiên"
+   ],
+   "cameraCues": [
+    "Khung hình từ thắt lưng trở lên",
+    "Ngang tầm mắt",
+    "Phông nền gọn gàng"
+   ]
+  },
+  "phone_scroll": {
+   "name": "Lướt điện thoại (cúi nhìn)",
+   "tips": [
+    "Hơi cúi cằm về phía điện thoại ngang ngực",
+    "Khuỷu tay mềm; giữ khuôn mặt được chiếu sáng từ phía trên hoặc phía cửa sổ"
+   ],
+   "cameraCues": [
+    "Khung hình từ thắt lưng trở lên hoặc 3/4; điện thoại ở phần ba dưới khung hình"
+   ]
+  },
+  "point_forward": {
+   "name": "Chỉ tay về phía trước",
+   "tips": [
+    "Duỗi thẳng tay nhưng không khóa cứng khuỷu",
+    "Mắt nhìn theo hướng chỉ",
+    "Chân trước bước về hướng máy ảnh"
+   ],
+   "cameraCues": [
+    "Khung hình 3/4 người",
+    "Chừa khoảng trống theo hướng chỉ tay",
+    "Tốc độ màn trập trung bình"
+   ]
+  },
+  "power_stance": {
+   "name": "Tư thế uy lực",
+   "tips": [
+    "Hai chân rộng bằng vai",
+    "Vai mở ra sau",
+    "Cằm ngang"
+   ],
+   "cameraCues": [
+    "Chính diện hoặc góc máy hơi thấp"
+   ]
+  },
+  "rooftop_golden_hour_stand": {
+   "name": "Đứng trên sân thượng giờ vàng",
+   "tips": [
+    "Xoay thân người 45 độ so với máy ảnh",
+    "Thả lỏng vai",
+    "Mỉm cười nhẹ hoặc ánh mắt tự nhiên như khoảnh khắc đời thường"
+   ],
+   "cameraCues": [
+    "Ánh sáng ngược để tạo viền sáng rực",
+    "Ngang tầm mắt cho cảm giác tự nhiên"
+   ]
+  },
+  "seated_cafe_laptop": {
+   "name": "Ngồi quán cà phê dùng laptop",
+   "tips": [
+    "Ngồi thẳng nhưng thư giãn",
+    "Tay đặt nhẹ trên bàn phím",
+    "Mắt nhìn vào màn hình để tập trung tự nhiên"
+   ],
+   "cameraCues": [
+    "Góc 3/4 từ phía bên kia bàn",
+    "Ánh sáng cửa sổ từ bên"
+   ]
+  },
+  "seated_crossed_legs": {
+   "name": "Ngồi vắt chéo chân",
+   "tips": [
+    "Ngồi thẳng trên ghế đẩu; vắt chéo chân ở đầu gối; tay đặt lên gối trên",
+    "Vai thả lỏng; cằm ngang; mắt nhìn vào máy ảnh"
+   ],
+   "cameraCues": [
+    "Góc 3/4; ngang tầm mắt; ánh sáng chính mềm"
+   ]
+  },
+  "seated_profile": {
+   "name": "Ngồi góc nghiêng",
+   "tips": [
+    "Ngồi thẳng, trọng lượng dồn lên một bên hông",
+    "Hơi xoay vai về phía máy ảnh",
+    "Tay thả lỏng trên đùi hoặc tay vịn ghế"
+   ],
+   "cameraCues": [
+    "Góc 3/4 hoặc nghiêng hoàn toàn",
+    "Ngang tầm mắt hoặc hơi cao hơn"
+   ]
+  },
+  "seated_profile_window": {
+   "name": "Ngồi nghiêng bên cửa sổ",
+   "tips": [
+    "Ngồi thẳng gần cửa sổ; vai mở hướng về phía ánh sáng",
+    "Hơi cúi cằm; tay xa đặt lên đùi"
+   ],
+   "cameraCues": [
+    "Góc nghiêng hoặc 3/4; ngang tầm mắt; ánh sáng chính mềm từ cửa sổ"
+   ]
+  },
+  "seated_window_light": {
+   "name": "Ngồi trong ánh sáng cửa sổ",
+   "tips": [
+    "Ngồi chếch 45° so với cửa sổ; mặt hướng về phía ánh sáng mềm",
+    "Tay thả lỏng trên đùi; hạ vai xuống"
+   ],
+   "cameraCues": [
+    "Ống kính 50–85mm; ngang tầm mắt; đo sáng theo khuôn mặt"
+   ]
+  },
+  "selfie_peace": {
+   "name": "Selfie giơ tay chữ V",
+   "tips": [
+    "Giơ tay gần má với dấu chữ V (peace)",
+    "Hơi nghiêng đầu, mắt nhìn vào ống kính"
+   ],
+   "cameraCues": [
+    "Khung hình đầu và vai hoặc từ thắt lưng trở lên, tay nằm trong khung"
+   ]
+  },
+  "side_profile_chin_up": {
+   "name": "Nghiêng mặt, ngẩng cằm",
+   "tips": [
+    "Nghiêng mặt hoàn toàn sang bên; vươn nhẹ qua cổ",
+    "Hơi nâng cằm; vai hạ xuống và mở ra sau"
+   ],
+   "cameraCues": [
+    "Góc nghiêng 90°; ngang tầm mắt; ánh sáng chính mềm từ phía trước"
+   ]
+  },
+  "side_profile_look": {
+   "name": "Ánh nhìn nghiêng",
+   "tips": [
+    "Cằm hơi đưa về phía trước",
+    "Hạ vai xa để kéo dài đường nét"
+   ],
+   "cameraCues": [
+    "Nghiêng hoàn toàn hoặc nghiêng 3/4"
+   ]
+  },
+  "side_profile_standing": {
+   "name": "Đứng nghiêng hoàn toàn",
+   "tips": [
+    "Thân người nghiêng hoàn toàn sang bên; cằm hơi đưa ra phía trước; vai xếp thẳng",
+    "Tay thả lỏng hai bên hoặc một tay lên hông; dồn trọng lượng lên chân sau"
+   ],
+   "cameraCues": [
+    "Nghiêng hoàn toàn sang bên; ngang tầm mắt; ánh sáng chính mềm từ phía trước mặt"
+   ]
+  },
+  "side_profile_walk": {
+   "name": "Sải bước góc nghiêng",
+   "tips": [
+    "Đi song song với máy ảnh; giữa sải bước",
+    "Cằm ngang; tay vung tự nhiên"
+   ],
+   "cameraCues": [
+    "Toàn thân góc bên; tốc độ màn trập 1/125s trở lên để đóng băng chuyển động"
+   ]
+  },
+  "sit_cross_legged": {
+   "name": "Ngồi xếp bằng",
+   "tips": [
+    "Ngồi thẳng, vươn dài cột sống",
+    "Tay đặt lên gối hoặc một tay chống phía sau",
+    "Ánh mắt dịu nhìn ra ngoài khung hình"
+   ],
+   "cameraCues": [
+    "Góc máy hơi cao",
+    "Khung hình 3/4 người"
+   ]
+  },
+  "sit_on_stool": {
+   "name": "Ngồi trên ghế đẩu",
+   "tips": [
+    "Ngồi ở mép trước của ghế đẩu",
+    "Bắt chéo nhẹ mắt cá chân để đường nét gọn gàng",
+    "Tay đặt lên đùi hoặc một tay đặt lên ghế"
+   ],
+   "cameraCues": [
+    "Chính diện góc 3/4",
+    "Góc máy hơi thấp để tôn đôi chân"
+   ]
+  },
+  "sitting_stairs_casual": {
+   "name": "Ngồi cầu thang tự nhiên",
+   "tips": [
+    "Ngồi giữa bậc thang; một chân thấp hơn để tạo đường chéo",
+    "Khuỷu tay đặt lên gối hoặc một tay chống phía sau"
+   ],
+   "cameraCues": [
+    "Khung hình 3/4 người; góc máy hơi thấp"
+   ]
+  },
+  "standing_three_quarter_turn": {
+   "name": "Đứng xoay người 3/4",
+   "tips": [
+    "Xoay hông 30–45° so với máy ảnh; mặt quay lại hướng ống kính",
+    "Vai trước hơi thấp hơn; dồn trọng lượng lên chân sau"
+   ],
+   "cameraCues": [
+    "Khung hình từ đầu đến đầu gối; ánh sáng chính mềm ở góc 45°"
+   ]
+  },
+  "stretch_reach": {
+   "name": "Vươn người duỗi tay",
+   "tips": [
+    "Vươn dài qua các đầu ngón tay",
+    "Giữ xương sườn xếp thẳng trên xương chậu",
+    "Đứng vững đều trên cả hai chân"
+   ],
+   "cameraCues": [
+    "Toàn thân",
+    "Góc máy hơi thấp",
+    "Khoảng trống phía trên bàn tay"
+   ]
+  },
+  "umbrella_walk": {
+   "name": "Sải bước với ô",
+   "tips": [
+    "Cầm ô hơi phía trước và cao hơn trán",
+    "Đang giữa bước đi; tay tự do thả lỏng bên người"
+   ],
+   "cameraCues": [
+    "Toàn thân góc 3/4; có thể dùng góc đường phố thấp"
+   ]
+  },
+  "walk_toward_camera": {
+   "name": "Bước về phía ống kính",
+   "tips": [
+    "Đóng băng giữa sải bước",
+    "Chân trước hướng về máy ảnh"
+   ],
+   "cameraCues": [
+    "Tốc độ màn trập 1/250 trở lên",
+    "Chừa khoảng trống phía trước"
+   ]
+  },
+  "walking_toward_camera": {
+   "name": "Đi bộ về phía máy ảnh",
+   "tips": [
+    "Giữa sải bước; chân trước tiếp đất bằng gót; vai mở hướng về ống kính",
+    "Tay vung thả lỏng; mắt nhìn vào máy ảnh; có thể mỉm cười nhẹ"
+   ],
+   "cameraCues": [
+    "Chính diện; góc máy hơi thấp; đóng băng chuyển động"
+   ]
+  },
+  "wall_lean": {
+   "name": "Tựa tường",
+   "tips": [
+    "Đặt nhẹ một vai và hông vào tường",
+    "Bắt chéo mắt cá chân hoặc chống chân tự do bằng mũi chân",
+    "Hơi cúi cằm để ánh mắt dịu"
+   ],
+   "cameraCues": [
+    "Góc 3/4",
+    "Ngang tầm mắt hoặc hơi thấp hơn"
+   ]
+  },
+  "weight_shift_standing": {
+   "name": "Đứng dồn trọng lượng một bên",
+   "tips": [
+    "Dồn phần lớn trọng lượng sang một bên hông",
+    "Để chân tự do hơi chùng ở đầu gối",
+    "Giữ vai ngang để trông thư giãn"
+   ],
+   "cameraCues": [
+    "Khung hình cắt từ thắt lưng trở lên",
+    "Ánh sáng cửa sổ mềm từ bên"
+   ]
+  },
+  "window_gaze": {
+   "name": "Nhìn ra cửa sổ",
+   "tips": [
+    "Đứng cạnh cửa sổ; mặt hướng về phía ánh sáng mềm",
+    "Tay thả lỏng; mắt hơi lệch khỏi máy ảnh"
+   ],
+   "cameraCues": [
+    "Khung hình từ thắt lưng trở lên; cửa sổ làm ánh sáng chính; phông nền gọn gàng"
+   ]
+  },
+  "window_light_stand": {
+   "name": "Đứng trong ánh sáng cửa sổ",
+   "tips": [
+    "Mặt hướng về cửa sổ ở góc 45 độ",
+    "Vai xa hơi đưa ra sau"
+   ],
+   "cameraCues": [
+    "Đo sáng theo khuôn mặt",
+    "Lấy cả ánh sáng viền từ cửa sổ"
+   ]
+  },
+  "yoga_tree": {
+   "name": "Tư thế yoga cái cây",
+   "tips": [
+    "Ấn chắc bàn chân trụ xuống sàn",
+    "Đầu gối mở sang bên mà không vặn hông",
+    "Tay chắp trước ngực hoặc đưa lên cao với vai mềm"
+   ],
+   "cameraCues": [
+    "Toàn thân, khung hình dọc",
+    "Ngang tầm mắt",
+    "Phông nền đơn giản"
+   ]
+  }
+ },
+ "scenes": {
+  "beach_sunset": {
+   "name": "Hoàng hôn trên biển"
+  },
+  "cafe_window": {
+   "name": "Ghế bên cửa sổ quán cà phê"
+  },
+  "cafe_window_counter": {
+   "name": "Quầy bar bên cửa sổ quán cà phê"
+  },
+  "city_balcony": {
+   "name": "Ban công thành phố"
+  },
+  "festival_crowd": {
+   "name": "Rìa đám đông lễ hội"
+  },
+  "forest_path": {
+   "name": "Lối mòn trong rừng"
+  },
+  "garden_path": {
+   "name": "Lối đi vườn buổi sáng"
+  },
+  "garden_proposal": {
+   "name": "Lối vườn cầu hôn"
+  },
+  "harbor_pier": {
+   "name": "Cầu cảng buổi sáng"
+  },
+  "home_window": {
+   "name": "Ánh sáng cửa sổ ở nhà"
+  },
+  "indoor_loft": {
+   "name": "Cửa sổ phòng loft"
+  },
+  "library_nook": {
+   "name": "Góc nhỏ thư viện"
+  },
+  "market_day": {
+   "name": "Ngày chợ ngoài trời"
+  },
+  "mountain_trail": {
+   "name": "Đường mòn núi ngắm cảnh"
+  },
+  "neon_alley": {
+   "name": "Hẻm neon ban đêm"
+  },
+  "office_lobby": {
+   "name": "Sảnh văn phòng"
+  },
+  "rooftop_night": {
+   "name": "Sân thượng ngắm phố đêm"
+  },
+  "sports_field": {
+   "name": "Sân thể thao buổi chiều"
+  },
+  "street_crossing": {
+   "name": "Vạch qua đường"
+  },
+  "studio_gray": {
+   "name": "Phông xám studio"
+  },
+  "subway_platform": {
+   "name": "Sân ga tàu điện ngầm"
+  },
+  "urban_wall": {
+   "name": "Bức tường đô thị"
+  },
+  "yoga_studio_morning": {
+   "name": "Ánh sáng sớm ở phòng yoga"
+  }
+ }
+}

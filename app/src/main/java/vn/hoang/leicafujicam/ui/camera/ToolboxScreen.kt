@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -39,6 +40,7 @@ fun ToolboxScreen(
     onLutCreatorClick: () -> Unit,
     onLutSynthesisClick: () -> Unit,
     onDeviceCalibrationClick: () -> Unit,
+    onPoseGuideClick: () -> Unit,
     onColorWalkClick: () -> Unit,
     onFilmLibraryClick: () -> Unit,
     onPuzzleClick: () -> Unit,
@@ -62,6 +64,12 @@ fun ToolboxScreen(
             descriptionRes = R.string.calibration_toolbox_desc,
             icon = AppIcons.Tune,
             onClick = onDeviceCalibrationClick
+        ),
+        ToolboxItem(
+            titleRes = R.string.pose_guide_title,
+            descriptionRes = R.string.pose_guide_toolbox_desc,
+            icon = Icons.Filled.Person,
+            onClick = onPoseGuideClick
         ),
         ToolboxItem(
             titleRes = R.string.toolbox_puzzle_title,

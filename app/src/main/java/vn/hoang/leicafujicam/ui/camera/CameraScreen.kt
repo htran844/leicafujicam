@@ -86,7 +86,11 @@ import vn.hoang.leicafujicam.video.VideoFpsPreset
 import vn.hoang.leicafujicam.video.VideoLogProfile
 import vn.hoang.leicafujicam.video.VideoResolutionPreset
 import vn.hoang.leicafujicam.video.VideoStabilizationMode
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.withContext
+import vn.hoang.leicafujicam.pose.PoseCatalog
+import vn.hoang.leicafujicam.pose.PoseCatalogData
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.delay
@@ -235,6 +239,12 @@ fun CameraScreen(
     val eyeFocusEnabled by viewModel.eyeFocusEnabled.collectAsState()
     val keepScreenOn by viewModel.keepScreenOn.collectAsState(initial = false)
     val currentLutId by viewModel.currentLutId.collectAsState()
+    val poseGuideState by viewModel.poseGuideState.collectAsState()
+    val poseGuideContext = LocalContext.current
+    var poseCatalog by remember { mutableStateOf<PoseCatalogData?>(null) }
+    LaunchedEffect(Unit) {
+        poseCatalog = withContext(Dispatchers.IO) { PoseCatalog.load(poseGuideContext) }
+    }
     val lutSwipeState = rememberLutSwipeState()
     val currentRecipeParams by viewModel.currentRecipeParams.collectAsState()
     val lutSelectorMode by viewModel.lutSelectorMode.collectAsState()
@@ -1475,6 +1485,33 @@ fun CameraScreen(
                                 aspectRatio = previewAspectRatio,
                                 modifier = Modifier.fillMaxSize()
                             )
+                        }
+
+                        // 姿势引导覆盖 (pose guide overlay)
+                        poseGuideState.poseId?.let { activePoseId ->
+                            val catalogData = poseCatalog
+                            val activePose = catalogData?.posesById?.get(activePoseId)
+                            if (catalogData != null && activePose != null) {
+                                PoseGuideOverlay(
+                                    pose = activePose,
+                                    state = poseGuideState,
+                                    aspectRatio = previewAspectRatio,
+                                    onUpdate = { transform ->
+                                        viewModel.updatePoseGuide(transform)
+                                    },
+                                    onCycle = { direction ->
+                                        val ids = catalogData.poses.map { it.id }
+                                        val idx = ids.indexOf(activePoseId)
+                                        if (idx >= 0 && ids.isNotEmpty()) {
+                                            val nextId =
+                                                ids[(idx + direction + ids.size) % ids.size]
+                                            viewModel.setPoseGuidePose(nextId)
+                                        }
+                                    },
+                                    onClose = { viewModel.clearPoseGuide() },
+                                    modifier = Modifier.fillMaxSize()
+                                )
+                            }
                         }
 
                         // 倒计时覆盖
