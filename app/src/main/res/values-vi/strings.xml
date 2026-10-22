@@ -1448,6 +1448,12 @@
     <string name="pose_guide_close">Đóng hướng dẫn</string>
     <string name="pose_guide_opacity">Độ mờ</string>
     <string name="pose_guide_size">Cỡ</string>
+    <string name="pose_guide_gender_all">Tất cả</string>
+    <string name="pose_guide_female">Nữ</string>
+    <string name="pose_guide_male">Nam</string>
+    <string name="pose_guide_source">Nguồn: %1$s · %2$s</string>
+    <string name="pose_guide_show_photo">Hiện ảnh mẫu</string>
+    <string name="pose_guide_show_figure">Hiện hình dáng</string>
     <string name="calibration_guide_body">Chụp bảng ColorChecker 24 bằng chính app này (đặt bộ lọc là Không) dưới ánh sáng trung tính, rồi chọn ảnh đó tại đây. App sẽ đo bảng màu, tính hiệu chỉnh màu riêng cho máy này và lưu các bản đã hiệu chuẩn của những phong cách tích hợp — dùng được ngay trên máy. Sau đó xuất gói hiệu chuẩn để đưa vào bản phát hành cho mọi người dùng cùng model máy.</string>
     <string name="calibration_guide_steps">Cách chụp bảng màu:\n1. Đặt bộ lọc là Không; khóa cân bằng trắng và phơi sáng.\n2. Dùng ánh sáng D65 / 5500K; để bảng chiếm phần lớn khung hình; tránh chói và bóng đổ.\n3. Chụp ảnh, chọn ảnh bên dưới và kéo 4 tay nắm vào 4 góc của lưới ô màu.</string>
     <string name="calibration_pick_photo">Chọn ảnh bảng màu</string>

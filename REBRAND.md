@@ -80,3 +80,21 @@ MIT, Copyright (c) 2026 MergeOS / ThanhTrucSolutions — toàn văn giấy phép
 tại `app/src/main/assets/poses/POSEGUIDE-LICENSE.txt`, dữ liệu đóng gói tại
 `app/src/main/assets/poses/poses.json` (sinh bởi
 `tools/pose-data/build_pose_catalog.py`).
+
+## 1.0.8 — Chia dáng Nam/Nữ + ảnh mẫu kèm hình dáng
+
+- Catalog mở rộng lên 110 dáng với trục giới tính: 76 dáng PoseGuide được gắn
+  nhãn theo thực hành tạo dáng chuẩn (nữ 7, nam 6, còn lại dùng chung), cộng
+  20 dáng tự thiết kế riêng cho nữ (10) và nam (10) trong
+  `tools/pose-data/extra_poses.json` (khung xương + mẹo gốc của dự án,
+  en/vi). Màn duyệt dáng có thêm hàng chip lọc Tất cả / Nữ / Nam (dáng dùng
+  chung luôn hiển thị ở cả hai phía).
+- 14 dáng kèm **ảnh mẫu gốc + hình dáng** thu thập từ các bài hướng dẫn tạo
+  dáng công khai: 8 dáng nữ từ guide của shram.kiev.ua (mỗi ảnh ghi tên
+  nhiếp ảnh gia ngay trong app, kèm link bài gốc) và 6 dáng nam từ Modern
+  Gentleman Magazine. Khung xương 13 điểm được trích tự động bằng MediaPipe
+  PoseLandmarker từ chính ảnh mẫu (kiểm chứng trực quan từng dáng; 1 dáng bị
+  trích lỗi đã loại, 1 dáng sửa tay thủ công theo ảnh). Ảnh mẫu hiện ở lưới,
+  panel chi tiết và trong lớp phủ camera (nút chuyển Ảnh mẫu / Hình dáng).
+  Ảnh thuộc bản quyền của tác giả gốc — app giữ nguyên ghi công và link
+  nguồn; chỉ phục vụ tham khảo cá nhân.

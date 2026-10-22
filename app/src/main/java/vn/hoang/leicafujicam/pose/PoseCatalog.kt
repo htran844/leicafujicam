@@ -18,11 +18,17 @@ import java.util.Locale
 data class PoseEntry(
     val id: String,
     val nameMap: Map<String, String>,
+    val gender: String = "unisex",
     val standing: Boolean,
     val tags: List<String>,
     val tipsMap: Map<String, List<String>>,
     val cameraCuesMap: Map<String, List<String>>,
-    val joints: Map<String, Offset>
+    val joints: Map<String, Offset>,
+    /** Example photo asset path relative to assets/poses/, if bundled. */
+    val photo: String? = null,
+    val sourcePlatform: String? = null,
+    val sourceCreator: String? = null,
+    val sourceUrl: String? = null
 ) {
     fun getName(locale: Locale = Locale.getDefault()): String =
         nameMap[locale.language] ?: nameMap["en"] ?: id
@@ -90,14 +96,20 @@ object PoseCatalog {
                         arr.getDouble(1).toFloat()
                     )
                 }
+                val sourceObj = obj.optJSONObject("source")
                 poses += PoseEntry(
                     id = obj.getString("id"),
                     nameMap = readNameMap(obj.getJSONObject("name")),
+                    gender = obj.optString("gender", "unisex"),
                     standing = obj.optBoolean("standing", true),
                     tags = readStringList(obj.optJSONArray("tags")),
                     tipsMap = readTextMap(obj.optJSONObject("tips")),
                     cameraCuesMap = readTextMap(obj.optJSONObject("cameraCues")),
-                    joints = joints
+                    joints = joints,
+                    photo = obj.optString("photo").ifEmpty { null },
+                    sourcePlatform = sourceObj?.optString("platform")?.ifEmpty { null },
+                    sourceCreator = sourceObj?.optString("creator")?.ifEmpty { null },
+                    sourceUrl = sourceObj?.optString("url")?.ifEmpty { null }
                 )
             }
             val scenes = mutableListOf<PoseScene>()

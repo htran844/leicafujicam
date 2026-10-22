@@ -1,0 +1,23 @@
+{
+  "id": "outdoor_running_midstride",
+  "name": "Outdoor Running Midstride",
+  "standing": true,
+  "tags": ["outdoor", "action", "fitness", "running", "dynamic"],
+  "tips": ["Land on midfoot", "Arms at 90 degrees", "Lean torso slightly forward"],
+  "camera_cues": ["side angle catches stride", "low angle for hero shot"],
+  "joints": {
+    "nose": [0.5, 0.15, 0.0],
+    "l_shoulder": [0.4, 0.3, 0.0],
+    "r_shoulder": [0.6, 0.3, 0.0],
+    "l_elbow": [0.32, 0.45, 0.0],
+    "r_elbow": [0.7, 0.45, 0.0],
+    "l_wrist": [0.25, 0.4, 0.0],
+    "r_wrist": [0.78, 0.4, 0.0],
+    "l_hip": [0.45, 0.55, 0.0],
+    "r_hip": [0.6, 0.55, 0.0],
+    "l_knee": [0.3, 0.7, 0.0],
+    "r_knee": [0.75, 0.7, 0.0],
+    "l_ankle": [0.2, 0.9, 0.0],
+    "r_ankle": [0.85, 0.9, 0.0]
+  }
+}

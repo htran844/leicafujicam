@@ -6,6 +6,7 @@
     "en": "Arms Crossed",
     "vi": "Khoanh tay"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "portrait",
@@ -93,6 +94,7 @@
     "en": "Arms Crossed Power",
     "vi": "Khoanh tay uy lực"
    },
+   "gender": "male",
    "standing": true,
    "tags": [
     "studio",
@@ -180,6 +182,7 @@
     "en": "Arms Raised Celebration",
     "vi": "Giơ tay ăn mừng"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "outdoor",
@@ -274,6 +277,7 @@
     "en": "Back to Camera",
     "vi": "Quay lưng với máy ảnh"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "outdoor",
@@ -368,6 +372,7 @@
     "en": "Backpack Over-Shoulder Turn",
     "vi": "Quay vai với ba lô"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "outdoor",
@@ -455,6 +460,7 @@
     "en": "Bike Lean",
     "vi": "Tựa vào xe đạp"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "outdoor",
@@ -542,6 +548,7 @@
     "en": "Book Reading (seated)",
     "vi": "Ngồi đọc sách"
    },
+   "gender": "unisex",
    "standing": false,
    "tags": [
     "portrait",
@@ -629,6 +636,7 @@
     "en": "Chin Rest on Hand",
     "vi": "Chống cằm lên tay"
    },
+   "gender": "unisex",
    "standing": false,
    "tags": [
     "portrait",
@@ -716,6 +724,7 @@
     "en": "Classic At Ease",
     "vi": "Đứng thư thái cổ điển"
    },
+   "gender": "male",
    "standing": true,
    "tags": [
     "portrait",
@@ -809,6 +818,7 @@
     "en": "Coffee Cup (both hands)",
     "vi": "Hai tay cầm cốc cà phê"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "portrait",
@@ -896,6 +906,7 @@
     "en": "Coffee Table Lean",
     "vi": "Tựa người lên bàn cà phê"
    },
+   "gender": "unisex",
    "standing": false,
    "tags": [
     "indoor",
@@ -983,6 +994,7 @@
     "en": "Contrapposto",
     "vi": "Contrapposto"
    },
+   "gender": "female",
    "standing": true,
    "tags": [
     "portrait",
@@ -1074,6 +1086,7 @@
     "en": "Crossed Arms Stand",
     "vi": "Đứng khoanh tay"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "portrait",
@@ -1161,6 +1174,7 @@
     "en": "Crouch Ready",
     "vi": "Ngồi xổm sẵn sàng"
    },
+   "gender": "unisex",
    "standing": false,
    "tags": [
     "outdoor",
@@ -1255,6 +1269,7 @@
     "en": "Crouch Street Photo",
     "vi": "Ngồi xổm đường phố"
    },
+   "gender": "unisex",
    "standing": false,
    "tags": [
     "outdoor",
@@ -1342,6 +1357,7 @@
     "en": "Crouch Tie Shoe",
     "vi": "Ngồi xổm buộc dây giày"
    },
+   "gender": "unisex",
    "standing": false,
    "tags": [
     "street",
@@ -1429,6 +1445,7 @@
     "en": "Hand on Chin",
     "vi": "Tay chạm cằm"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "indoor",
@@ -1523,6 +1540,7 @@
     "en": "Hand Wave",
     "vi": "Vẫy tay"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "portrait",
@@ -1610,6 +1628,7 @@
     "en": "Hands Behind Back",
     "vi": "Chắp tay sau lưng"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "portrait",
@@ -1701,6 +1720,7 @@
     "en": "Hands Clasped in Front",
     "vi": "Chắp tay phía trước"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "portrait",
@@ -1794,6 +1814,7 @@
     "en": "Hands in Pockets",
     "vi": "Đút tay túi quần"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "urban",
@@ -1883,6 +1904,7 @@
     "en": "Hands on Hips",
     "vi": "Chống tay lên hông"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "beach",
@@ -1970,6 +1992,7 @@
     "en": "Hands On Hips Hero",
     "vi": "Chống tay lên hông đầy uy lực"
    },
+   "gender": "male",
    "standing": true,
    "tags": [
     "studio",
@@ -2057,6 +2080,7 @@
     "en": "Hat Tip",
     "vi": "Chạm vành mũ chào"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "portrait",
@@ -2144,6 +2168,7 @@
     "en": "Jump Mid-Air",
     "vi": "Nhảy lơ lửng"
    },
+   "gender": "unisex",
    "standing": false,
    "tags": [
     "outdoor",
@@ -2238,6 +2263,7 @@
     "en": "Jump Midair Arms Open",
     "vi": "Nhảy lơ lửng dang rộng tay"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "outdoor",
@@ -2325,6 +2351,7 @@
     "en": "Kneel Profile",
     "vi": "Quỳ gối, mặt nghiêng"
    },
+   "gender": "female",
    "standing": false,
    "tags": [
     "indoor",
@@ -2419,6 +2446,7 @@
     "en": "Kneel Propose",
     "vi": "Quỳ gối cầu hôn"
    },
+   "gender": "male",
    "standing": false,
    "tags": [
     "indoor",
@@ -2512,6 +2540,7 @@
     "en": "Kneeling Propose Style",
     "vi": "Quỳ gối kiểu cầu hôn"
    },
+   "gender": "unisex",
    "standing": false,
    "tags": [
     "indoor",
@@ -2599,6 +2628,7 @@
     "en": "Laptop Desk (seated)",
     "vi": "Ngồi bàn với laptop"
    },
+   "gender": "unisex",
    "standing": false,
    "tags": [
     "indoor",
@@ -2686,6 +2716,7 @@
     "en": "Lean Forward",
     "vi": "Nghiêng người về phía trước"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "outdoor",
@@ -2780,6 +2811,7 @@
     "en": "Lean Forward Desk",
     "vi": "Nghiêng người trên bàn"
    },
+   "gender": "unisex",
    "standing": false,
    "tags": [
     "indoor",
@@ -2867,6 +2899,7 @@
     "en": "Lean on Rail",
     "vi": "Tựa vào lan can"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "outdoor",
@@ -2956,6 +2989,7 @@
     "en": "Lean Wall Casual",
     "vi": "Tựa tường tự nhiên"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "outdoor",
@@ -3049,6 +3083,7 @@
     "en": "Lean Wall Casual Soft",
     "vi": "Tựa tường tự nhiên nhẹ nhàng"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "studio",
@@ -3136,6 +3171,7 @@
     "en": "Lean Window Portrait",
     "vi": "Chân dung tựa cửa sổ"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "indoor",
@@ -3223,6 +3259,7 @@
     "en": "Lean Window Portrait Soft",
     "vi": "Chân dung tựa cửa sổ nhẹ nhàng"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "indoor",
@@ -3310,6 +3347,7 @@
     "en": "Leaning Doorframe",
     "vi": "Tựa khung cửa"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "indoor",
@@ -3397,6 +3435,7 @@
     "en": "Leaning on Rail",
     "vi": "Tựa lưng vào lan can"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "portrait",
@@ -3490,6 +3529,7 @@
     "en": "Look Down Phone",
     "vi": "Cúi nhìn điện thoại"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "street",
@@ -3581,6 +3621,7 @@
     "en": "Looking Away",
     "vi": "Nhìn xa xăm"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "portrait",
@@ -3670,6 +3711,7 @@
     "en": "Night City — Lean Against Rail",
     "vi": "Đêm phố — tựa lan can"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "portrait",
@@ -3759,6 +3801,7 @@
     "en": "One Knee Down",
     "vi": "Một gối chạm đất"
    },
+   "gender": "male",
    "standing": false,
    "tags": [
     "outdoor",
@@ -3846,6 +3889,7 @@
     "en": "Outdoor Running Midstride",
     "vi": "Chạy ngoài trời giữa sải bước"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "outdoor",
@@ -3937,6 +3981,7 @@
     "en": "Over the Shoulder",
     "vi": "Qua vai"
    },
+   "gender": "female",
    "standing": true,
    "tags": [
     "portrait",
@@ -4026,6 +4071,7 @@
     "en": "Over Shoulder Look",
     "vi": "Nhìn qua vai"
    },
+   "gender": "female",
    "standing": true,
    "tags": [
     "portrait",
@@ -4113,6 +4159,7 @@
     "en": "Over Shoulder Look Soft",
     "vi": "Nhìn qua vai nhẹ nhàng"
    },
+   "gender": "female",
    "standing": true,
    "tags": [
     "studio",
@@ -4200,6 +4247,7 @@
     "en": "Over Shoulder Lookback",
     "vi": "Quay đầu nhìn qua vai"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "outdoor",
@@ -4287,6 +4335,7 @@
     "en": "Palm Up Explain",
     "vi": "Tay ngửa giải thích"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "portrait",
@@ -4380,6 +4429,7 @@
     "en": "Phone Scroll (looking down)",
     "vi": "Lướt điện thoại (cúi nhìn)"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "portrait",
@@ -4468,6 +4518,7 @@
     "en": "Point Forward",
     "vi": "Chỉ tay về phía trước"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "outdoor",
@@ -4562,6 +4613,7 @@
     "en": "Power Stance",
     "vi": "Tư thế uy lực"
    },
+   "gender": "male",
    "standing": true,
    "tags": [
     "urban",
@@ -4651,6 +4703,7 @@
     "en": "Rooftop Golden Hour Stand",
     "vi": "Đứng trên sân thượng giờ vàng"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "outdoor",
@@ -4742,6 +4795,7 @@
     "en": "Seated Cafe Laptop",
     "vi": "Ngồi quán cà phê dùng laptop"
    },
+   "gender": "unisex",
    "standing": false,
    "tags": [
     "indoor",
@@ -4833,6 +4887,7 @@
     "en": "Seated Crossed Legs",
     "vi": "Ngồi vắt chéo chân"
    },
+   "gender": "female",
    "standing": false,
    "tags": [
     "studio",
@@ -4920,6 +4975,7 @@
     "en": "Seated Profile",
     "vi": "Ngồi góc nghiêng"
    },
+   "gender": "unisex",
    "standing": false,
    "tags": [
     "studio",
@@ -5011,6 +5067,7 @@
     "en": "Seated Profile Window",
     "vi": "Ngồi nghiêng bên cửa sổ"
    },
+   "gender": "unisex",
    "standing": false,
    "tags": [
     "studio",
@@ -5098,6 +5155,7 @@
     "en": "Seated Window Light",
     "vi": "Ngồi trong ánh sáng cửa sổ"
    },
+   "gender": "unisex",
    "standing": false,
    "tags": [
     "portrait",
@@ -5185,6 +5243,7 @@
     "en": "Selfie Peace Sign",
     "vi": "Selfie giơ tay chữ V"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "portrait",
@@ -5272,6 +5331,7 @@
     "en": "Side Profile Chin Up",
     "vi": "Nghiêng mặt, ngẩng cằm"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "studio",
@@ -5359,6 +5419,7 @@
     "en": "Side Profile Look",
     "vi": "Ánh nhìn nghiêng"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "portrait",
@@ -5446,6 +5507,7 @@
     "en": "Side Profile Standing",
     "vi": "Đứng nghiêng hoàn toàn"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "studio",
@@ -5533,6 +5595,7 @@
     "en": "Side Profile Walk",
     "vi": "Sải bước góc nghiêng"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "outdoor",
@@ -5620,6 +5683,7 @@
     "en": "Sit Cross-Legged",
     "vi": "Ngồi xếp bằng"
    },
+   "gender": "unisex",
    "standing": false,
    "tags": [
     "indoor",
@@ -5712,6 +5776,7 @@
     "en": "Sit on Stool",
     "vi": "Ngồi trên ghế đẩu"
    },
+   "gender": "female",
    "standing": false,
    "tags": [
     "studio",
@@ -5803,6 +5868,7 @@
     "en": "Sitting Stairs Casual",
     "vi": "Ngồi cầu thang tự nhiên"
    },
+   "gender": "unisex",
    "standing": false,
    "tags": [
     "outdoor",
@@ -5890,6 +5956,7 @@
     "en": "Standing Three-Quarter Turn",
     "vi": "Đứng xoay người 3/4"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "portrait",
@@ -5977,6 +6044,7 @@
     "en": "Stretch Reach",
     "vi": "Vươn người duỗi tay"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "outdoor",
@@ -6071,6 +6139,7 @@
     "en": "Umbrella Walk",
     "vi": "Sải bước với ô"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "outdoor",
@@ -6158,6 +6227,7 @@
     "en": "Walk Toward Camera",
     "vi": "Bước về phía ống kính"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "street",
@@ -6247,6 +6317,7 @@
     "en": "Walking Toward Camera",
     "vi": "Đi bộ về phía máy ảnh"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "studio",
@@ -6334,6 +6405,7 @@
     "en": "Wall Lean",
     "vi": "Tựa tường"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "outdoor",
@@ -6425,6 +6497,7 @@
     "en": "Weight Shift Standing",
     "vi": "Đứng dồn trọng lượng một bên"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "portrait",
@@ -6516,6 +6589,7 @@
     "en": "Window Gaze",
     "vi": "Nhìn ra cửa sổ"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "indoor",
@@ -6603,6 +6677,7 @@
     "en": "Window Light Stand",
     "vi": "Đứng trong ánh sáng cửa sổ"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "indoor",
@@ -6692,6 +6767,7 @@
     "en": "Yoga Tree Pose",
     "vi": "Tư thế yoga cái cây"
    },
+   "gender": "unisex",
    "standing": true,
    "tags": [
     "indoor",
@@ -6779,6 +6855,3048 @@
      0.7
     ]
    }
+  },
+  {
+   "cameraCues": {
+    "en": [
+     "Waist-up or three-quarter framing flatters this pose"
+    ],
+    "vi": [
+     "Khung hình từ thắt lưng hoặc 3/4 người hợp với dáng này"
+    ]
+   },
+   "gender": "female",
+   "id": "f_hair_touch",
+   "joints": {
+    "l_ankle": [
+     0.47,
+     0.93
+    ],
+    "l_elbow": [
+     0.36,
+     0.42
+    ],
+    "l_hip": [
+     0.46,
+     0.55
+    ],
+    "l_knee": [
+     0.44,
+     0.74
+    ],
+    "l_shoulder": [
+     0.44,
+     0.27
+    ],
+    "l_wrist": [
+     0.4,
+     0.55
+    ],
+    "nose": [
+     0.51,
+     0.11
+    ],
+    "r_ankle": [
+     0.59,
+     0.92
+    ],
+    "r_elbow": [
+     0.66,
+     0.2
+    ],
+    "r_hip": [
+     0.57,
+     0.54
+    ],
+    "r_knee": [
+     0.58,
+     0.73
+    ],
+    "r_shoulder": [
+     0.58,
+     0.28
+    ],
+    "r_wrist": [
+     0.56,
+     0.09
+    ]
+   },
+   "name": {
+    "en": "Touching the Hair",
+    "vi": "Chạm tóc"
+   },
+   "standing": true,
+   "tags": [
+    "portrait",
+    "beauty",
+    "feminine",
+    "classic"
+   ],
+   "tips": {
+    "en": [
+     "Shift weight onto one leg so the hip pops",
+     "Run fingers loosely through the hair, elbow out"
+    ],
+    "vi": [
+     "Dồn trọng lượng lên một chân để hông nhô tự nhiên",
+     "Luồn nhẹ ngón tay qua tóc, khuỷu tay hướng ra ngoài"
+    ]
+   }
+  },
+  {
+   "cameraCues": {
+    "en": [
+     "Full-body framing shows the dress shape"
+    ],
+    "vi": [
+     "Khung hình toàn thân tôn dáng váy"
+    ]
+   },
+   "gender": "female",
+   "id": "f_skirt_hold",
+   "joints": {
+    "l_ankle": [
+     0.55,
+     0.92
+    ],
+    "l_elbow": [
+     0.34,
+     0.43
+    ],
+    "l_hip": [
+     0.45,
+     0.55
+    ],
+    "l_knee": [
+     0.52,
+     0.73
+    ],
+    "l_shoulder": [
+     0.42,
+     0.28
+    ],
+    "l_wrist": [
+     0.33,
+     0.58
+    ],
+    "nose": [
+     0.5,
+     0.12
+    ],
+    "r_ankle": [
+     0.45,
+     0.92
+    ],
+    "r_elbow": [
+     0.66,
+     0.43
+    ],
+    "r_hip": [
+     0.55,
+     0.55
+    ],
+    "r_knee": [
+     0.48,
+     0.73
+    ],
+    "r_shoulder": [
+     0.58,
+     0.28
+    ],
+    "r_wrist": [
+     0.67,
+     0.58
+    ]
+   },
+   "name": {
+    "en": "Holding the Skirt",
+    "vi": "Giữ váy"
+   },
+   "standing": true,
+   "tags": [
+    "portrait",
+    "dress",
+    "feminine",
+    "outdoor"
+   ],
+   "tips": {
+    "en": [
+     "Pinch the skirt lightly between thumb and finger on both sides",
+     "Cross the ankles for a graceful line"
+    ],
+    "vi": [
+     "Kẹp nhẹ váy giữa ngón cái và ngón trỏ ở hai bên",
+     "Bắt chéo cổ chân để đường nét duyên dáng"
+    ]
+   }
+  },
+  {
+   "cameraCues": {
+    "en": [
+     "Full-body framing, slight low angle lengthens the legs"
+    ],
+    "vi": [
+     "Khung toàn thân, góc hơi thấp làm chân trông dài hơn"
+    ]
+   },
+   "gender": "female",
+   "id": "f_leg_cross_stand",
+   "joints": {
+    "l_ankle": [
+     0.56,
+     0.92
+    ],
+    "l_elbow": [
+     0.33,
+     0.4
+    ],
+    "l_hip": [
+     0.44,
+     0.55
+    ],
+    "l_knee": [
+     0.53,
+     0.73
+    ],
+    "l_shoulder": [
+     0.41,
+     0.28
+    ],
+    "l_wrist": [
+     0.42,
+     0.52
+    ],
+    "nose": [
+     0.49,
+     0.12
+    ],
+    "r_ankle": [
+     0.47,
+     0.93
+    ],
+    "r_elbow": [
+     0.63,
+     0.44
+    ],
+    "r_hip": [
+     0.55,
+     0.54
+    ],
+    "r_knee": [
+     0.5,
+     0.74
+    ],
+    "r_shoulder": [
+     0.57,
+     0.28
+    ],
+    "r_wrist": [
+     0.62,
+     0.6
+    ]
+   },
+   "name": {
+    "en": "Crossed-Leg Stand",
+    "vi": "Đứng bắt chéo chân"
+   },
+   "standing": true,
+   "tags": [
+    "portrait",
+    "street",
+    "feminine",
+    "casual"
+   ],
+   "tips": {
+    "en": [
+     "Cross one leg in front of the other, weight on the back leg",
+     "One hand on the hip, the other relaxed"
+    ],
+    "vi": [
+     "Bắt chéo một chân trước chân kia, trọng lượng dồn chân sau",
+     "Một tay chống hông, tay còn lại thả lỏng"
+    ]
+   }
+  },
+  {
+   "cameraCues": {
+    "en": [
+     "Burst mode catches the genuine peak of the laugh"
+    ],
+    "vi": [
+     "Chụp liên tiếp để bắt khoảnh khắc cười thật nhất"
+    ]
+   },
+   "gender": "female",
+   "id": "f_joyful_laugh",
+   "joints": {
+    "l_ankle": [
+     0.45,
+     0.92
+    ],
+    "l_elbow": [
+     0.36,
+     0.42
+    ],
+    "l_hip": [
+     0.45,
+     0.54
+    ],
+    "l_knee": [
+     0.46,
+     0.73
+    ],
+    "l_shoulder": [
+     0.42,
+     0.26
+    ],
+    "l_wrist": [
+     0.48,
+     0.52
+    ],
+    "nose": [
+     0.5,
+     0.1
+    ],
+    "r_ankle": [
+     0.55,
+     0.92
+    ],
+    "r_elbow": [
+     0.64,
+     0.42
+    ],
+    "r_hip": [
+     0.55,
+     0.54
+    ],
+    "r_knee": [
+     0.54,
+     0.73
+    ],
+    "r_shoulder": [
+     0.58,
+     0.26
+    ],
+    "r_wrist": [
+     0.52,
+     0.52
+    ]
+   },
+   "name": {
+    "en": "Joyful Laugh",
+    "vi": "Cười rạng rỡ"
+   },
+   "standing": true,
+   "tags": [
+    "portrait",
+    "candid",
+    "happy",
+    "lifestyle"
+   ],
+   "tips": {
+    "en": [
+     "Tilt the head back just a little and laugh for real",
+     "Clasp the hands loosely at the waist"
+    ],
+    "vi": [
+     "Hơi ngửa đầu và cười thật tự nhiên",
+     "Chắp tay nhẹ trước thắt lưng"
+    ]
+   }
+  },
+  {
+   "cameraCues": {
+    "en": [
+     "Head-and-shoulders framing, soft light"
+    ],
+    "vi": [
+     "Khung hình đầu và vai, ánh sáng mềm"
+    ]
+   },
+   "gender": "female",
+   "id": "f_neck_touch",
+   "joints": {
+    "l_ankle": [
+     0.44,
+     0.92
+    ],
+    "l_elbow": [
+     0.4,
+     0.46
+    ],
+    "l_hip": [
+     0.45,
+     0.55
+    ],
+    "l_knee": [
+     0.45,
+     0.74
+    ],
+    "l_shoulder": [
+     0.43,
+     0.28
+    ],
+    "l_wrist": [
+     0.6,
+     0.44
+    ],
+    "nose": [
+     0.51,
+     0.12
+    ],
+    "r_ankle": [
+     0.58,
+     0.92
+    ],
+    "r_elbow": [
+     0.68,
+     0.36
+    ],
+    "r_hip": [
+     0.56,
+     0.54
+    ],
+    "r_knee": [
+     0.57,
+     0.73
+    ],
+    "r_shoulder": [
+     0.58,
+     0.27
+    ],
+    "r_wrist": [
+     0.54,
+     0.22
+    ]
+   },
+   "name": {
+    "en": "Touching the Neck",
+    "vi": "Chạm cổ"
+   },
+   "standing": true,
+   "tags": [
+    "portrait",
+    "beauty",
+    "editorial",
+    "feminine"
+   ],
+   "tips": {
+    "en": [
+     "Brush fingertips along the neck or collarbone, never grip",
+     "Support the raised arm with the other arm across the waist"
+    ],
+    "vi": [
+     "Lướt nhẹ đầu ngón tay dọc cổ hoặc xương quai xanh, không nắm chặt",
+     "Tay còn lại đỡ ngang thắt lưng"
+    ]
+   }
+  },
+  {
+   "cameraCues": {
+    "en": [
+     "Shoot at the model's eye level or slightly above"
+    ],
+    "vi": [
+     "Chụp ngang tầm mắt người mẫu hoặc hơi cao hơn"
+    ]
+   },
+   "gender": "female",
+   "id": "f_seated_elegant",
+   "joints": {
+    "l_ankle": [
+     0.44,
+     0.9
+    ],
+    "l_elbow": [
+     0.37,
+     0.45
+    ],
+    "l_hip": [
+     0.44,
+     0.58
+    ],
+    "l_knee": [
+     0.4,
+     0.68
+    ],
+    "l_shoulder": [
+     0.42,
+     0.3
+    ],
+    "l_wrist": [
+     0.42,
+     0.62
+    ],
+    "nose": [
+     0.5,
+     0.14
+    ],
+    "r_ankle": [
+     0.38,
+     0.9
+    ],
+    "r_elbow": [
+     0.63,
+     0.45
+    ],
+    "r_hip": [
+     0.56,
+     0.58
+    ],
+    "r_knee": [
+     0.46,
+     0.7
+    ],
+    "r_shoulder": [
+     0.58,
+     0.3
+    ],
+    "r_wrist": [
+     0.46,
+     0.64
+    ]
+   },
+   "name": {
+    "en": "Elegant Seated",
+    "vi": "Ngồi thanh lịch"
+   },
+   "standing": false,
+   "tags": [
+    "seated",
+    "portrait",
+    "elegant",
+    "studio"
+   ],
+   "tips": {
+    "en": [
+     "Angle both legs together to one side, ankles crossed",
+     "Rest the hands softly on the knees, back straight"
+    ],
+    "vi": [
+     "Để hai chân nghiêng cùng về một phía, bắt chéo cổ chân",
+     "Đặt tay nhẹ lên đầu gối, lưng thẳng"
+    ]
+   }
+  },
+  {
+   "cameraCues": {
+    "en": [
+     "Stand a few steps back for a relaxed street frame"
+    ],
+    "vi": [
+     "Đứng lùi vài bước để khung hình đường phố thoáng"
+    ]
+   },
+   "gender": "female",
+   "id": "f_wall_lean_soft",
+   "joints": {
+    "l_ankle": [
+     0.45,
+     0.93
+    ],
+    "l_elbow": [
+     0.36,
+     0.44
+    ],
+    "l_hip": [
+     0.45,
+     0.55
+    ],
+    "l_knee": [
+     0.45,
+     0.73
+    ],
+    "l_shoulder": [
+     0.42,
+     0.28
+    ],
+    "l_wrist": [
+     0.48,
+     0.56
+    ],
+    "nose": [
+     0.5,
+     0.12
+    ],
+    "r_ankle": [
+     0.56,
+     0.6
+    ],
+    "r_elbow": [
+     0.64,
+     0.44
+    ],
+    "r_hip": [
+     0.55,
+     0.55
+    ],
+    "r_knee": [
+     0.6,
+     0.72
+    ],
+    "r_shoulder": [
+     0.58,
+     0.28
+    ],
+    "r_wrist": [
+     0.52,
+     0.56
+    ]
+   },
+   "name": {
+    "en": "Soft Wall Lean",
+    "vi": "Tựa tường dịu dàng"
+   },
+   "standing": true,
+   "tags": [
+    "street",
+    "wall",
+    "feminine",
+    "casual"
+   ],
+   "tips": {
+    "en": [
+     "Rest the back against the wall, one foot flat on the wall behind",
+     "Hands clasped behind the back, chin slightly up"
+    ],
+    "vi": [
+     "Tựa lưng vào tường, một bàn chân áp phẳng lên tường phía sau",
+     "Chắp tay sau lưng, cằm hơi ngẩng"
+    ]
+   }
+  },
+  {
+   "cameraCues": {
+    "en": [
+     "Burst mode with a fast shutter freezes the skirt"
+    ],
+    "vi": [
+     "Chụp liên tiếp, tốc độ màn trập nhanh để đóng băng váy"
+    ]
+   },
+   "gender": "female",
+   "id": "f_walk_twirl",
+   "joints": {
+    "l_ankle": [
+     0.38,
+     0.9
+    ],
+    "l_elbow": [
+     0.35,
+     0.42
+    ],
+    "l_hip": [
+     0.45,
+     0.54
+    ],
+    "l_knee": [
+     0.42,
+     0.72
+    ],
+    "l_shoulder": [
+     0.42,
+     0.27
+    ],
+    "l_wrist": [
+     0.34,
+     0.56
+    ],
+    "nose": [
+     0.5,
+     0.11
+    ],
+    "r_ankle": [
+     0.63,
+     0.88
+    ],
+    "r_elbow": [
+     0.65,
+     0.42
+    ],
+    "r_hip": [
+     0.55,
+     0.54
+    ],
+    "r_knee": [
+     0.6,
+     0.7
+    ],
+    "r_shoulder": [
+     0.58,
+     0.27
+    ],
+    "r_wrist": [
+     0.66,
+     0.56
+    ]
+   },
+   "name": {
+    "en": "Walking Twirl",
+    "vi": "Bước đi xoay nhẹ"
+   },
+   "standing": true,
+   "tags": [
+    "motion",
+    "dress",
+    "outdoor",
+    "candid"
+   ],
+   "tips": {
+    "en": [
+     "Walk slowly and let the skirt flare with a small turn",
+     "Arms slightly away from the body, fingers relaxed"
+    ],
+    "vi": [
+     "Đi chậm và xoay nhẹ để váy xòe tự nhiên",
+     "Tay hơi rời thân, ngón tay thả lỏng"
+    ]
+   }
+  },
+  {
+   "cameraCues": {
+    "en": [
+     "Shoot from one step below for a flattering angle"
+    ],
+    "vi": [
+     "Chụp từ bậc thấp hơn một bậc để góc tôn dáng"
+    ]
+   },
+   "gender": "female",
+   "id": "f_stairs_seated",
+   "joints": {
+    "l_ankle": [
+     0.38,
+     0.9
+    ],
+    "l_elbow": [
+     0.34,
+     0.42
+    ],
+    "l_hip": [
+     0.44,
+     0.57
+    ],
+    "l_knee": [
+     0.4,
+     0.7
+    ],
+    "l_shoulder": [
+     0.42,
+     0.29
+    ],
+    "l_wrist": [
+     0.33,
+     0.58
+    ],
+    "nose": [
+     0.5,
+     0.13
+    ],
+    "r_ankle": [
+     0.44,
+     0.91
+    ],
+    "r_elbow": [
+     0.62,
+     0.44
+    ],
+    "r_hip": [
+     0.56,
+     0.57
+    ],
+    "r_knee": [
+     0.45,
+     0.72
+    ],
+    "r_shoulder": [
+     0.58,
+     0.29
+    ],
+    "r_wrist": [
+     0.5,
+     0.64
+    ]
+   },
+   "name": {
+    "en": "Seated on Stairs",
+    "vi": "Ngồi bậc thang"
+   },
+   "standing": false,
+   "tags": [
+    "seated",
+    "stairs",
+    "outdoor",
+    "casual"
+   ],
+   "tips": {
+    "en": [
+     "Keep the legs together and angled to one side",
+     "One arm rests on the step behind for support"
+    ],
+    "vi": [
+     "Khép hai chân và nghiêng về một phía",
+     "Một tay chống lên bậc phía sau"
+    ]
+   }
+  },
+  {
+   "cameraCues": {
+    "en": [
+     "Expose for the face, let the window blow out softly"
+    ],
+    "vi": [
+     "Đo sáng theo khuôn mặt, để cửa sổ cháy sáng nhẹ"
+    ]
+   },
+   "gender": "female",
+   "id": "f_window_touch",
+   "joints": {
+    "l_ankle": [
+     0.43,
+     0.92
+    ],
+    "l_elbow": [
+     0.37,
+     0.43
+    ],
+    "l_hip": [
+     0.44,
+     0.55
+    ],
+    "l_knee": [
+     0.44,
+     0.74
+    ],
+    "l_shoulder": [
+     0.42,
+     0.28
+    ],
+    "l_wrist": [
+     0.45,
+     0.55
+    ],
+    "nose": [
+     0.49,
+     0.12
+    ],
+    "r_ankle": [
+     0.57,
+     0.92
+    ],
+    "r_elbow": [
+     0.64,
+     0.14
+    ],
+    "r_hip": [
+     0.55,
+     0.54
+    ],
+    "r_knee": [
+     0.56,
+     0.73
+    ],
+    "r_shoulder": [
+     0.57,
+     0.27
+    ],
+    "r_wrist": [
+     0.58,
+     0.03
+    ]
+   },
+   "name": {
+    "en": "By the Window",
+    "vi": "Bên khung cửa sổ"
+   },
+   "standing": true,
+   "tags": [
+    "window",
+    "indoor",
+    "soft-light",
+    "feminine"
+   ],
+   "tips": {
+    "en": [
+     "Reach one hand up to the frame or curtain, fingertips only",
+     "Turn the body a quarter away, face back to the light"
+    ],
+    "vi": [
+     "Một tay vươn chạm khung cửa hoặc rèm, chỉ bằng đầu ngón tay",
+     "Xoay người một phần tư, mặt hướng về phía sáng"
+    ]
+   }
+  },
+  {
+   "cameraCues": {
+    "en": [
+     "Slight low angle adds presence"
+    ],
+    "vi": [
+     "Góc hơi thấp tăng vẻ vững chãi"
+    ]
+   },
+   "gender": "male",
+   "id": "m_thumb_pockets",
+   "joints": {
+    "l_ankle": [
+     0.38,
+     0.92
+    ],
+    "l_elbow": [
+     0.31,
+     0.42
+    ],
+    "l_hip": [
+     0.43,
+     0.55
+    ],
+    "l_knee": [
+     0.4,
+     0.73
+    ],
+    "l_shoulder": [
+     0.4,
+     0.28
+    ],
+    "l_wrist": [
+     0.42,
+     0.53
+    ],
+    "nose": [
+     0.5,
+     0.12
+    ],
+    "r_ankle": [
+     0.62,
+     0.92
+    ],
+    "r_elbow": [
+     0.69,
+     0.42
+    ],
+    "r_hip": [
+     0.57,
+     0.55
+    ],
+    "r_knee": [
+     0.6,
+     0.73
+    ],
+    "r_shoulder": [
+     0.6,
+     0.28
+    ],
+    "r_wrist": [
+     0.58,
+     0.53
+    ]
+   },
+   "name": {
+    "en": "Thumbs in Pockets",
+    "vi": "Ngón cái móc túi"
+   },
+   "standing": true,
+   "tags": [
+    "portrait",
+    "street",
+    "masculine",
+    "casual"
+   ],
+   "tips": {
+    "en": [
+     "Hook only the thumbs in the front pockets, fingers outside",
+     "Feet shoulder-width apart, chest open"
+    ],
+    "vi": [
+     "Chỉ móc ngón cái vào túi trước, các ngón còn lại để ngoài",
+     "Hai chân rộng bằng vai, ngực mở"
+    ]
+   }
+  },
+  {
+   "cameraCues": {
+    "en": [
+     "Waist-up framing suits formal wear"
+    ],
+    "vi": [
+     "Khung hình từ thắt lưng hợp với trang phục trang trọng"
+    ]
+   },
+   "gender": "male",
+   "id": "m_cuff_adjust",
+   "joints": {
+    "l_ankle": [
+     0.41,
+     0.92
+    ],
+    "l_elbow": [
+     0.36,
+     0.47
+    ],
+    "l_hip": [
+     0.44,
+     0.55
+    ],
+    "l_knee": [
+     0.42,
+     0.73
+    ],
+    "l_shoulder": [
+     0.41,
+     0.28
+    ],
+    "l_wrist": [
+     0.55,
+     0.47
+    ],
+    "nose": [
+     0.5,
+     0.12
+    ],
+    "r_ankle": [
+     0.59,
+     0.92
+    ],
+    "r_elbow": [
+     0.64,
+     0.42
+    ],
+    "r_hip": [
+     0.56,
+     0.55
+    ],
+    "r_knee": [
+     0.58,
+     0.73
+    ],
+    "r_shoulder": [
+     0.59,
+     0.28
+    ],
+    "r_wrist": [
+     0.54,
+     0.46
+    ]
+   },
+   "name": {
+    "en": "Adjusting the Cuff",
+    "vi": "Chỉnh cổ tay áo"
+   },
+   "standing": true,
+   "tags": [
+    "business",
+    "suit",
+    "portrait",
+    "masculine"
+   ],
+   "tips": {
+    "en": [
+     "Reach across and straighten the opposite cuff",
+     "Look slightly off camera for a candid, polished feel"
+    ],
+    "vi": [
+     "Đưa tay sang chỉnh cổ tay áo phía đối diện",
+     "Nhìn hơi lệch khỏi ống kính cho cảm giác tự nhiên, chỉn chu"
+    ]
+   }
+  },
+  {
+   "cameraCues": {
+    "en": [
+     "Three-quarter framing, catch the moment mid-glance"
+    ],
+    "vi": [
+     "Khung 3/4 người, bắt khoảnh khắc đang liếc nhìn"
+    ]
+   },
+   "gender": "male",
+   "id": "m_watch_check",
+   "joints": {
+    "l_ankle": [
+     0.41,
+     0.92
+    ],
+    "l_elbow": [
+     0.4,
+     0.4
+    ],
+    "l_hip": [
+     0.44,
+     0.55
+    ],
+    "l_knee": [
+     0.42,
+     0.73
+    ],
+    "l_shoulder": [
+     0.41,
+     0.28
+    ],
+    "l_wrist": [
+     0.52,
+     0.32
+    ],
+    "nose": [
+     0.5,
+     0.12
+    ],
+    "r_ankle": [
+     0.59,
+     0.92
+    ],
+    "r_elbow": [
+     0.65,
+     0.45
+    ],
+    "r_hip": [
+     0.56,
+     0.55
+    ],
+    "r_knee": [
+     0.58,
+     0.73
+    ],
+    "r_shoulder": [
+     0.59,
+     0.28
+    ],
+    "r_wrist": [
+     0.53,
+     0.35
+    ]
+   },
+   "name": {
+    "en": "Checking the Watch",
+    "vi": "Xem đồng hồ"
+   },
+   "standing": true,
+   "tags": [
+    "business",
+    "candid",
+    "portrait",
+    "masculine"
+   ],
+   "tips": {
+    "en": [
+     "Raise the forearm and glance at the watch, don't stare",
+     "The other hand touches the watch as if adjusting it"
+    ],
+    "vi": [
+     "Nâng cẳng tay và liếc nhìn đồng hồ, đừng nhìn chằm chằm",
+     "Tay còn lại chạm vào đồng hồ như đang chỉnh"
+    ]
+   }
+  },
+  {
+   "cameraCues": {
+    "en": [
+     "Full-body framing shows the classic silhouette"
+    ],
+    "vi": [
+     "Khung toàn thân tôn dáng cổ điển"
+    ]
+   },
+   "gender": "male",
+   "id": "m_jacket_shoulder",
+   "joints": {
+    "l_ankle": [
+     0.54,
+     0.92
+    ],
+    "l_elbow": [
+     0.35,
+     0.43
+    ],
+    "l_hip": [
+     0.44,
+     0.55
+    ],
+    "l_knee": [
+     0.5,
+     0.73
+    ],
+    "l_shoulder": [
+     0.41,
+     0.28
+    ],
+    "l_wrist": [
+     0.43,
+     0.54
+    ],
+    "nose": [
+     0.5,
+     0.12
+    ],
+    "r_ankle": [
+     0.48,
+     0.92
+    ],
+    "r_elbow": [
+     0.68,
+     0.16
+    ],
+    "r_hip": [
+     0.56,
+     0.54
+    ],
+    "r_knee": [
+     0.53,
+     0.73
+    ],
+    "r_shoulder": [
+     0.59,
+     0.27
+    ],
+    "r_wrist": [
+     0.57,
+     0.24
+    ]
+   },
+   "name": {
+    "en": "Jacket over the Shoulder",
+    "vi": "Vắt áo khoác qua vai"
+   },
+   "standing": true,
+   "tags": [
+    "street",
+    "fashion",
+    "masculine",
+    "classic"
+   ],
+   "tips": {
+    "en": [
+     "Hook the jacket over one shoulder with a finger or two",
+     "Other hand in the pocket, legs crossed casually"
+    ],
+    "vi": [
+     "Móc áo khoác qua một vai bằng một hoặc hai ngón tay",
+     "Tay còn lại trong túi, chân bắt chéo thoải mái"
+    ]
+   }
+  },
+  {
+   "cameraCues": {
+    "en": [
+     "Shoot slightly from the side for depth"
+    ],
+    "vi": [
+     "Chụp hơi chếch từ bên để có chiều sâu"
+    ]
+   },
+   "gender": "male",
+   "id": "m_wall_foot_up",
+   "joints": {
+    "l_ankle": [
+     0.44,
+     0.93
+    ],
+    "l_elbow": [
+     0.38,
+     0.42
+    ],
+    "l_hip": [
+     0.44,
+     0.55
+    ],
+    "l_knee": [
+     0.44,
+     0.73
+    ],
+    "l_shoulder": [
+     0.41,
+     0.28
+    ],
+    "l_wrist": [
+     0.58,
+     0.4
+    ],
+    "nose": [
+     0.5,
+     0.12
+    ],
+    "r_ankle": [
+     0.57,
+     0.6
+    ],
+    "r_elbow": [
+     0.62,
+     0.42
+    ],
+    "r_hip": [
+     0.56,
+     0.55
+    ],
+    "r_knee": [
+     0.63,
+     0.7
+    ],
+    "r_shoulder": [
+     0.59,
+     0.28
+    ],
+    "r_wrist": [
+     0.42,
+     0.4
+    ]
+   },
+   "name": {
+    "en": "Wall Lean, Foot Up",
+    "vi": "Tựa tường gác chân"
+   },
+   "standing": true,
+   "tags": [
+    "street",
+    "wall",
+    "masculine",
+    "casual"
+   ],
+   "tips": {
+    "en": [
+     "One foot flat on the wall behind, knee bent",
+     "Arms crossed, shoulders relaxed against the wall"
+    ],
+    "vi": [
+     "Một bàn chân áp phẳng lên tường phía sau, gối gập",
+     "Khoanh tay, vai thả lỏng tựa tường"
+    ]
+   }
+  },
+  {
+   "cameraCues": {
+    "en": [
+     "Shoot slightly from above, three-quarter framing"
+    ],
+    "vi": [
+     "Chụp hơi từ trên xuống, khung 3/4 người"
+    ]
+   },
+   "gender": "male",
+   "id": "m_seated_ankle_knee",
+   "joints": {
+    "l_ankle": [
+     0.39,
+     0.9
+    ],
+    "l_elbow": [
+     0.35,
+     0.44
+    ],
+    "l_hip": [
+     0.43,
+     0.57
+    ],
+    "l_knee": [
+     0.4,
+     0.68
+    ],
+    "l_shoulder": [
+     0.41,
+     0.29
+    ],
+    "l_wrist": [
+     0.42,
+     0.6
+    ],
+    "nose": [
+     0.5,
+     0.13
+    ],
+    "r_ankle": [
+     0.44,
+     0.63
+    ],
+    "r_elbow": [
+     0.65,
+     0.44
+    ],
+    "r_hip": [
+     0.57,
+     0.57
+    ],
+    "r_knee": [
+     0.64,
+     0.62
+    ],
+    "r_shoulder": [
+     0.59,
+     0.29
+    ],
+    "r_wrist": [
+     0.5,
+     0.6
+    ]
+   },
+   "name": {
+    "en": "Seated, Ankle on Knee",
+    "vi": "Ngồi vắt chân chữ tứ"
+   },
+   "standing": false,
+   "tags": [
+    "seated",
+    "portrait",
+    "masculine",
+    "classic"
+   ],
+   "tips": {
+    "en": [
+     "Rest one ankle on the opposite knee, knee opened wide",
+     "Lean slightly forward, one hand on the raised ankle"
+    ],
+    "vi": [
+     "Gác một cổ chân lên đầu gối đối diện, đầu gối mở rộng",
+     "Hơi nghiêng người về trước, một tay đặt lên cổ chân gác"
+    ]
+   }
+  },
+  {
+   "cameraCues": {
+    "en": [
+     "Waist-up or full body both work; keep the background clean"
+    ],
+    "vi": [
+     "Khung từ thắt lưng hay toàn thân đều được; giữ hậu cảnh gọn"
+    ]
+   },
+   "gender": "male",
+   "id": "m_hands_behind_head",
+   "joints": {
+    "l_ankle": [
+     0.38,
+     0.92
+    ],
+    "l_elbow": [
+     0.28,
+     0.22
+    ],
+    "l_hip": [
+     0.43,
+     0.55
+    ],
+    "l_knee": [
+     0.4,
+     0.73
+    ],
+    "l_shoulder": [
+     0.41,
+     0.28
+    ],
+    "l_wrist": [
+     0.44,
+     0.1
+    ],
+    "nose": [
+     0.5,
+     0.13
+    ],
+    "r_ankle": [
+     0.62,
+     0.92
+    ],
+    "r_elbow": [
+     0.72,
+     0.22
+    ],
+    "r_hip": [
+     0.57,
+     0.55
+    ],
+    "r_knee": [
+     0.6,
+     0.73
+    ],
+    "r_shoulder": [
+     0.59,
+     0.28
+    ],
+    "r_wrist": [
+     0.56,
+     0.1
+    ]
+   },
+   "name": {
+    "en": "Hands Behind the Head",
+    "vi": "Chắp tay sau đầu"
+   },
+   "standing": true,
+   "tags": [
+    "casual",
+    "relaxed",
+    "masculine",
+    "outdoor"
+   ],
+   "tips": {
+    "en": [
+     "Clasp the hands behind the head, elbows wide",
+     "Wide stance, weight even, easy smile"
+    ],
+    "vi": [
+     "Chắp hai tay sau đầu, khuỷu tay mở rộng",
+     "Đứng rộng chân, trọng lượng đều, cười nhẹ"
+    ]
+   }
+  },
+  {
+   "cameraCues": {
+    "en": [
+     "Waist-up framing, plain background keeps it sharp"
+    ],
+    "vi": [
+     "Khung từ thắt lưng, hậu cảnh trơn cho sắc nét"
+    ]
+   },
+   "gender": "male",
+   "id": "m_lapel_hold",
+   "joints": {
+    "l_ankle": [
+     0.41,
+     0.92
+    ],
+    "l_elbow": [
+     0.35,
+     0.44
+    ],
+    "l_hip": [
+     0.44,
+     0.55
+    ],
+    "l_knee": [
+     0.42,
+     0.73
+    ],
+    "l_shoulder": [
+     0.41,
+     0.28
+    ],
+    "l_wrist": [
+     0.46,
+     0.33
+    ],
+    "nose": [
+     0.5,
+     0.12
+    ],
+    "r_ankle": [
+     0.59,
+     0.92
+    ],
+    "r_elbow": [
+     0.65,
+     0.44
+    ],
+    "r_hip": [
+     0.56,
+     0.55
+    ],
+    "r_knee": [
+     0.58,
+     0.73
+    ],
+    "r_shoulder": [
+     0.59,
+     0.28
+    ],
+    "r_wrist": [
+     0.54,
+     0.33
+    ]
+   },
+   "name": {
+    "en": "Holding the Lapels",
+    "vi": "Nắm ve áo khoác"
+   },
+   "standing": true,
+   "tags": [
+    "business",
+    "suit",
+    "portrait",
+    "masculine"
+   ],
+   "tips": {
+    "en": [
+     "Grip both lapels lightly at chest height",
+     "Feet apart, chin level, direct gaze"
+    ],
+    "vi": [
+     "Nắm nhẹ hai ve áo ngang ngực",
+     "Chân đứng tách, cằm ngang, nhìn thẳng"
+    ]
+   }
+  },
+  {
+   "cameraCues": {
+    "en": [
+     "Track the walk and burst at mid-stride"
+    ],
+    "vi": [
+     "Lia máy theo và chụp liên tiếp giữa bước"
+    ]
+   },
+   "gender": "male",
+   "id": "m_pocket_walk",
+   "joints": {
+    "l_ankle": [
+     0.36,
+     0.88
+    ],
+    "l_elbow": [
+     0.35,
+     0.41
+    ],
+    "l_hip": [
+     0.44,
+     0.54
+    ],
+    "l_knee": [
+     0.41,
+     0.71
+    ],
+    "l_shoulder": [
+     0.41,
+     0.27
+    ],
+    "l_wrist": [
+     0.43,
+     0.52
+    ],
+    "nose": [
+     0.5,
+     0.11
+    ],
+    "r_ankle": [
+     0.65,
+     0.89
+    ],
+    "r_elbow": [
+     0.66,
+     0.4
+    ],
+    "r_hip": [
+     0.56,
+     0.54
+    ],
+    "r_knee": [
+     0.61,
+     0.7
+    ],
+    "r_shoulder": [
+     0.59,
+     0.27
+    ],
+    "r_wrist": [
+     0.7,
+     0.55
+    ]
+   },
+   "name": {
+    "en": "Walking, Hand in Pocket",
+    "vi": "Bước đi, tay trong túi"
+   },
+   "standing": true,
+   "tags": [
+    "motion",
+    "street",
+    "masculine",
+    "candid"
+   ],
+   "tips": {
+    "en": [
+     "Walk naturally, one hand in the pocket",
+     "Let the other arm swing with the stride"
+    ],
+    "vi": [
+     "Đi tự nhiên, một tay trong túi",
+     "Tay còn lại đánh theo nhịp bước"
+    ]
+   }
+  },
+  {
+   "cameraCues": {
+    "en": [
+     "Chest-up framing, dramatic side light works well"
+    ],
+    "vi": [
+     "Khung từ ngực trở lên, ánh sáng chếch tạo khối rõ"
+    ]
+   },
+   "gender": "male",
+   "id": "m_chin_stroke",
+   "joints": {
+    "l_ankle": [
+     0.41,
+     0.92
+    ],
+    "l_elbow": [
+     0.38,
+     0.47
+    ],
+    "l_hip": [
+     0.44,
+     0.55
+    ],
+    "l_knee": [
+     0.42,
+     0.73
+    ],
+    "l_shoulder": [
+     0.41,
+     0.28
+    ],
+    "l_wrist": [
+     0.59,
+     0.44
+    ],
+    "nose": [
+     0.5,
+     0.12
+    ],
+    "r_ankle": [
+     0.59,
+     0.92
+    ],
+    "r_elbow": [
+     0.6,
+     0.42
+    ],
+    "r_hip": [
+     0.56,
+     0.55
+    ],
+    "r_knee": [
+     0.58,
+     0.73
+    ],
+    "r_shoulder": [
+     0.59,
+     0.28
+    ],
+    "r_wrist": [
+     0.51,
+     0.19
+    ]
+   },
+   "name": {
+    "en": "Stroking the Chin",
+    "vi": "Vuốt cằm suy tư"
+   },
+   "standing": true,
+   "tags": [
+    "portrait",
+    "thoughtful",
+    "masculine",
+    "editorial"
+   ],
+   "tips": {
+    "en": [
+     "Stroke the chin or jaw with one hand, gaze off camera",
+     "Support that elbow with the other arm across the waist"
+    ],
+    "vi": [
+     "Một tay vuốt cằm hoặc hàm, mắt nhìn xa khỏi ống kính",
+     "Tay còn lại ngang thắt lưng đỡ khuỷu tay kia"
+    ]
+   }
+  },
+  {
+   "id": "sf_white_dress_hair",
+   "name": {
+    "en": "Hand in Hair, White Dress",
+    "vi": "Tay luồn tóc, váy trắng"
+   },
+   "gender": "female",
+   "standing": true,
+   "tags": [
+    "portrait",
+    "outdoor",
+    "dress",
+    "feminine"
+   ],
+   "tips": {
+    "en": [
+     "Lift one hand into the hair and let the elbow point away",
+     "Keep the other arm soft along the dress"
+    ],
+    "vi": [
+     "Một tay luồn vào tóc, khuỷu tay hướng ra ngoài",
+     "Tay còn lại thả mềm dọc theo váy"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "Full-body framing in soft garden light"
+    ],
+    "vi": [
+     "Khung toàn thân dưới ánh sáng vườn mềm"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.4118,
+     0.1412
+    ],
+    "l_shoulder": [
+     0.3341,
+     0.2212
+    ],
+    "r_shoulder": [
+     0.9109,
+     0.2495
+    ],
+    "l_elbow": [
+     0.0536,
+     0.1014
+    ],
+    "r_elbow": [
+     0.9464,
+     0.4264
+    ],
+    "l_wrist": [
+     0.4375,
+     0.0536
+    ],
+    "r_wrist": [
+     0.7723,
+     0.5696
+    ],
+    "l_hip": [
+     0.3733,
+     0.5255
+    ],
+    "r_hip": [
+     0.7154,
+     0.5408
+    ],
+    "l_knee": [
+     0.2703,
+     0.7507
+    ],
+    "r_knee": [
+     0.6219,
+     0.7734
+    ],
+    "l_ankle": [
+     0.2791,
+     0.9464
+    ],
+    "r_ankle": [
+     0.5586,
+     0.9439
+    ]
+   },
+   "photo": "photos/sf_white_dress_hair.jpg",
+   "source": {
+    "platform": "shram.kiev.ua",
+    "creator": "Konstantin Lelyak",
+    "url": "http://en.shram.kiev.ua/work/photo/photo-female-photoshoot.shtml"
+   }
+  },
+  {
+   "id": "sf_street_hip",
+   "name": {
+    "en": "Hand on Hip, Street Style",
+    "vi": "Chống hông phong cách phố"
+   },
+   "gender": "female",
+   "standing": true,
+   "tags": [
+    "street",
+    "portrait",
+    "casual",
+    "feminine"
+   ],
+   "tips": {
+    "en": [
+     "One hand firmly on the hip, elbow out",
+     "Shift the weight to one leg for an S-curve"
+    ],
+    "vi": [
+     "Một tay chống chắc lên hông, khuỷu tay mở ra",
+     "Dồn trọng lượng sang một chân tạo đường cong S"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "Shoot at hip height for a confident street frame"
+    ],
+    "vi": [
+     "Chụp ngang hông để khung phố tự tin"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.5785,
+     0.0536
+    ],
+    "l_shoulder": [
+     0.2661,
+     0.1806
+    ],
+    "r_shoulder": [
+     0.8707,
+     0.1725
+    ],
+    "l_elbow": [
+     0.0536,
+     0.3564
+    ],
+    "r_elbow": [
+     0.8392,
+     0.3354
+    ],
+    "l_wrist": [
+     0.1439,
+     0.5274
+    ],
+    "r_wrist": [
+     0.9464,
+     0.4554
+    ],
+    "l_hip": [
+     0.4263,
+     0.549
+    ],
+    "r_hip": [
+     0.8416,
+     0.5346
+    ],
+    "l_knee": [
+     0.452,
+     0.7723
+    ],
+    "r_knee": [
+     0.7289,
+     0.7633
+    ],
+    "l_ankle": [
+     0.5056,
+     0.9314
+    ],
+    "r_ankle": [
+     0.7331,
+     0.9464
+    ]
+   },
+   "photo": "photos/sf_street_hip.jpg",
+   "source": {
+    "platform": "shram.kiev.ua",
+    "creator": "Ali ilker Elci",
+    "url": "http://en.shram.kiev.ua/work/photo/photo-female-photoshoot.shtml"
+   }
+  },
+  {
+   "id": "sf_studio_dress",
+   "name": {
+    "en": "Studio Dress, Relaxed Arms",
+    "vi": "Váy studio, tay thả lỏng"
+   },
+   "gender": "female",
+   "standing": true,
+   "tags": [
+    "studio",
+    "portrait",
+    "dress",
+    "feminine"
+   ],
+   "tips": {
+    "en": [
+     "Let both arms hang relaxed with a slight bend",
+     "Turn the body a quarter away, face back to camera"
+    ],
+    "vi": [
+     "Để hai tay buông lỏng với độ cong nhẹ",
+     "Xoay người một phần tư, mặt quay về ống kính"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "Plain background keeps the focus on the silhouette"
+    ],
+    "vi": [
+     "Hậu cảnh trơn giữ điểm nhấn ở đường nét cơ thể"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.9113,
+     0.0536
+    ],
+    "l_shoulder": [
+     0.2945,
+     0.1082
+    ],
+    "r_shoulder": [
+     0.8515,
+     0.1657
+    ],
+    "l_elbow": [
+     0.0536,
+     0.2779
+    ],
+    "r_elbow": [
+     0.9026,
+     0.3304
+    ],
+    "l_wrist": [
+     0.3371,
+     0.4161
+    ],
+    "r_wrist": [
+     0.9464,
+     0.4804
+    ],
+    "l_hip": [
+     0.4463,
+     0.4865
+    ],
+    "r_hip": [
+     0.744,
+     0.4845
+    ],
+    "l_knee": [
+     0.5219,
+     0.7149
+    ],
+    "r_knee": [
+     0.7294,
+     0.697
+    ],
+    "l_ankle": [
+     0.4715,
+     0.9464
+    ],
+    "r_ankle": [
+     0.7056,
+     0.9243
+    ]
+   },
+   "photo": "photos/sf_studio_dress.jpg",
+   "source": {
+    "platform": "shram.kiev.ua",
+    "creator": "Karen Abramyan",
+    "url": "http://en.shram.kiev.ua/work/photo/photo-female-photoshoot.shtml"
+   }
+  },
+  {
+   "id": "sf_column_lean",
+   "name": {
+    "en": "Leaning on a Column",
+    "vi": "Tựa cột"
+   },
+   "gender": "female",
+   "standing": true,
+   "tags": [
+    "outdoor",
+    "street",
+    "lean",
+    "feminine"
+   ],
+   "tips": {
+    "en": [
+     "Lean the shoulder against the column and cross the legs",
+     "Rest one hand lightly on the thigh"
+    ],
+    "vi": [
+     "Tựa vai vào cột và bắt chéo chân",
+     "Một tay đặt nhẹ lên đùi"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "Use the architecture lines to frame the model"
+    ],
+    "vi": [
+     "Tận dụng đường nét kiến trúc để đóng khung người mẫu"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.8036,
+     0.0536
+    ],
+    "l_shoulder": [
+     0.6133,
+     0.1637
+    ],
+    "r_shoulder": [
+     0.882,
+     0.1593
+    ],
+    "l_elbow": [
+     0.5116,
+     0.2975
+    ],
+    "r_elbow": [
+     0.9464,
+     0.3398
+    ],
+    "l_wrist": [
+     0.3472,
+     0.3804
+    ],
+    "r_wrist": [
+     0.6662,
+     0.3517
+    ],
+    "l_hip": [
+     0.5035,
+     0.4487
+    ],
+    "r_hip": [
+     0.6766,
+     0.4485
+    ],
+    "l_knee": [
+     0.0536,
+     0.6243
+    ],
+    "r_knee": [
+     0.5049,
+     0.6931
+    ],
+    "l_ankle": [
+     0.5851,
+     0.8221
+    ],
+    "r_ankle": [
+     0.3935,
+     0.9464
+    ]
+   },
+   "photo": "photos/sf_column_lean.jpg",
+   "source": {
+    "platform": "shram.kiev.ua",
+    "creator": "Christian Te",
+    "url": "http://en.shram.kiev.ua/work/photo/photo-female-photoshoot.shtml"
+   }
+  },
+  {
+   "id": "sf_car_golden",
+   "name": {
+    "en": "Golden Hour by the Car",
+    "vi": "Giờ vàng bên xe"
+   },
+   "gender": "female",
+   "standing": true,
+   "tags": [
+    "outdoor",
+    "street",
+    "golden_hour",
+    "casual"
+   ],
+   "tips": {
+    "en": [
+     "Lean on the car with straight posture and relaxed arms",
+     "Chin up toward the low sun"
+    ],
+    "vi": [
+     "Tựa vào xe với tư thế thẳng, tay thả lỏng",
+     "Cằm hướng về phía nắng thấp"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "Backlight from the setting sun, expose for the face"
+    ],
+    "vi": [
+     "Nắng ngược hoàng hôn, đo sáng theo mặt"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.3733,
+     0.0536
+    ],
+    "l_shoulder": [
+     0.1632,
+     0.1714
+    ],
+    "r_shoulder": [
+     0.8057,
+     0.1369
+    ],
+    "l_elbow": [
+     0.1643,
+     0.3206
+    ],
+    "r_elbow": [
+     0.9464,
+     0.3147
+    ],
+    "l_wrist": [
+     0.0536,
+     0.4396
+    ],
+    "r_wrist": [
+     0.9224,
+     0.4732
+    ],
+    "l_hip": [
+     0.2763,
+     0.4399
+    ],
+    "r_hip": [
+     0.6385,
+     0.4594
+    ],
+    "l_knee": [
+     0.3654,
+     0.7045
+    ],
+    "r_knee": [
+     0.379,
+     0.6982
+    ],
+    "l_ankle": [
+     0.4438,
+     0.9464
+    ],
+    "r_ankle": [
+     0.261,
+     0.9317
+    ]
+   },
+   "photo": "photos/sf_car_golden.jpg",
+   "source": {
+    "platform": "shram.kiev.ua",
+    "creator": "Maria Petrova",
+    "url": "http://en.shram.kiev.ua/work/photo/photo-female-photoshoot.shtml"
+   }
+  },
+  {
+   "id": "sf_side_glance",
+   "name": {
+    "en": "Sideways Glance, Red Dress",
+    "vi": "Đứng nghiêng, váy đỏ"
+   },
+   "gender": "female",
+   "standing": true,
+   "tags": [
+    "studio",
+    "portrait",
+    "dress",
+    "elegant"
+   ],
+   "tips": {
+    "en": [
+     "Stand sideways and turn only the face to the camera",
+     "Cross the arms loosely low in front"
+    ],
+    "vi": [
+     "Đứng nghiêng và chỉ quay mặt về ống kính",
+     "Khoanh tay lỏng thấp phía trước"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "Three-quarter framing flatters the dress line"
+    ],
+    "vi": [
+     "Khung 3/4 người tôn đường váy"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.0536,
+     0.0536
+    ],
+    "l_shoulder": [
+     0.0547,
+     0.3311
+    ],
+    "r_shoulder": [
+     0.4163,
+     0.0772
+    ],
+    "l_elbow": [
+     0.3926,
+     0.7107
+    ],
+    "r_elbow": [
+     0.8532,
+     0.2984
+    ],
+    "l_wrist": [
+     0.7079,
+     0.5222
+    ],
+    "r_wrist": [
+     0.6593,
+     0.572
+    ],
+    "l_hip": [
+     0.5249,
+     0.6305
+    ],
+    "r_hip": [
+     0.7006,
+     0.4912
+    ],
+    "l_knee": [
+     0.6956,
+     0.8856
+    ],
+    "r_knee": [
+     0.8756,
+     0.549
+    ],
+    "l_ankle": [
+     0.8726,
+     0.9464
+    ],
+    "r_ankle": [
+     0.9464,
+     0.7043
+    ]
+   },
+   "photo": "photos/sf_side_glance.jpg",
+   "source": {
+    "platform": "shram.kiev.ua",
+    "creator": "Pascal Martin",
+    "url": "http://en.shram.kiev.ua/work/photo/photo-female-photoshoot.shtml"
+   }
+  },
+  {
+   "id": "sf_hands_waist",
+   "name": {
+    "en": "Both Hands on the Waist",
+    "vi": "Hai tay chống hông"
+   },
+   "gender": "female",
+   "standing": true,
+   "tags": [
+    "portrait",
+    "studio",
+    "confident",
+    "feminine"
+   ],
+   "tips": {
+    "en": [
+     "Place both hands on the waist, elbows wide",
+     "Straight back, direct confident gaze"
+    ],
+    "vi": [
+     "Đặt cả hai tay lên eo, khuỷu tay mở rộng",
+     "Lưng thẳng, ánh nhìn tự tin thẳng vào ống kính"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "Waist-up or full body both work; keep the backdrop simple"
+    ],
+    "vi": [
+     "Khung từ eo hay toàn thân đều hợp; giữ hậu cảnh đơn giản"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.2867,
+     0.0536
+    ],
+    "l_shoulder": [
+     0.2743,
+     0.1707
+    ],
+    "r_shoulder": [
+     0.6926,
+     0.1503
+    ],
+    "l_elbow": [
+     0.0536,
+     0.324
+    ],
+    "r_elbow": [
+     0.9464,
+     0.2964
+    ],
+    "l_wrist": [
+     0.2644,
+     0.4198
+    ],
+    "r_wrist": [
+     0.7483,
+     0.4244
+    ],
+    "l_hip": [
+     0.3592,
+     0.4865
+    ],
+    "r_hip": [
+     0.6338,
+     0.493
+    ],
+    "l_knee": [
+     0.3376,
+     0.7453
+    ],
+    "r_knee": [
+     0.6067,
+     0.7406
+    ],
+    "l_ankle": [
+     0.3417,
+     0.9464
+    ],
+    "r_ankle": [
+     0.6248,
+     0.9231
+    ]
+   },
+   "photo": "photos/sf_hands_waist.jpg",
+   "source": {
+    "platform": "shram.kiev.ua",
+    "creator": "JMurias Fotografia",
+    "url": "http://en.shram.kiev.ua/work/photo/photo-female-photoshoot.shtml"
+   }
+  },
+  {
+   "id": "sf_back_glance",
+   "name": {
+    "en": "Back Pose, Arm Raised",
+    "vi": "Dáng lưng, tay giơ cao"
+   },
+   "gender": "female",
+   "standing": true,
+   "tags": [
+    "portrait",
+    "editorial",
+    "back",
+    "feminine"
+   ],
+   "tips": {
+    "en": [
+     "Turn the back to the camera and raise one arm over the head",
+     "Look back over the shoulder"
+    ],
+    "vi": [
+     "Quay lưng về phía ống kính, một tay giơ qua đầu",
+     "Nhìn lại qua vai"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "Monochrome or soft light suits this fine-art look"
+    ],
+    "vi": [
+     "Đen trắng hoặc ánh sáng mềm hợp phong cách fine-art này"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.7899,
+     0.1502
+    ],
+    "l_shoulder": [
+     0.5303,
+     0.2637
+    ],
+    "r_shoulder": [
+     0.7094,
+     0.2814
+    ],
+    "l_elbow": [
+     0.16,
+     0.12
+    ],
+    "r_elbow": [
+     0.58,
+     0.44
+    ],
+    "l_wrist": [
+     0.38,
+     0.04
+    ],
+    "r_wrist": [
+     0.48,
+     0.53
+    ],
+    "l_hip": [
+     0.4159,
+     0.6248
+    ],
+    "r_hip": [
+     0.5837,
+     0.6278
+    ],
+    "l_knee": [
+     0.4675,
+     0.7612
+    ],
+    "r_knee": [
+     0.4548,
+     0.7731
+    ],
+    "l_ankle": [
+     0.3124,
+     0.9464
+    ],
+    "r_ankle": [
+     0.5668,
+     0.9396
+    ]
+   },
+   "photo": "photos/sf_back_glance.jpg",
+   "source": {
+    "platform": "shram.kiev.ua",
+    "creator": "Thomas Agatz",
+    "url": "http://en.shram.kiev.ua/work/photo/photo-female-photoshoot.shtml"
+   }
+  },
+  {
+   "id": "sm_suit_walk",
+   "name": {
+    "en": "Suit Walk, Hand in Pocket",
+    "vi": "Bước đi vest, tay trong túi"
+   },
+   "gender": "male",
+   "standing": true,
+   "tags": [
+    "business",
+    "walking",
+    "suit",
+    "masculine"
+   ],
+   "tips": {
+    "en": [
+     "Walk toward the camera with one hand in the pocket",
+     "Keep the stride long and the shoulders square"
+    ],
+    "vi": [
+     "Đi về phía ống kính, một tay trong túi",
+     "Sải bước dài, vai vuông"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "Track the walk and burst at mid-stride"
+    ],
+    "vi": [
+     "Lia máy theo và chụp liên tiếp giữa bước"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.3861,
+     0.0536
+    ],
+    "l_shoulder": [
+     0.0692,
+     0.1863
+    ],
+    "r_shoulder": [
+     0.7344,
+     0.1718
+    ],
+    "l_elbow": [
+     0.0536,
+     0.3671
+    ],
+    "r_elbow": [
+     0.9464,
+     0.3336
+    ],
+    "l_wrist": [
+     0.1349,
+     0.5092
+    ],
+    "r_wrist": [
+     0.5417,
+     0.3416
+    ],
+    "l_hip": [
+     0.2869,
+     0.4967
+    ],
+    "r_hip": [
+     0.6289,
+     0.4862
+    ],
+    "l_knee": [
+     0.3408,
+     0.7326
+    ],
+    "r_knee": [
+     0.628,
+     0.7301
+    ],
+    "l_ankle": [
+     0.788,
+     0.9308
+    ],
+    "r_ankle": [
+     0.6713,
+     0.9464
+    ]
+   },
+   "photo": "photos/sm_suit_walk.jpg",
+   "source": {
+    "platform": "moderngentlemanmagazine.com",
+    "creator": "Modern Gentleman Magazine",
+    "url": "https://www.moderngentlemanmagazine.com/46-unique-ideas-for-photo-pose-for-mens/"
+   }
+  },
+  {
+   "id": "sm_stairs_lean",
+   "name": {
+    "en": "Seated Lean on the Stairs",
+    "vi": "Ngồi bậc thang, nghiêng người"
+   },
+   "gender": "male",
+   "standing": false,
+   "tags": [
+    "seated",
+    "stairs",
+    "casual",
+    "masculine"
+   ],
+   "tips": {
+    "en": [
+     "Sit and lean forward with forearms on the knees",
+     "Clasp the hands loosely between the knees"
+    ],
+    "vi": [
+     "Ngồi và nghiêng về trước, cẳng tay đặt lên đầu gối",
+     "Chắp tay lỏng giữa hai đầu gối"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "Shoot slightly from above, three-quarter frame"
+    ],
+    "vi": [
+     "Chụp hơi từ trên, khung 3/4"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.3857,
+     0.0536
+    ],
+    "l_shoulder": [
+     0.1125,
+     0.1969
+    ],
+    "r_shoulder": [
+     0.7593,
+     0.1781
+    ],
+    "l_elbow": [
+     0.0536,
+     0.4837
+    ],
+    "r_elbow": [
+     0.9464,
+     0.4953
+    ],
+    "l_wrist": [
+     0.1943,
+     0.6387
+    ],
+    "r_wrist": [
+     0.5861,
+     0.6394
+    ],
+    "l_hip": [
+     0.3204,
+     0.5559
+    ],
+    "r_hip": [
+     0.6495,
+     0.5496
+    ],
+    "l_knee": [
+     0.1536,
+     0.6247
+    ],
+    "r_knee": [
+     0.8491,
+     0.6939
+    ],
+    "l_ankle": [
+     0.2447,
+     0.9317
+    ],
+    "r_ankle": [
+     0.7523,
+     0.9464
+    ]
+   },
+   "photo": "photos/sm_stairs_lean.jpg",
+   "source": {
+    "platform": "moderngentlemanmagazine.com",
+    "creator": "Modern Gentleman Magazine",
+    "url": "https://www.moderngentlemanmagazine.com/46-unique-ideas-for-photo-pose-for-mens/"
+   }
+  },
+  {
+   "id": "sm_wall_foot",
+   "name": {
+    "en": "Wall Lean, Foot Raised",
+    "vi": "Tựa tường gác chân"
+   },
+   "gender": "male",
+   "standing": true,
+   "tags": [
+    "street",
+    "wall",
+    "athletic",
+    "masculine"
+   ],
+   "tips": {
+    "en": [
+     "Press the back to the wall and raise one foot against it",
+     "Arms relaxed or holding the raised knee"
+    ],
+    "vi": [
+     "Áp lưng vào tường, một chân gác lên tường",
+     "Tay thả lỏng hoặc ôm đầu gối gác"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "Side angle shows the raised foot best"
+    ],
+    "vi": [
+     "Góc chếch bên cho thấy rõ chân gác"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.4784,
+     0.0536
+    ],
+    "l_shoulder": [
+     0.1627,
+     0.1436
+    ],
+    "r_shoulder": [
+     0.4565,
+     0.1173
+    ],
+    "l_elbow": [
+     0.0536,
+     0.365
+    ],
+    "r_elbow": [
+     0.4447,
+     0.2632
+    ],
+    "l_wrist": [
+     0.1283,
+     0.5747
+    ],
+    "r_wrist": [
+     0.5989,
+     0.3169
+    ],
+    "l_hip": [
+     0.2559,
+     0.4767
+    ],
+    "r_hip": [
+     0.4662,
+     0.4535
+    ],
+    "l_knee": [
+     0.4463,
+     0.7288
+    ],
+    "r_knee": [
+     0.9464,
+     0.6327
+    ],
+    "l_ankle": [
+     0.4706,
+     0.9464
+    ],
+    "r_ankle": [
+     0.3476,
+     0.7319
+    ]
+   },
+   "photo": "photos/sm_wall_foot.jpg",
+   "source": {
+    "platform": "moderngentlemanmagazine.com",
+    "creator": "Modern Gentleman Magazine",
+    "url": "https://www.moderngentlemanmagazine.com/46-unique-ideas-for-photo-pose-for-mens/"
+   }
+  },
+  {
+   "id": "sm_steps_knee",
+   "name": {
+    "en": "Seated on Steps, Knee Up",
+    "vi": "Ngồi bậc thềm, gối dựng"
+   },
+   "gender": "male",
+   "standing": false,
+   "tags": [
+    "seated",
+    "outdoor",
+    "casual",
+    "masculine"
+   ],
+   "tips": {
+    "en": [
+     "Sit wide on the steps with one knee raised",
+     "Rest an arm on the raised knee"
+    ],
+    "vi": [
+     "Ngồi rộng trên bậc thềm, một đầu gối dựng",
+     "Tựa một tay lên đầu gối dựng"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "Low angle from the steps below"
+    ],
+    "vi": [
+     "Góc thấp từ bậc dưới"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.4207,
+     0.0536
+    ],
+    "l_shoulder": [
+     0.1737,
+     0.2175
+    ],
+    "r_shoulder": [
+     0.6845,
+     0.2201
+    ],
+    "l_elbow": [
+     0.0536,
+     0.4927
+    ],
+    "r_elbow": [
+     0.8948,
+     0.3967
+    ],
+    "l_wrist": [
+     0.3048,
+     0.6143
+    ],
+    "r_wrist": [
+     0.6903,
+     0.4843
+    ],
+    "l_hip": [
+     0.2924,
+     0.6777
+    ],
+    "r_hip": [
+     0.563,
+     0.6625
+    ],
+    "l_knee": [
+     0.1564,
+     0.6572
+    ],
+    "r_knee": [
+     0.9089,
+     0.492
+    ],
+    "l_ankle": [
+     0.4899,
+     0.9267
+    ],
+    "r_ankle": [
+     0.9464,
+     0.9464
+    ]
+   },
+   "photo": "photos/sm_steps_knee.jpg",
+   "source": {
+    "platform": "moderngentlemanmagazine.com",
+    "creator": "Modern Gentleman Magazine",
+    "url": "https://www.moderngentlemanmagazine.com/46-unique-ideas-for-photo-pose-for-mens/"
+   }
+  },
+  {
+   "id": "sm_street_walk",
+   "name": {
+    "en": "Street Stride with Bag Strap",
+    "vi": "Sải bước phố, tay giữ quai túi"
+   },
+   "gender": "male",
+   "standing": true,
+   "tags": [
+    "street",
+    "walking",
+    "candid",
+    "masculine"
+   ],
+   "tips": {
+    "en": [
+     "Walk naturally and hold the bag strap with one hand",
+     "Look ahead, not at the camera"
+    ],
+    "vi": [
+     "Đi tự nhiên, một tay giữ quai túi",
+     "Nhìn thẳng phía trước, không nhìn ống kính"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "Pan with the stride, fast shutter"
+    ],
+    "vi": [
+     "Lia máy theo bước, màn trập nhanh"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.748,
+     0.0536
+    ],
+    "l_shoulder": [
+     0.2112,
+     0.1386
+    ],
+    "r_shoulder": [
+     0.8337,
+     0.1647
+    ],
+    "l_elbow": [
+     0.0536,
+     0.3172
+    ],
+    "r_elbow": [
+     0.9464,
+     0.3138
+    ],
+    "l_wrist": [
+     0.3108,
+     0.2185
+    ],
+    "r_wrist": [
+     0.8335,
+     0.4409
+    ],
+    "l_hip": [
+     0.285,
+     0.4786
+    ],
+    "r_hip": [
+     0.6555,
+     0.4763
+    ],
+    "l_knee": [
+     0.2723,
+     0.7189
+    ],
+    "r_knee": [
+     0.6388,
+     0.7225
+    ],
+    "l_ankle": [
+     0.371,
+     0.8968
+    ],
+    "r_ankle": [
+     0.6016,
+     0.9464
+    ]
+   },
+   "photo": "photos/sm_street_walk.jpg",
+   "source": {
+    "platform": "moderngentlemanmagazine.com",
+    "creator": "Modern Gentleman Magazine",
+    "url": "https://www.moderngentlemanmagazine.com/46-unique-ideas-for-photo-pose-for-mens/"
+   }
+  },
+  {
+   "id": "sm_coat_lean",
+   "name": {
+    "en": "Coat Lean, Hands in Pockets",
+    "vi": "Tựa tường áo khoác dài"
+   },
+   "gender": "male",
+   "standing": true,
+   "tags": [
+    "street",
+    "wall",
+    "coat",
+    "masculine"
+   ],
+   "tips": {
+    "en": [
+     "Lean back on the wall with both hands in the coat pockets",
+     "One leg crossed loosely in front"
+    ],
+    "vi": [
+     "Tựa lưng vào tường, hai tay trong túi áo khoác",
+     "Một chân bắt chéo lỏng phía trước"
+    ]
+   },
+   "cameraCues": {
+    "en": [
+     "Vertical lines of the building frame the shot"
+    ],
+    "vi": [
+     "Đường dọc của tòa nhà đóng khung bức ảnh"
+    ]
+   },
+   "joints": {
+    "nose": [
+     0.6735,
+     0.0536
+    ],
+    "l_shoulder": [
+     0.2339,
+     0.1734
+    ],
+    "r_shoulder": [
+     0.8098,
+     0.1865
+    ],
+    "l_elbow": [
+     0.0536,
+     0.3389
+    ],
+    "r_elbow": [
+     0.8921,
+     0.3339
+    ],
+    "l_wrist": [
+     0.1347,
+     0.4357
+    ],
+    "r_wrist": [
+     0.9464,
+     0.4355
+    ],
+    "l_hip": [
+     0.355,
+     0.5062
+    ],
+    "r_hip": [
+     0.6762,
+     0.5047
+    ],
+    "l_knee": [
+     0.349,
+     0.765
+    ],
+    "r_knee": [
+     0.6881,
+     0.7615
+    ],
+    "l_ankle": [
+     0.329,
+     0.9464
+    ],
+    "r_ankle": [
+     0.7067,
+     0.935
+    ]
+   },
+   "photo": "photos/sm_coat_lean.jpg",
+   "source": {
+    "platform": "moderngentlemanmagazine.com",
+    "creator": "Modern Gentleman Magazine",
+    "url": "https://www.moderngentlemanmagazine.com/46-unique-ideas-for-photo-pose-for-mens/"
+   }
   }
  ],
  "scenes": [
@@ -6802,7 +9920,10 @@
    "expectedPoses": [
     "looking_away",
     "hands_on_hips",
-    "over_shoulder"
+    "over_shoulder",
+    "f_skirt_hold",
+    "f_walk_twirl",
+    "m_hands_behind_head"
    ],
    "composition": {
     "horizon": "lower_third",
@@ -6828,7 +9949,12 @@
     "looking_away",
     "lean_on_rail",
     "seated_profile",
-    "window_light_stand"
+    "window_light_stand",
+    "f_hair_touch",
+    "f_leg_cross_stand",
+    "f_seated_elegant",
+    "f_window_touch",
+    "m_seated_ankle_knee"
    ],
    "composition": {}
   },
@@ -6855,7 +9981,8 @@
     "seated_cafe_laptop",
     "coffee_cup",
     "seated_window_light",
-    "seated_profile"
+    "seated_profile",
+    "m_watch_check"
    ],
    "composition": {
     "key_light": "side light from the cafe window",
@@ -6882,7 +10009,14 @@
    "expectedPoses": [
     "lean_on_rail",
     "looking_away",
-    "contrapposto"
+    "contrapposto",
+    "f_stairs_seated",
+    "m_cuff_adjust",
+    "m_jacket_shoulder",
+    "sf_column_lean",
+    "sm_suit_walk",
+    "sm_stairs_lean",
+    "sm_steps_knee"
    ],
    "composition": {
     "include": "skyline",
@@ -6908,7 +10042,8 @@
     "arms_raised",
     "jump_midair",
     "walk_toward_camera",
-    "looking_away"
+    "looking_away",
+    "f_joyful_laugh"
    ],
    "composition": {}
   },
@@ -6932,7 +10067,8 @@
    "expectedPoses": [
     "over_shoulder",
     "looking_away",
-    "contrapposto"
+    "contrapposto",
+    "sf_back_glance"
    ],
    "composition": {
     "depth": "path_leading_lines"
@@ -6957,7 +10093,12 @@
     "stretch_reach",
     "walk_toward_camera",
     "looking_away",
-    "contrapposto"
+    "contrapposto",
+    "f_hair_touch",
+    "f_skirt_hold",
+    "f_joyful_laugh",
+    "f_walk_twirl",
+    "sf_white_dress_hair"
    ],
    "composition": {}
   },
@@ -6978,7 +10119,9 @@
    "expectedPoses": [
     "kneel_propose",
     "walk_toward_camera",
-    "side_profile_look"
+    "side_profile_look",
+    "f_skirt_hold",
+    "sf_white_dress_hair"
    ],
    "composition": {}
   },
@@ -7001,7 +10144,9 @@
     "point_forward",
     "walk_toward_camera",
     "looking_away",
-    "lean_on_rail"
+    "lean_on_rail",
+    "f_stairs_seated",
+    "sm_steps_knee"
    ],
    "composition": {}
   },
@@ -7024,7 +10169,8 @@
    "expectedPoses": [
     "window_light_stand",
     "looking_away",
-    "arms_crossed"
+    "arms_crossed",
+    "f_window_touch"
    ],
    "composition": {
     "key_light": "window",
@@ -7054,7 +10200,14 @@
     "lean_window_portrait",
     "window_gaze",
     "hands_in_pockets",
-    "coffee_table_lean"
+    "coffee_table_lean",
+    "f_neck_touch",
+    "f_seated_elegant",
+    "f_stairs_seated",
+    "f_window_touch",
+    "m_lapel_hold",
+    "sf_studio_dress",
+    "sf_side_glance"
    ],
    "composition": {
     "key_light": "large loft window at 45 degrees",
@@ -7081,7 +10234,11 @@
     "kneel_profile",
     "seated_profile",
     "looking_away",
-    "over_shoulder"
+    "over_shoulder",
+    "f_neck_touch",
+    "f_seated_elegant",
+    "m_seated_ankle_knee",
+    "m_chin_stroke"
    ],
    "composition": {}
   },
@@ -7104,7 +10261,11 @@
     "crouch_ready",
     "walk_toward_camera",
     "looking_away",
-    "hands_in_pockets"
+    "hands_in_pockets",
+    "f_joyful_laugh",
+    "m_thumb_pockets",
+    "m_pocket_walk",
+    "sm_street_walk"
    ],
    "composition": {}
   },
@@ -7127,7 +10288,8 @@
     "back_to_camera",
     "walk_toward_camera",
     "looking_away",
-    "lean_forward"
+    "lean_forward",
+    "m_hands_behind_head"
    ],
    "composition": {}
   },
@@ -7150,7 +10312,10 @@
     "hand_on_chin",
     "lean_forward",
     "looking_away",
-    "over_shoulder"
+    "over_shoulder",
+    "f_wall_lean_soft",
+    "m_wall_foot_up",
+    "sm_coat_lean"
    ],
    "composition": {}
   },
@@ -7173,7 +10338,13 @@
    "expectedPoses": [
     "power_stance",
     "arms_crossed",
-    "hands_in_pockets"
+    "hands_in_pockets",
+    "m_cuff_adjust",
+    "m_watch_check",
+    "m_seated_ankle_knee",
+    "m_lapel_hold",
+    "m_chin_stroke",
+    "sm_suit_walk"
    ],
    "composition": {
     "vertical_lines": "architecture"
@@ -7221,7 +10392,8 @@
     "jump_midair",
     "power_stance",
     "stretch_reach",
-    "walk_toward_camera"
+    "walk_toward_camera",
+    "m_hands_behind_head"
    ],
    "composition": {}
   },
@@ -7244,7 +10416,18 @@
    "expectedPoses": [
     "walk_toward_camera",
     "hands_in_pockets",
-    "power_stance"
+    "power_stance",
+    "f_leg_cross_stand",
+    "f_wall_lean_soft",
+    "f_walk_twirl",
+    "m_thumb_pockets",
+    "m_jacket_shoulder",
+    "m_wall_foot_up",
+    "m_pocket_walk",
+    "sf_street_hip",
+    "sf_car_golden",
+    "sm_wall_foot",
+    "sm_street_walk"
    ],
    "composition": {
     "leading_lines": "crosswalk",
@@ -7270,7 +10453,16 @@
    "expectedPoses": [
     "power_stance",
     "arms_crossed",
-    "hands_on_hips"
+    "hands_on_hips",
+    "f_hair_touch",
+    "f_neck_touch",
+    "m_cuff_adjust",
+    "m_lapel_hold",
+    "m_chin_stroke",
+    "sf_studio_dress",
+    "sf_side_glance",
+    "sf_hands_waist",
+    "sf_back_glance"
    ],
    "composition": {
     "backdrop": "seamless",
@@ -7296,7 +10488,10 @@
     "lean_forward",
     "walk_toward_camera",
     "hands_in_pockets",
-    "looking_away"
+    "looking_away",
+    "m_watch_check",
+    "m_pocket_walk",
+    "sm_stairs_lean"
    ],
    "composition": {}
   },
@@ -7319,7 +10514,17 @@
    "expectedPoses": [
     "hands_in_pockets",
     "contrapposto",
-    "lean_on_rail"
+    "lean_on_rail",
+    "f_leg_cross_stand",
+    "f_wall_lean_soft",
+    "m_thumb_pockets",
+    "m_jacket_shoulder",
+    "m_wall_foot_up",
+    "sf_street_hip",
+    "sf_column_lean",
+    "sf_hands_waist",
+    "sm_wall_foot",
+    "sm_coat_lean"
    ],
    "composition": {
     "background": "texture_wall",

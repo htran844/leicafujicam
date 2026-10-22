@@ -1,5 +1,7 @@
 package vn.hoang.leicafujicam.ui.settings
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,7 +41,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -50,6 +54,7 @@ import vn.hoang.leicafujicam.pose.PoseCatalog
 import vn.hoang.leicafujicam.pose.PoseCatalogData
 import vn.hoang.leicafujicam.pose.PoseEntry
 import vn.hoang.leicafujicam.ui.camera.PoseFigureCanvas
+import vn.hoang.leicafujicam.ui.camera.rememberAssetBitmap
 import vn.hoang.leicafujicam.ui.theme.PremiumGold
 
 /**
@@ -66,6 +71,7 @@ fun PoseGuideScreen(
     val context = LocalContext.current
     var catalog by remember { mutableStateOf<PoseCatalogData?>(null) }
     var selectedSceneId by remember { mutableStateOf<String?>(null) }
+    var selectedGender by remember { mutableStateOf<String?>(null) }
     var selectedPoseId by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(Unit) {
@@ -73,11 +79,14 @@ fun PoseGuideScreen(
     }
 
     val data = catalog
-    val visiblePoses: List<PoseEntry> = when {
+    val scenePoses: List<PoseEntry> = when {
         data == null -> emptyList()
         selectedSceneId == null -> data.poses
         else -> data.scenes.firstOrNull { it.id == selectedSceneId }
             ?.expectedPoses?.mapNotNull { data.posesById[it] } ?: emptyList()
+    }
+    val visiblePoses: List<PoseEntry> = scenePoses.filter { pose ->
+        selectedGender == null || pose.gender == selectedGender || pose.gender == "unisex"
     }
     val selectedPose = selectedPoseId?.let { data?.posesById?.get(it) }
 
@@ -143,6 +152,46 @@ fun PoseGuideScreen(
                 }
             }
 
+            // Gender filter chips (gendered poses plus shared unisex ones).
+            LazyRow(
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 2.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                item {
+                    FilterChip(
+                        selected = selectedGender == null,
+                        onClick = { selectedGender = null },
+                        label = { Text(stringResource(R.string.pose_guide_gender_all)) },
+                        colors = FilterChipDefaults.filterChipColors(
+                            selectedContainerColor = PremiumGold,
+                            selectedLabelColor = Color.Black
+                        )
+                    )
+                }
+                item {
+                    FilterChip(
+                        selected = selectedGender == "female",
+                        onClick = { selectedGender = "female" },
+                        label = { Text(stringResource(R.string.pose_guide_female)) },
+                        colors = FilterChipDefaults.filterChipColors(
+                            selectedContainerColor = PremiumGold,
+                            selectedLabelColor = Color.Black
+                        )
+                    )
+                }
+                item {
+                    FilterChip(
+                        selected = selectedGender == "male",
+                        onClick = { selectedGender = "male" },
+                        label = { Text(stringResource(R.string.pose_guide_male)) },
+                        colors = FilterChipDefaults.filterChipColors(
+                            selectedContainerColor = PremiumGold,
+                            selectedLabelColor = Color.Black
+                        )
+                    )
+                }
+            }
+
             LazyVerticalGrid(
                 columns = GridCells.Fixed(3),
                 modifier = Modifier
@@ -165,14 +214,28 @@ fun PoseGuideScreen(
                         )
                     ) {
                         Column(modifier = Modifier.padding(6.dp)) {
-                            PoseFigureCanvas(
-                                pose = pose,
-                                color = if (selected) PremiumGold else Color.White,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(104.dp),
-                                strokeWidthPx = 4f
-                            )
+                            val cellPhoto = pose.photo?.let { photoPath ->
+                                rememberAssetBitmap("poses/$photoPath")
+                            }
+                            if (cellPhoto != null) {
+                                Image(
+                                    bitmap = cellPhoto,
+                                    contentDescription = pose.getName(),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(104.dp),
+                                    contentScale = ContentScale.Crop
+                                )
+                            } else {
+                                PoseFigureCanvas(
+                                    pose = pose,
+                                    color = if (selected) PremiumGold else Color.White,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(104.dp),
+                                    strokeWidthPx = 4f
+                                )
+                            }
                             Text(
                                 text = pose.getName(),
                                 style = MaterialTheme.typography.labelSmall,
@@ -196,6 +259,20 @@ fun PoseGuideScreen(
                     )
                 ) {
                     Column(modifier = Modifier.padding(14.dp)) {
+                        val detailPhoto = selectedPose.photo?.let { photoPath ->
+                            rememberAssetBitmap("poses/$photoPath")
+                        }
+                        if (detailPhoto != null) {
+                            Image(
+                                bitmap = detailPhoto,
+                                contentDescription = selectedPose.getName(),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(210.dp)
+                                    .padding(bottom = 10.dp),
+                                contentScale = ContentScale.Crop
+                            )
+                        }
                         Text(
                             text = selectedPose.getName(),
                             style = MaterialTheme.typography.titleMedium
@@ -229,6 +306,25 @@ fun PoseGuideScreen(
                                     style = MaterialTheme.typography.bodySmall
                                 )
                             }
+                        }
+                        if (selectedPose.sourceCreator != null) {
+                            val uriHandler = LocalUriHandler.current
+                            val sourceUrl = selectedPose.sourceUrl
+                            Spacer(Modifier.height(8.dp))
+                            Text(
+                                text = stringResource(
+                                    R.string.pose_guide_source,
+                                    selectedPose.sourceCreator,
+                                    selectedPose.sourcePlatform ?: ""
+                                ),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = PremiumGold,
+                                modifier = if (sourceUrl != null) {
+                                    Modifier.clickable { uriHandler.openUri(sourceUrl) }
+                                } else {
+                                    Modifier
+                                }
+                            )
                         }
                         Spacer(Modifier.height(10.dp))
                         Button(

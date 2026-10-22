@@ -1534,6 +1534,12 @@
     <string name="pose_guide_close">Close pose guide</string>
     <string name="pose_guide_opacity">Opacity</string>
     <string name="pose_guide_size">Size</string>
+    <string name="pose_guide_gender_all">Everyone</string>
+    <string name="pose_guide_female">Women</string>
+    <string name="pose_guide_male">Men</string>
+    <string name="pose_guide_source">Source: %1$s · %2$s</string>
+    <string name="pose_guide_show_photo">Show example photo</string>
+    <string name="pose_guide_show_figure">Show pose outline</string>
     <string name="calibration_guide_body">Shoot a ColorChecker 24 chart with this app (filter set to None) under neutral light, then pick that photo here. The app measures the chart, computes this device\'s color correction, and saves calibrated versions of the built-in looks that work immediately on this phone. Export the pack afterwards so the calibration can be baked into a release for every user of this device model.</string>
     <string name="calibration_guide_steps">How to shoot the chart:\n1. Set the filter to None; lock white balance and exposure.\n2. Use D65 / 5500K light; let the chart fill most of the frame; avoid glare and shadows.\n3. Take the photo, pick it below, and align the four handles to the corners of the patch grid.</string>
     <string name="calibration_pick_photo">Pick chart photo</string>

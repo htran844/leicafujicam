@@ -1,5 +1,6 @@
 package vn.hoang.leicafujicam.ui.camera
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -17,17 +18,24 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -66,6 +74,13 @@ fun PoseGuideOverlay(
         val centerX = previewLeft + previewW * state.centerX
         val centerY = previewTop + previewH * state.centerY
 
+        val photoBitmap = pose.photo?.let { photoPath ->
+            rememberAssetBitmap("poses/$photoPath")
+        }
+        var showPhoto by remember(pose.id) {
+            mutableStateOf(pose.photo != null)
+        }
+
         Box(
             modifier = Modifier
                 .offset(x = centerX - figureW / 2, y = centerY - figureH / 2)
@@ -85,15 +100,29 @@ fun PoseGuideOverlay(
                     }
                 }
         ) {
-            PoseFigureCanvas(
-                pose = pose,
-                color = Color.White,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .alpha(state.opacity),
-                strokeWidthPx = 7f,
-                flipped = state.flipped
-            )
+            if (showPhoto && photoBitmap != null) {
+                Image(
+                    bitmap = photoBitmap,
+                    contentDescription = pose.getName(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .alpha(state.opacity)
+                        .graphicsLayer {
+                            if (state.flipped) scaleX = -1f
+                        },
+                    contentScale = ContentScale.Fit
+                )
+            } else {
+                PoseFigureCanvas(
+                    pose = pose,
+                    color = Color.White,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .alpha(state.opacity),
+                    strokeWidthPx = 7f,
+                    flipped = state.flipped
+                )
+            }
         }
 
         // Control panel.
@@ -128,6 +157,21 @@ fun PoseGuideOverlay(
                         contentDescription = stringResource(R.string.pose_guide_next),
                         tint = Color.White
                     )
+                }
+                if (pose.photo != null) {
+                    IconButton(onClick = { showPhoto = !showPhoto }) {
+                        Icon(
+                            if (showPhoto) Icons.Filled.Person else AppIcons.Photo,
+                            contentDescription = stringResource(
+                                if (showPhoto) {
+                                    R.string.pose_guide_show_figure
+                                } else {
+                                    R.string.pose_guide_show_photo
+                                }
+                            ),
+                            tint = Color.White
+                        )
+                    }
                 }
                 IconButton(onClick = {
                     onUpdate { it.copy(flipped = !it.flipped) }
