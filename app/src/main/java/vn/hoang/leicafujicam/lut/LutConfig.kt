@@ -109,6 +109,7 @@ data class LutInfo(
     val isVip: Boolean = false, // 是否为 VIP LUT
     val category: String = "", // 分类
     val isFavorite: Boolean = false, // 是否收藏
+    val exampleCredit: String = "", // 例子照片的来源标注（可选）
     val inputCurve: TransferCurve? = null,
     val inputColorSpace: ColorSpace? = null,
 ) {

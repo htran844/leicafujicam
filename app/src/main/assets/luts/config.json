@@ -68,6 +68,19 @@
       "isFavorite": true
     },
     {
+      "id": "amelia",
+      "name": {
+        "en": "Amelia",
+        "zh": "Amelia",
+        "vi": "Amelia"
+      },
+      "path": "amelia.plut",
+      "category": "Creative",
+      "isVip": false,
+      "isFavorite": true,
+      "exampleCredit": "TikTok @conceptbyamelia"
+    },
+    {
       "id": "kodak_portra_400",
       "name": {
         "en": "Kodak Portra 400",

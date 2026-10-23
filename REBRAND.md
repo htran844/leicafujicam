@@ -98,3 +98,20 @@ tại `app/src/main/assets/poses/POSEGUIDE-LICENSE.txt`, dữ liệu đóng gói
   panel chi tiết và trong lớp phủ camera (nút chuyển Ảnh mẫu / Hình dáng).
   Ảnh thuộc bản quyền của tác giả gốc — app giữ nguyên ghi công và link
   nguồn; chỉ phục vụ tham khảo cá nhân.
+
+## 1.0.9 — LUT "Amelia" + ảnh ví dụ cho mọi LUT
+
+- LUT mới **Amelia** (Creative, Yêu thích): tái tạo phong cách bộ ảnh vườn
+  cẩm tú cầu của TikTok @conceptbyamelia do Hoàng gửi — đo thống kê trực tiếp
+  trên 6 ảnh gốc (bóng đổ ám xanh lá và được nâng nhẹ, xanh lá ngả vàng hue
+  ~104 bão hòa cao, da đào hue ~33, xanh trời/hồng pastel bão hòa thấp, trắng
+  gần trung tính hơi ngả xanh), thông số ghi trong `tools/make_custom_luts.py`.
+- **Quy ước mới (theo yêu cầu của Hoàng): mọi LUT đóng gói đều có ảnh ví dụ.**
+  Ảnh nằm ở `assets/luts/examples/<lutId>/`, màn chọn LUT hiện một dải "Ảnh
+  ví dụ" theo LUT đang chọn, bấm vào xem toàn màn hình. Amelia dùng chính 6
+  ảnh gốc (ghi công "TikTok @conceptbyamelia" trong config + trong app);
+  30 LUT còn lại được sinh tự động bằng `tools/make_lut_examples.py` — áp
+  chính LUT đó lên một ảnh tham chiếu chung (ảnh xe đạp trong bộ Amelia) nên
+  so sánh màu giữa các LUT rất trực quan; riêng nhóm LUT khôi phục Log không
+  sinh ảnh (là biến đổi kỹ thuật cho footage log, ảnh sRGB sẽ gây hiểu sai).
+  LUT mới thêm vào app bắt buộc kèm ảnh ví dụ theo quy ước này.

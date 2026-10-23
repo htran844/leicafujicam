@@ -1437,6 +1437,7 @@
     <string name="calibration_title">Hiệu chuẩn màu theo máy</string>
     <string name="calibration_toolbox_desc">Hiệu chuẩn các phong cách tích hợp bằng bảng màu, ngay trên máy này</string>
     <string name="pose_guide_title">Hướng dẫn tạo dáng</string>
+    <string name="lut_examples_title">Ảnh ví dụ</string>
     <string name="pose_guide_toolbox_desc">Chọn dáng theo bối cảnh và căn theo hình phủ trên camera</string>
     <string name="pose_guide_all_scenes">Tất cả bối cảnh</string>
     <string name="pose_guide_tips">Cho người mẫu</string>

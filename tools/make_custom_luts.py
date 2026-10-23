@@ -180,6 +180,28 @@ SPECS = {
         ],
         "split": ((-0.004, 0.006, 0.016), (0.002, 0.004, 0.008), 0.7),
     },
+    # Amelia (TikTok @conceptbyamelia): bright pastel garden look measured from
+    # the photographer's hydrangea-garden set — high-key soft contrast, lifted
+    # green-tinted shadows, rich yellow-greens (hue ~104, sat .49), peachy skin
+    # (hue ~33), pastel blues (sat .18) and lavender pinks (sat .15), whites
+    # near-neutral with a green lean (G>R>B).
+    "amelia": {
+        "wb": (0.995, 1.012, 0.978),
+        "curves": [
+            [(0, 0.020), (0.25, 0.258), (0.5, 0.510), (0.75, 0.758), (1, 0.986)],  # R
+            [(0, 0.036), (0.25, 0.268), (0.5, 0.516), (0.75, 0.764), (1, 0.990)],  # G
+            [(0, 0.012), (0.25, 0.246), (0.5, 0.498), (0.75, 0.748), (1, 0.984)],  # B
+        ],
+        "sat": 0.96,
+        "hue_rules": [
+            (120, 70, -11, 1.14),  # greens -> yellow-green, richer
+            (210, 65, -3, 0.70),   # blues -> soft pastel
+            (322, 48, 0, 0.74),    # pinks -> pastel lavender-pink
+            (30, 42, 1, 1.03),     # skin stays peachy
+            (55, 40, 0, 1.06),     # yellows glow gently
+        ],
+        "split": ((0.002, 0.013, -0.003), (0.005, 0.009, -0.007), 0.8),
+    },
 }
 
 

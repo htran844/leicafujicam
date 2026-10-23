@@ -34,6 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Size
@@ -42,7 +43,9 @@ import vn.hoang.leicafujicam.R
 import vn.hoang.leicafujicam.data.ContentRepository
 import vn.hoang.leicafujicam.frame.FrameInfo
 import vn.hoang.leicafujicam.lut.BaselineColorCorrectionTarget
+import vn.hoang.leicafujicam.lut.LutExamples
 import vn.hoang.leicafujicam.lut.LutInfo
+import vn.hoang.leicafujicam.ui.camera.rememberAssetBitmap
 import vn.hoang.leicafujicam.model.CameraPreset
 import vn.hoang.leicafujicam.model.LutSelectorMode
 import kotlinx.coroutines.Dispatchers
@@ -567,6 +570,15 @@ fun LutSelector(
                                 )
                             }
                         }
+
+                        // 当前 LUT 的例子照片（打包在 assets/luts/examples/<id>/ 时显示）
+                        val currentLutForExamples = availableLuts.find { it.id == activeLutId }
+                        if (currentLutForExamples != null) {
+                            LutExamplesStrip(
+                                lutId = currentLutForExamples.id,
+                                credit = currentLutForExamples.exampleCredit
+                            )
+                        }
                     }
                 }
                 LutSelectorMode.Frame -> {
@@ -797,5 +809,114 @@ private fun LutItem(
                 .padding(horizontal = 2.dp, vertical = 1.dp)
                 .basicMarquee()
         )
+    }
+}
+
+/**
+ * 当前选中 LUT 的例子照片条：横向滚动展示打包的参考色照片，点击任意一张全屏查看。
+ * 没有打包例子照片的 LUT（如用户导入的 LUT）不显示。
+ */
+@Composable
+private fun LutExamplesStrip(
+    lutId: String,
+    credit: String,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+    var paths by remember(lutId) { mutableStateOf<List<String>>(emptyList()) }
+    LaunchedEffect(lutId) {
+        paths = withContext(Dispatchers.IO) { LutExamples.examplePaths(context, lutId) }
+    }
+    if (paths.isEmpty()) return
+
+    var enlargedPath by remember { mutableStateOf<String?>(null) }
+
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
+            Text(
+                text = stringResource(R.string.lut_examples_title),
+                color = Color.White.copy(alpha = 0.85f),
+                fontSize = 10.sp,
+                fontWeight = FontWeight.Medium,
+                style = LocalTextStyle.current.copy(shadow = ViewfinderTextShadow)
+            )
+            if (credit.isNotEmpty()) {
+                Text(
+                    text = credit,
+                    color = Color.White.copy(alpha = 0.55f),
+                    fontSize = 10.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    style = LocalTextStyle.current.copy(shadow = ViewfinderTextShadow)
+                )
+            }
+        }
+        LazyRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+            contentPadding = PaddingValues(horizontal = 8.dp)
+        ) {
+            items(paths, key = { it }) { path ->
+                val bitmap = rememberAssetBitmap(path)
+                if (bitmap != null) {
+                    val aspect = bitmap.width.toFloat() / bitmap.height.toFloat()
+                    Image(
+                        bitmap = bitmap,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .height(96.dp)
+                            .width((96 * aspect).dp)
+                            .clip(RoundedCornerShape(8.dp))
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null
+                            ) { enlargedPath = path }
+                    )
+                }
+            }
+        }
+    }
+
+    enlargedPath?.let { path ->
+        Dialog(onDismissRequest = { enlargedPath = null }) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black)
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null
+                    ) { enlargedPath = null },
+                contentAlignment = Alignment.Center
+            ) {
+                val bitmap = rememberAssetBitmap(path)
+                if (bitmap != null) {
+                    Image(
+                        bitmap = bitmap,
+                        contentDescription = null,
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+                if (credit.isNotEmpty()) {
+                    Text(
+                        text = credit,
+                        color = Color.White.copy(alpha = 0.75f),
+                        fontSize = 11.sp,
+                        modifier = Modifier
+                            .align(Alignment.BottomCenter)
+                            .padding(16.dp)
+                    )
+                }
+            }
+        }
     }
 }

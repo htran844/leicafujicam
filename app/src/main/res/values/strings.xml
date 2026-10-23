@@ -1523,6 +1523,7 @@
     <string name="calibration_title">Device Color Calibration</string>
     <string name="calibration_toolbox_desc">Calibrate the built-in looks with a color chart, right on this device</string>
     <string name="pose_guide_title">Pose Guide</string>
+    <string name="lut_examples_title">Example photos</string>
     <string name="pose_guide_toolbox_desc">Pick a pose for the scene and align with the on-camera overlay</string>
     <string name="pose_guide_all_scenes">All scenes</string>
     <string name="pose_guide_tips">For the model</string>
