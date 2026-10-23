@@ -23,6 +23,32 @@
       "isVip": false
     },
     {
+      "id": "tomosaki",
+      "name": {
+        "en": "Tomosaki",
+        "zh": "Tomosaki",
+        "vi": "Tomosaki"
+      },
+      "path": "tomosaki.plut",
+      "category": "Creative",
+      "isVip": false,
+      "isFavorite": true,
+      "exampleCredit": "TikTok @photono_gen"
+    },
+    {
+      "id": "amelia",
+      "name": {
+        "en": "Amelia",
+        "zh": "Amelia",
+        "vi": "Amelia"
+      },
+      "path": "amelia.plut",
+      "category": "Creative",
+      "isVip": false,
+      "isFavorite": true,
+      "exampleCredit": "TikTok @conceptbyamelia"
+    },
+    {
       "id": "leica",
       "name": {
         "en": "Leica",
@@ -54,31 +80,6 @@
       "path": "Hasselblad.plut",
       "isVip": false,
       "isFavorite": true
-    },
-    {
-      "id": "tomosaki",
-      "name": {
-        "en": "Tomosaki",
-        "zh": "Tomosaki",
-        "vi": "Tomosaki"
-      },
-      "path": "tomosaki.plut",
-      "category": "Creative",
-      "isVip": false,
-      "isFavorite": true
-    },
-    {
-      "id": "amelia",
-      "name": {
-        "en": "Amelia",
-        "zh": "Amelia",
-        "vi": "Amelia"
-      },
-      "path": "amelia.plut",
-      "category": "Creative",
-      "isVip": false,
-      "isFavorite": true,
-      "exampleCredit": "TikTok @conceptbyamelia"
     },
     {
       "id": "kodak_portra_400",

@@ -19,6 +19,7 @@ OUT_ROOT = os.path.join(LUTS_DIR, "examples")
 REFERENCE = os.path.expanduser("~/workspace/amelia-samples/amelia_2.jpg")
 EXCEPTIONS = {
     "amelia": [os.path.expanduser(f"~/workspace/amelia-samples/amelia_{i}.jpg") for i in range(1, 7)],
+    "tomosaki": [os.path.expanduser(f"~/workspace/tomosaki-samples/p{i}.jpg") for i in range(1, 9)],
 }
 SKIP_CATEGORIES = {"Log"}
 MAX_W = 560

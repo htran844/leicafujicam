@@ -115,3 +115,14 @@ tại `app/src/main/assets/poses/POSEGUIDE-LICENSE.txt`, dữ liệu đóng gói
   so sánh màu giữa các LUT rất trực quan; riêng nhóm LUT khôi phục Log không
   sinh ảnh (là biến đổi kỹ thuật cho footage log, ảnh sRGB sẽ gây hiểu sai).
   LUT mới thêm vào app bắt buộc kèm ảnh ví dụ theo quy ước này.
+
+## 1.0.10 — Ảnh mẫu gốc cho Tomosaki + đưa Tomosaki/Amelia lên đầu
+
+- LUT **tomosaki** dùng 8 ảnh mẫu gốc của @photono_gen (chính là bộ ảnh đã
+  dùng để đo và tinh chỉnh LUT ở bản 1.0.6) làm ảnh ví dụ, thay cho ảnh sinh
+  tự động; ghi công "TikTok @photono_gen" trong config + trong app.
+- **Tomosaki và Amelia đứng đầu danh sách LUT** (config.json: ngay sau
+  Standard) — tab Yêu thích mở ra thấy Tomosaki → Amelia đầu tiên, tab
+  Built-in cũng vậy. Lưu ý: thứ tự này là mặc định của app; nếu người dùng đã
+  tự sắp xếp thứ tự bộ lọc trong màn Quản lý bộ lọc thì thứ tự đã lưu của họ
+  được ưu tiên.
